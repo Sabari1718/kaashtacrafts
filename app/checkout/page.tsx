@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCart } from "../context/CartContext";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { CheckCircle2, ShoppingBag, MapPin, Truck, Loader2, Tag, X } from "lucide-react";
 
 function CheckoutContent() {
@@ -14,7 +14,7 @@ function CheckoutContent() {
   const selectedIds = selectedIdsParam ? selectedIdsParam.split(",") : [];
   
   const { cartItems, cartTotal, clearCart, removeFromCart } = useCart();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   
   const [checkoutItems, setCheckoutItems] = useState<any[]>([]);
   const [checkoutTotal, setCheckoutTotal] = useState(0);
@@ -260,6 +260,28 @@ function CheckoutContent() {
     return (
       <div className="flex w-full min-h-[80vh] items-center justify-center bg-stone-50">
         <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
+      </div>
+    );
+  }
+
+  if (status === "unauthenticated") {
+    return (
+      <div className="flex w-full min-h-[80vh] items-center justify-center bg-stone-50 p-6">
+        <div className="bg-white p-10 rounded-3xl shadow-xl border border-stone-200 text-center max-w-md w-full">
+          <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <ShoppingBag className="w-10 h-10 text-amber-700" />
+          </div>
+          <h2 className="text-3xl font-bold font-playfair text-stone-900 mb-4">Login Required</h2>
+          <p className="text-stone-600 mb-8">
+            Please log in or create an account to proceed with your checkout.
+          </p>
+          <button 
+            onClick={() => signIn("google")}
+            className="w-full py-4 bg-amber-700 hover:bg-amber-800 text-white rounded-xl font-bold transition-all flex items-center justify-center gap-2"
+          >
+            Sign in with Google
+          </button>
+        </div>
       </div>
     );
   }

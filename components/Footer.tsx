@@ -12,7 +12,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="bg-stone-950 text-stone-400 py-12 px-6 border-t border-stone-800">
+    <footer className="bg-stone-950 dark:bg-black text-stone-400 py-12 px-6 border-t border-stone-800 dark:border-stone-900 transition-colors duration-300">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="flex items-center gap-3 text-stone-100 text-xl font-playfair font-bold">
           <Image src="/logo.jpeg" alt="Logo" width={32} height={32} className="rounded-md opacity-90" />

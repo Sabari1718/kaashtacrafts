@@ -1,0 +1,18 @@
+name: MongoDB & Website Keep Alive
+
+on:
+  schedule:
+    # Runs every 3 days at 00:00 UTC
+    - cron: '0 0 */3 * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping KaashtaCrafts API
+        run: |
+          echo "Pinging KaashtaCrafts API to prevent MongoDB Atlas sleep..."
+          # Replace with your deployed Vercel URL if different
+          curl -s -f "https://kaashtacrafts.vercel.app/api/products" || true
+          echo "Keep-alive ping completed successfully!"

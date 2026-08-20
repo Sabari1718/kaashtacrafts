@@ -115,16 +115,16 @@ function ProductsContent() {
   };
 
   return (
-    <main className="flex flex-col w-full min-h-screen bg-stone-50 pt-6 pb-24 font-sans">
+    <main className="flex flex-col w-full min-h-screen bg-stone-50 dark:bg-[#121212] pt-6 pb-24 font-sans transition-colors duration-300">
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 w-full">
         
         {/* Top Search & Header */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 bg-white p-4 md:p-6 rounded-3xl shadow-sm border border-stone-100">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 bg-white dark:bg-[#181818] p-4 md:p-6 rounded-3xl shadow-sm border border-stone-100 dark:border-stone-800 transition-colors duration-300">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold font-playfair text-stone-900 tracking-tight">
+            <h1 className="text-2xl md:text-3xl font-bold font-playfair text-stone-900 dark:text-stone-100 tracking-tight transition-colors">
               Shop Premium Woodworks
             </h1>
-            <p className="text-stone-500 text-sm mt-1">{filteredProducts.length} products found</p>
+            <p className="text-stone-500 dark:text-stone-400 text-sm mt-1">{filteredProducts.length} products found</p>
           </div>
           
           <div className="flex w-full md:w-auto items-center gap-3">
@@ -140,12 +140,12 @@ function ProductsContent() {
                     router.push(`/products?search=${encodeURIComponent(searchQuery)}${selectedCategory !== 'All' ? `&category=${selectedCategory}` : ''}`);
                   }
                 }}
-                className="w-full pl-11 pr-4 py-3 rounded-full border border-stone-200 bg-stone-50 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:bg-white transition-all text-sm"
+                className="w-full pl-11 pr-4 py-3 rounded-full border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-[#121212] focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:bg-white dark:focus:bg-[#181818] text-stone-900 dark:text-stone-100 placeholder:text-stone-400 dark:placeholder:text-stone-500 transition-all text-sm"
               />
             </div>
             <button 
               onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
-              className="md:hidden flex items-center justify-center p-3 rounded-full bg-stone-900 text-white"
+              className="md:hidden flex items-center justify-center p-3 rounded-full bg-stone-900 dark:bg-stone-800 text-white"
             >
               <Filter className="w-5 h-5" />
             </button>
@@ -156,21 +156,21 @@ function ProductsContent() {
           
           {/* Left Sidebar Filters (Desktop) & Mobile Drawer */}
           <aside className={`
-            ${isMobileFilterOpen ? 'fixed inset-0 z-50 bg-white p-6 overflow-y-auto' : 'hidden md:block w-64 shrink-0'}
+            ${isMobileFilterOpen ? 'fixed inset-0 z-50 bg-white dark:bg-[#121212] p-6 overflow-y-auto' : 'hidden md:block w-64 shrink-0'}
             md:sticky md:top-28 md:bg-transparent md:p-0 md:z-auto
           `}>
             {isMobileFilterOpen && (
               <div className="flex justify-between items-center mb-6 md:hidden">
-                <h2 className="text-xl font-bold font-playfair">Filters</h2>
-                <button onClick={() => setIsMobileFilterOpen(false)} className="text-stone-500 font-bold p-2">✕</button>
+                <h2 className="text-xl font-bold font-playfair dark:text-stone-100">Filters</h2>
+                <button onClick={() => setIsMobileFilterOpen(false)} className="text-stone-500 dark:text-stone-400 font-bold p-2">✕</button>
               </div>
             )}
 
-            <div className="bg-white p-6 rounded-3xl shadow-sm border border-stone-100 flex flex-col gap-8">
+            <div className="bg-white dark:bg-[#181818] p-6 rounded-3xl shadow-sm border border-stone-100 dark:border-stone-800 flex flex-col gap-8 transition-colors duration-300">
               
               {/* Categories */}
               <div>
-                <h3 className="text-sm font-bold uppercase tracking-widest text-stone-900 mb-4 flex items-center justify-between">
+                <h3 className="text-sm font-bold uppercase tracking-widest text-stone-900 dark:text-stone-100 mb-4 flex items-center justify-between">
                   Category
                 </h3>
                 <div className="flex flex-col gap-2">
@@ -182,10 +182,10 @@ function ProductsContent() {
                         router.push(`/products?category=${encodeURIComponent(category)}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`);
                       }}
                       className={`text-left flex items-center gap-3 text-sm py-1.5 transition-colors ${
-                        selectedCategory === category ? "text-amber-700 font-bold" : "text-stone-600 hover:text-stone-900"
+                        selectedCategory === category ? "text-amber-700 dark:text-amber-500 font-bold" : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200"
                       }`}
                     >
-                      <div className={`w-4 h-4 rounded border flex items-center justify-center ${selectedCategory === category ? "border-amber-700 bg-amber-700 text-white" : "border-stone-300"}`}>
+                      <div className={`w-4 h-4 rounded border flex items-center justify-center ${selectedCategory === category ? "border-amber-700 dark:border-amber-500 bg-amber-700 dark:bg-amber-500 text-white" : "border-stone-300 dark:border-stone-700"}`}>
                         {selectedCategory === category && <Check className="w-3 h-3" />}
                       </div>
                       {category}
@@ -194,11 +194,11 @@ function ProductsContent() {
                 </div>
               </div>
 
-              <div className="h-px bg-stone-100"></div>
+              <div className="h-px bg-stone-100 dark:bg-stone-800"></div>
 
               {/* Price Range */}
               <div>
-                <h3 className="text-sm font-bold uppercase tracking-widest text-stone-900 mb-4">Price</h3>
+                <h3 className="text-sm font-bold uppercase tracking-widest text-stone-900 dark:text-stone-100 mb-4">Price</h3>
                 <div className="flex flex-col gap-2">
                   {[
                     { id: "All", label: "Any Price" },
@@ -210,11 +210,11 @@ function ProductsContent() {
                       key={range.id}
                       onClick={() => setPriceRange(range.id)}
                       className={`text-left flex items-center gap-3 text-sm py-1.5 transition-colors ${
-                        priceRange === range.id ? "text-amber-700 font-bold" : "text-stone-600 hover:text-stone-900"
+                        priceRange === range.id ? "text-amber-700 dark:text-amber-500 font-bold" : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200"
                       }`}
                     >
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${priceRange === range.id ? "border-amber-700" : "border-stone-300"}`}>
-                        {priceRange === range.id && <div className="w-2 h-2 rounded-full bg-amber-700"></div>}
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${priceRange === range.id ? "border-amber-700 dark:border-amber-500" : "border-stone-300 dark:border-stone-700"}`}>
+                        {priceRange === range.id && <div className="w-2 h-2 rounded-full bg-amber-700 dark:bg-amber-500"></div>}
                       </div>
                       {range.label}
                     </button>
@@ -222,23 +222,23 @@ function ProductsContent() {
                 </div>
               </div>
 
-              <div className="h-px bg-stone-100"></div>
+              <div className="h-px bg-stone-100 dark:bg-stone-800"></div>
 
               {/* Customer Reviews */}
               <div>
-                <h3 className="text-sm font-bold uppercase tracking-widest text-stone-900 mb-4">Customer Reviews</h3>
+                <h3 className="text-sm font-bold uppercase tracking-widest text-stone-900 dark:text-stone-100 mb-4">Customer Reviews</h3>
                 <div className="flex flex-col gap-2">
                   {[4, 3, 2, 1].map(rating => (
                     <button
                       key={rating}
                       onClick={() => setMinRating(rating === minRating ? 0 : rating)}
                       className={`flex items-center gap-2 text-sm py-1.5 transition-colors ${
-                        minRating === rating ? "font-bold text-amber-700" : "text-stone-600 hover:text-stone-900"
+                        minRating === rating ? "font-bold text-amber-700 dark:text-amber-500" : "text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200"
                       }`}
                     >
                       <div className="flex gap-0.5">
                         {[...Array(5)].map((_, i) => (
-                          <Star key={i} className={`w-4 h-4 ${i < rating ? 'fill-amber-400 text-amber-400' : 'text-stone-200'}`} />
+                          <Star key={i} className={`w-4 h-4 ${i < rating ? 'fill-amber-400 text-amber-400' : 'text-stone-200 dark:text-stone-700'}`} />
                         ))}
                       </div>
                       <span className="text-xs">& Up</span>
@@ -250,7 +250,7 @@ function ProductsContent() {
               {(searchQuery || selectedCategory !== "All" || priceRange !== "All" || minRating > 0) && (
                 <button 
                   onClick={clearFilters}
-                  className="w-full py-3 bg-stone-100 text-stone-600 font-bold text-sm rounded-xl hover:bg-stone-200 transition-colors"
+                  className="w-full py-3 bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-bold text-sm rounded-xl hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
                 >
                   Clear All Filters
                 </button>
@@ -264,13 +264,13 @@ function ProductsContent() {
             
             {/* Sort Dropdown */}
             <div className="flex justify-end items-center mb-6 z-20 relative">
-              <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-stone-200 shadow-sm text-sm">
-                <span className="text-stone-500 font-medium">Sort by:</span>
+              <div className="flex items-center gap-2 bg-white dark:bg-[#181818] px-4 py-2 rounded-full border border-stone-200 dark:border-stone-800 shadow-sm text-sm transition-colors">
+                <span className="text-stone-500 dark:text-stone-400 font-medium">Sort by:</span>
                 <select 
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-transparent font-bold text-stone-900 focus:outline-none cursor-pointer appearance-none pr-6 relative"
-                  style={{ backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231c1917%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right .2em top 55%', backgroundSize: '.65em auto' }}
+                  className="bg-transparent font-bold text-stone-900 dark:text-stone-100 focus:outline-none cursor-pointer appearance-none pr-6 relative dark:[&>option]:bg-[#181818]"
+                  style={{ backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23a8a29e%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right .2em top 55%', backgroundSize: '.65em auto' }}
                 >
                   <option value="Newest">Newest Arrivals</option>
                   <option value="PriceLowToHigh">Price: Low to High</option>
@@ -282,18 +282,18 @@ function ProductsContent() {
 
             {/* Product Grid */}
             {isLoading ? (
-              <div className="py-32 flex flex-col items-center justify-center bg-white rounded-3xl border border-stone-100 shadow-sm">
+              <div className="py-32 flex flex-col items-center justify-center bg-white dark:bg-[#181818] rounded-3xl border border-stone-100 dark:border-stone-800 shadow-sm transition-colors">
                 <Loader2 className="w-12 h-12 text-amber-500 animate-spin mb-4" />
-                <p className="text-stone-500 font-medium">Loading products...</p>
+                <p className="text-stone-500 dark:text-stone-400 font-medium">Loading products...</p>
               </div>
             ) : filteredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredProducts.map((product) => (
                   <div
                     key={product.id}
-                    className="group flex flex-col bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100"
+                    className="group flex flex-col bg-white dark:bg-[#181818] rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100 dark:border-stone-800"
                   >
-                    <Link href={`/products/${product.id}`} className="block relative aspect-[4/5] w-full overflow-hidden bg-stone-100">
+                    <Link href={`/products/${product.id}`} className="block relative aspect-[4/5] w-full overflow-hidden bg-stone-100 dark:bg-stone-900">
                       <Image 
                         src={product.image} 
                         alt={product.name}
@@ -302,10 +302,10 @@ function ProductsContent() {
                       />
                       {/* Rating Badge */}
                       {product.rating ? (
-                        <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur px-2.5 py-1 rounded-lg shadow-sm flex items-center gap-1">
-                          <span className="text-xs font-bold text-stone-900">{product.rating.toFixed(1)}</span>
+                        <div className="absolute bottom-4 left-4 bg-white/95 dark:bg-[#181818]/95 backdrop-blur px-2.5 py-1 rounded-lg shadow-sm flex items-center gap-1">
+                          <span className="text-xs font-bold text-stone-900 dark:text-stone-100">{product.rating.toFixed(1)}</span>
                           <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                          <span className="text-[10px] text-stone-400 ml-1">({product.numReviews})</span>
+                          <span className="text-[10px] text-stone-400 dark:text-stone-500 ml-1">({product.numReviews})</span>
                         </div>
                       ) : null}
                       <button 
@@ -314,29 +314,29 @@ function ProductsContent() {
                           toggleWishlist(product);
                           toast.success(isInWishlist(product.id) ? "Removed from Wishlist" : "Added to Wishlist");
                         }}
-                        className="absolute top-4 right-4 bg-white/90 backdrop-blur p-2.5 rounded-full hover:bg-white shadow-sm transition-all z-10 group/heart"
+                        className="absolute top-4 right-4 bg-white/90 dark:bg-[#181818]/90 backdrop-blur p-2.5 rounded-full hover:bg-white dark:hover:bg-[#202020] shadow-sm transition-all z-10 group/heart"
                       >
-                        <Heart className={`w-5 h-5 transition-colors ${isInWishlist(product.id) ? "fill-red-500 text-red-500" : "text-stone-400 group-hover/heart:text-red-500"}`} />
+                        <Heart className={`w-5 h-5 transition-colors ${isInWishlist(product.id) ? "fill-red-500 text-red-500" : "text-stone-400 dark:text-stone-500 group-hover/heart:text-red-500"}`} />
                       </button>
                       {!product.inStock && (
-                        <div className="absolute inset-0 bg-stone-900/40 flex items-center justify-center backdrop-blur-[2px]">
-                          <span className="bg-white px-6 py-2.5 rounded-full font-bold text-stone-900 tracking-widest text-xs uppercase shadow-xl">Sold Out</span>
+                        <div className="absolute inset-0 bg-stone-900/40 dark:bg-stone-900/60 flex items-center justify-center backdrop-blur-[2px]">
+                          <span className="bg-white dark:bg-[#181818] px-6 py-2.5 rounded-full font-bold text-stone-900 dark:text-stone-100 tracking-widest text-xs uppercase shadow-xl">Sold Out</span>
                         </div>
                       )}
                     </Link>
 
                     <div className="p-5 flex flex-col flex-grow">
-                      <Link href={`/products/${product.id}`} className="flex flex-col mb-4 group-hover:text-amber-700 transition-colors">
-                        <div className="text-[10px] font-bold tracking-widest uppercase text-stone-400 mb-1">{product.category}</div>
-                        <h3 className="text-lg font-bold font-playfair text-stone-900 leading-tight mb-2 line-clamp-2">
+                      <Link href={`/products/${product.id}`} className="flex flex-col mb-4 group-hover:text-amber-700 dark:group-hover:text-amber-500 transition-colors">
+                        <div className="text-[10px] font-bold tracking-widest uppercase text-stone-400 dark:text-stone-500 mb-1">{product.category}</div>
+                        <h3 className="text-lg font-bold font-playfair text-stone-900 dark:text-stone-100 leading-tight mb-2 line-clamp-2">
                           {product.name}
                         </h3>
                         <div className="flex items-center gap-2">
-                          <span className="text-xl font-bold text-stone-900">
+                          <span className="text-xl font-bold text-stone-900 dark:text-stone-100">
                             ₹{product.price}
                           </span>
                           {product.originalPrice && (
-                            <span className="text-sm font-medium text-stone-400 line-through">
+                            <span className="text-sm font-medium text-stone-400 dark:text-stone-500 line-through">
                               ₹{product.originalPrice}
                             </span>
                           )}
@@ -350,7 +350,7 @@ function ProductsContent() {
                           toast.success(`${product.name} added to cart`);
                         }}
                         disabled={!product.inStock}
-                        className="mt-auto w-full bg-stone-100 hover:bg-amber-800 disabled:bg-stone-100 disabled:text-stone-400 text-stone-900 hover:text-white py-3 rounded-xl text-sm font-bold tracking-wide transition-colors flex justify-center items-center gap-2"
+                        className="mt-auto w-full bg-stone-100 dark:bg-stone-800 hover:bg-amber-800 dark:hover:bg-amber-700 disabled:bg-stone-100 dark:disabled:bg-stone-800 disabled:text-stone-400 dark:disabled:text-stone-600 text-stone-900 dark:text-stone-300 hover:text-white dark:hover:text-white py-3 rounded-xl text-sm font-bold tracking-wide transition-colors flex justify-center items-center gap-2"
                       >
                         <ShoppingBag className="w-4 h-4" /> 
                         {product.inStock ? "Add to Cart" : "Out of Stock"}
@@ -360,17 +360,17 @@ function ProductsContent() {
                 ))}
               </div>
             ) : (
-              <div className="py-32 flex flex-col items-center justify-center text-center bg-white rounded-3xl border border-stone-100 shadow-sm">
-                <div className="w-20 h-20 bg-stone-50 rounded-full flex items-center justify-center mb-6">
-                  <Search className="w-8 h-8 text-stone-400" />
+              <div className="py-32 flex flex-col items-center justify-center text-center bg-white dark:bg-[#181818] rounded-3xl border border-stone-100 dark:border-stone-800 shadow-sm transition-colors">
+                <div className="w-20 h-20 bg-stone-50 dark:bg-[#121212] rounded-full flex items-center justify-center mb-6">
+                  <Search className="w-8 h-8 text-stone-400 dark:text-stone-500" />
                 </div>
-                <h3 className="text-2xl font-bold font-playfair text-stone-900 mb-2">No matching products</h3>
-                <p className="text-stone-500 max-w-sm mb-8 text-sm">
+                <h3 className="text-2xl font-bold font-playfair text-stone-900 dark:text-stone-100 mb-2">No matching products</h3>
+                <p className="text-stone-500 dark:text-stone-400 max-w-sm mb-8 text-sm">
                   Try adjusting your filters or search query to find what you're looking for.
                 </p>
                 <button 
                   onClick={clearFilters}
-                  className="bg-stone-900 text-white px-8 py-3 rounded-full font-bold text-sm hover:bg-stone-800 transition-colors shadow-lg"
+                  className="bg-stone-900 dark:bg-stone-700 text-white px-8 py-3 rounded-full font-bold text-sm hover:bg-stone-800 dark:hover:bg-stone-600 transition-colors shadow-lg"
                 >
                   Clear all filters
                 </button>
