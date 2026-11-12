@@ -233,23 +233,23 @@ export default function MyOrdersPage() {
 
   if (!isUserAuthenticated) {
     return (
-      <main className="flex flex-col items-center justify-center min-h-[80vh] bg-stone-50 p-6">
-        <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-stone-200 max-w-md w-full text-center">
-          <div className="w-20 h-20 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Package className="w-10 h-10 text-stone-800" />
+      <main className="flex flex-col items-center justify-center min-h-[80vh] bg-stone-50 dark:bg-[#121212] p-6 transition-colors duration-300">
+        <div className="bg-white dark:bg-stone-900 p-8 md:p-12 rounded-3xl shadow-xl border border-stone-200 dark:border-stone-800 max-w-md w-full text-center">
+          <div className="w-20 h-20 bg-stone-100 dark:bg-stone-800 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Package className="w-10 h-10 text-stone-800 dark:text-stone-300" />
           </div>
-          <h1 className="text-3xl font-bold font-playfair text-stone-900 mb-4">My Orders</h1>
-          <p className="text-stone-500 mb-8">Enter your phone number to track, manage, or cancel your previous orders.</p>
+          <h1 className="text-3xl font-bold font-playfair text-stone-900 dark:text-stone-100 mb-4">My Orders</h1>
+          <p className="text-stone-500 dark:text-stone-400 mb-8">Enter your phone number to track, manage, or cancel your previous orders.</p>
           
           <form onSubmit={handleGuestLogin} className="flex flex-col gap-4">
             <div className="relative">
-              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 w-5 h-5" />
+              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-500 w-5 h-5" />
               <input 
                 type="tel" 
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="Enter 10-digit Phone Number" 
-                className="w-full pl-12 pr-4 py-4 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-700/50"
+                className="w-full pl-12 pr-4 py-4 rounded-xl border border-stone-300 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-700/50 bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 dark:placeholder:text-stone-500"
                 required
               />
             </div>
@@ -263,15 +263,15 @@ export default function MyOrdersPage() {
   }
 
   return (
-    <main className="flex flex-col w-full min-h-screen bg-stone-50 pt-8 pb-24 font-sans">
+    <main className="flex flex-col w-full min-h-screen bg-stone-50 dark:bg-[#121212] pt-8 pb-24 font-sans transition-colors duration-300">
       <div className="max-w-4xl mx-auto px-6 w-full">
         <div className="flex flex-col md:flex-row justify-between md:items-end mb-8 gap-4">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold font-playfair text-stone-900 mb-2">My Orders</h1>
-            <p className="text-stone-500">Showing orders for: <span className="font-medium text-stone-900">{session?.user?.email || phone}</span></p>
+            <h1 className="text-3xl md:text-4xl font-bold font-playfair text-stone-900 dark:text-stone-100 mb-2">My Orders</h1>
+            <p className="text-stone-500 dark:text-stone-400">Showing orders for: <span className="font-medium text-stone-900 dark:text-stone-200">{session?.user?.email || phone}</span></p>
           </div>
           {!session && (
-            <button onClick={handleGuestLogout} className="text-sm text-red-600 font-medium hover:underline whitespace-nowrap">
+            <button onClick={handleGuestLogout} className="text-sm text-red-600 dark:text-red-500 font-medium hover:underline whitespace-nowrap">
               Clear Phone Search
             </button>
           )}
@@ -280,19 +280,19 @@ export default function MyOrdersPage() {
         {!isLoading && orders.length > 0 && (
           <div className="flex flex-col md:flex-row gap-4 mb-8">
             <div className="relative flex-grow">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 w-5 h-5" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-500 w-5 h-5" />
               <input 
                 type="text" 
                 placeholder="Search by Order ID..." 
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
+                className="w-full pl-12 pr-4 py-3 rounded-xl border border-stone-200 dark:border-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500/50 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 dark:placeholder:text-stone-500"
               />
             </div>
             <select 
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500/50 bg-white min-w-[160px] font-medium"
+              className="px-4 py-3 rounded-xl border border-stone-200 dark:border-stone-800 focus:outline-none focus:ring-2 focus:ring-amber-500/50 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 min-w-[160px] font-medium"
             >
               <option value="All">All Orders</option>
               <option value="Pending">Pending</option>
@@ -305,20 +305,20 @@ export default function MyOrdersPage() {
         )}
 
         {isLoading ? (
-          <div className="text-center py-20 text-stone-500">Loading your orders...</div>
+          <div className="text-center py-20 text-stone-500 dark:text-stone-400">Loading your orders...</div>
         ) : orders.length === 0 ? (
-          <div className="bg-white p-12 rounded-3xl border border-stone-200 text-center shadow-sm">
-            <Package className="w-16 h-16 text-stone-300 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-stone-900 mb-2">No orders found</h2>
-            <p className="text-stone-500 mb-8">It looks like you haven't placed any orders with this number yet.</p>
-            <Link href="/products" className="bg-stone-900 text-white px-8 py-3 rounded-full font-medium inline-flex items-center gap-2">
+          <div className="bg-white dark:bg-stone-900 p-12 rounded-3xl border border-stone-200 dark:border-stone-800 text-center shadow-sm">
+            <Package className="w-16 h-16 text-stone-300 dark:text-stone-600 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-stone-900 dark:text-stone-100 mb-2">No orders found</h2>
+            <p className="text-stone-500 dark:text-stone-400 mb-8">It looks like you haven't placed any orders with this number yet.</p>
+            <Link href="/products" className="bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 px-8 py-3 rounded-full font-medium inline-flex items-center gap-2">
               Start Shopping <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         ) : filteredOrders.length === 0 && orders.length > 0 ? (
-          <div className="text-center py-20 text-stone-500 bg-white rounded-3xl border border-stone-200 shadow-sm">
-            <Search className="w-12 h-12 text-stone-300 mx-auto mb-4" />
-            <h2 className="text-xl font-bold text-stone-900 mb-2">No matching orders</h2>
+          <div className="text-center py-20 text-stone-500 dark:text-stone-400 bg-white dark:bg-stone-900 rounded-3xl border border-stone-200 dark:border-stone-800 shadow-sm">
+            <Search className="w-12 h-12 text-stone-300 dark:text-stone-600 mx-auto mb-4" />
+            <h2 className="text-xl font-bold text-stone-900 dark:text-stone-100 mb-2">No matching orders</h2>
             <p>Try changing your search or filter criteria.</p>
           </div>
         ) : (
@@ -329,14 +329,14 @@ export default function MyOrdersPage() {
               const isDelivered = order.status === "Delivered";
               
               return (
-                <div key={order._id} className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-stone-200">
-                  <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6 pb-6 border-b border-stone-100">
+                <div key={order._id} className="bg-white dark:bg-stone-900 p-6 md:p-8 rounded-3xl shadow-sm border border-stone-200 dark:border-stone-800">
+                  <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6 pb-6 border-b border-stone-100 dark:border-stone-800">
                     <div>
-                      <div className="text-sm text-stone-500 mb-1">Order ID: {order._id.slice(-8).toUpperCase()}</div>
-                      <div className="text-sm text-stone-500">Placed on: {new Date(order.createdAt).toLocaleDateString()}</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-400 mb-1">Order ID: {order._id.slice(-8).toUpperCase()}</div>
+                      <div className="text-sm text-stone-500 dark:text-stone-400">Placed on: {new Date(order.createdAt).toLocaleDateString()}</div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="text-xl font-bold text-stone-900">₹{order.totalAmount}</div>
+                      <div className="text-xl font-bold text-stone-900 dark:text-stone-100">₹{order.totalAmount}</div>
                     </div>
                   </div>
 
@@ -346,18 +346,18 @@ export default function MyOrdersPage() {
                     {order.items.map((item: any, idx: number) => (
                       <div key={idx} className="flex flex-col md:flex-row gap-4 items-start md:items-center">
                         <div className="flex gap-4 items-center flex-grow">
-                          <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-stone-100 shrink-0 border border-stone-200">
+                          <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-stone-100 dark:bg-stone-800 shrink-0 border border-stone-200 dark:border-stone-700">
                             <Image src={item.image} alt={item.name} fill className="object-cover" />
                           </div>
                           <div className="flex-grow">
-                            <h4 className="font-semibold text-stone-900 line-clamp-1">{item.name}</h4>
-                            <p className="text-sm text-stone-500">Qty: {item.quantity}</p>
+                            <h4 className="font-semibold text-stone-900 dark:text-stone-100 line-clamp-1">{item.name}</h4>
+                            <p className="text-sm text-stone-500 dark:text-stone-400">Qty: {item.quantity}</p>
                           </div>
-                          <div className="font-medium text-stone-900 hidden md:block">₹{item.price * item.quantity}</div>
+                          <div className="font-medium text-stone-900 dark:text-stone-100 hidden md:block">₹{item.price * item.quantity}</div>
                         </div>
 
                         {/* Actions for items */}
-                        <div className="w-full md:w-auto flex flex-col md:flex-row md:justify-end border-t md:border-t-0 pt-3 md:pt-0 mt-2 md:mt-0 border-stone-100 gap-2">
+                        <div className="w-full md:w-auto flex flex-col md:flex-row md:justify-end border-t md:border-t-0 pt-3 md:pt-0 mt-2 md:mt-0 border-stone-100 dark:border-stone-800 gap-2">
                           <button 
                             onClick={() => handleBuyAgain(item)}
                             className="text-stone-900 bg-amber-500 hover:bg-amber-400 px-4 py-2 rounded-lg text-sm font-bold flex justify-center items-center gap-2 transition-colors"
@@ -381,11 +381,11 @@ export default function MyOrdersPage() {
                     ))}
                   </div>
 
-                  <div className="flex justify-between items-center pt-4 border-t border-stone-100 flex-wrap gap-4">
+                  <div className="flex justify-between items-center pt-4 border-t border-stone-100 dark:border-stone-800 flex-wrap gap-4">
                     <Link 
                       href={`/my-orders/${order._id}/invoice`} 
                       target="_blank"
-                      className="text-amber-700 hover:text-amber-800 font-bold text-sm flex items-center gap-1.5 px-4 py-2 hover:bg-amber-50 rounded-lg transition-colors border border-amber-200/50"
+                      className="text-amber-700 dark:text-amber-500 hover:text-amber-800 dark:hover:text-amber-400 font-bold text-sm flex items-center gap-1.5 px-4 py-2 hover:bg-amber-50 dark:hover:bg-amber-900/20 rounded-lg transition-colors border border-amber-200/50 dark:border-amber-700/30"
                     >
                       <FileText className="w-4 h-4" /> Download Invoice
                     </Link>
@@ -394,7 +394,7 @@ export default function MyOrdersPage() {
                       {isDelivered && (
                         <button 
                           onClick={() => handleReturnItem(order._id)}
-                          className="text-stone-600 hover:text-stone-900 font-bold text-sm flex items-center gap-1.5 px-4 py-2 hover:bg-stone-100 rounded-lg transition-colors border border-stone-200"
+                          className="text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 font-bold text-sm flex items-center gap-1.5 px-4 py-2 hover:bg-stone-100 dark:hover:bg-stone-800 rounded-lg transition-colors border border-stone-200 dark:border-stone-700"
                         >
                           <RefreshCcw className="w-4 h-4" /> Return Item
                         </button>
@@ -403,7 +403,7 @@ export default function MyOrdersPage() {
                       {isPending && (
                         <button 
                           onClick={() => cancelOrder(order._id)}
-                          className="text-red-500 hover:text-red-700 font-bold text-sm flex items-center gap-1.5 px-4 py-2 hover:bg-red-50 rounded-lg transition-colors"
+                          className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-bold text-sm flex items-center gap-1.5 px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                         >
                           <XCircle className="w-4 h-4" /> Cancel Order
                         </button>
@@ -419,14 +419,14 @@ export default function MyOrdersPage() {
 
       {/* Review Modal */}
       {reviewModalOpen && selectedProductToReview && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl animate-in fade-in zoom-in duration-200">
-            <h3 className="text-xl font-bold font-playfair text-stone-900 mb-2">Rate your product</h3>
-            <div className="flex items-center gap-3 bg-stone-50 p-3 rounded-xl border border-stone-100 mb-6">
-              <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-white border border-stone-200 shrink-0">
+        <div className="fixed inset-0 bg-black/60 dark:bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white dark:bg-stone-900 rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl animate-in fade-in zoom-in duration-200 border border-stone-200 dark:border-stone-800">
+            <h3 className="text-xl font-bold font-playfair text-stone-900 dark:text-stone-100 mb-2">Rate your product</h3>
+            <div className="flex items-center gap-3 bg-stone-50 dark:bg-stone-800/50 p-3 rounded-xl border border-stone-100 dark:border-stone-800 mb-6">
+              <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-white dark:bg-stone-800 border border-stone-200 dark:border-stone-700 shrink-0">
                 <Image src={selectedProductToReview.image} alt={selectedProductToReview.name} fill className="object-cover" />
               </div>
-              <span className="line-clamp-2 text-sm font-medium text-stone-700">{selectedProductToReview.name}</span>
+              <span className="line-clamp-2 text-sm font-medium text-stone-700 dark:text-stone-300">{selectedProductToReview.name}</span>
             </div>
             
             <form onSubmit={submitReview} className="flex flex-col gap-5">
@@ -438,7 +438,7 @@ export default function MyOrdersPage() {
                     onClick={() => setReviewRating(star)}
                     className="focus:outline-none transition-transform hover:scale-110 active:scale-95"
                   >
-                    <Star className={`w-10 h-10 ${star <= reviewRating ? 'fill-amber-400 text-amber-400' : 'text-stone-200'}`} />
+                    <Star className={`w-10 h-10 ${star <= reviewRating ? 'fill-amber-400 text-amber-400' : 'text-stone-200 dark:text-stone-700'}`} />
                   </button>
                 ))}
               </div>
@@ -449,7 +449,7 @@ export default function MyOrdersPage() {
                   onChange={(e) => setReviewComment(e.target.value)}
                   placeholder="What did you like or dislike? (Optional)"
                   rows={4}
-                  className="w-full px-4 py-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-amber-500/50 resize-none text-sm bg-stone-50"
+                  className="w-full px-4 py-3 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:ring-2 focus:ring-amber-500/50 resize-none text-sm bg-stone-50 dark:bg-stone-800 text-stone-900 dark:text-stone-100 placeholder:text-stone-400 dark:placeholder:text-stone-500"
                 />
               </div>
 
@@ -457,7 +457,7 @@ export default function MyOrdersPage() {
                 <button 
                   type="button"
                   onClick={() => setReviewModalOpen(false)}
-                  className="flex-1 px-4 py-3.5 rounded-xl font-bold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-colors"
+                  className="flex-1 px-4 py-3.5 rounded-xl font-bold text-stone-600 dark:text-stone-400 bg-stone-100 dark:bg-stone-800 hover:bg-stone-200 dark:hover:bg-stone-700 transition-colors"
                 >
                   Cancel
                 </button>

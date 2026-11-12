@@ -34,9 +34,36 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       fetch("/api/user/cart")
         .then(res => res.json())
         .then(data => {
-          if (data.cart) {
-            setCartItems(data.cart);
+          let dbCart = data.cart || [];
+          
+          // Merge local cart if exists
+          const savedCart = localStorage.getItem("kaashtaCart");
+          if (savedCart) {
+            try {
+              const localCart = JSON.parse(savedCart);
+              if (localCart.length > 0) {
+                // Merge logic: Add local items to dbCart if they don't exist
+                localCart.forEach((localItem: any) => {
+                  const exists = dbCart.find((dbItem: any) => dbItem.id === localItem.id || dbItem._id === localItem._id);
+                  if (!exists) {
+                    dbCart.push(localItem);
+                  }
+                });
+                // Clear local storage after merging
+                localStorage.removeItem("kaashtaCart");
+                // Immediately save the merged cart back to the DB
+                fetch("/api/user/cart", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ cart: dbCart })
+                }).catch(e => console.error("Failed to sync merged cart to DB", e));
+              }
+            } catch (e) {
+              console.error("Failed to parse cart from local storage", e);
+            }
           }
+          
+          setCartItems(dbCart);
           setIsInitialized(true);
         })
         .catch(e => {

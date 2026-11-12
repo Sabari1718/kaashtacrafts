@@ -28,6 +28,8 @@ export interface IUser extends mongoose.Document {
   city?: string; // Legacy
   pincode?: string; // Legacy
   addresses: IAddress[];
+  otp?: string;
+  otpExpiry?: Date;
   createdAt: Date;
 }
 
@@ -58,6 +60,8 @@ const UserSchema = new mongoose.Schema({
   city: { type: String }, // Keep for legacy
   pincode: { type: String }, // Keep for legacy
   addresses: [AddressSchema],
+  otp: { type: String },
+  otpExpiry: { type: Date },
   createdAt: { type: Date, default: Date.now }
 });
 

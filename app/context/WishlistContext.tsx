@@ -28,9 +28,33 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
       fetch("/api/user/wishlist")
         .then(res => res.json())
         .then(data => {
-          if (data.wishlist) {
-            setWishlistItems(data.wishlist);
+          let dbWishlist = data.wishlist || [];
+          
+          const savedWishlist = localStorage.getItem("kaashtaWishlist");
+          if (savedWishlist) {
+            try {
+              const localWishlist = JSON.parse(savedWishlist);
+              if (localWishlist.length > 0) {
+                // Merge logic
+                localWishlist.forEach((localItem: any) => {
+                  const exists = dbWishlist.find((dbItem: any) => dbItem.id === localItem.id || dbItem._id === localItem._id);
+                  if (!exists) {
+                    dbWishlist.push(localItem);
+                  }
+                });
+                localStorage.removeItem("kaashtaWishlist");
+                fetch("/api/user/wishlist", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ wishlist: dbWishlist })
+                }).catch(e => console.error("Failed to sync merged wishlist to DB", e));
+              }
+            } catch (e) {
+              console.error("Failed to parse wishlist from local storage", e);
+            }
           }
+
+          setWishlistItems(dbWishlist);
           setIsInitialized(true);
         })
         .catch(e => {

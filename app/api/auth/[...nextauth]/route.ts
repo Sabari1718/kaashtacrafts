@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 import connectToDatabase from "../../../../lib/mongodb";
 import User from "../../../../models/User";
 
@@ -9,12 +10,45 @@ const handler = NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
+    CredentialsProvider({
+      name: "OTP",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        otp: { label: "OTP", type: "text" }
+      },
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.otp) return null;
+
+        await connectToDatabase();
+        const user = await User.findOne({ email: credentials.email });
+
+        if (!user) throw new Error("No user found");
+        if (user.otp !== credentials.otp) throw new Error("Invalid OTP");
+        if (user.otpExpiry && new Date() > user.otpExpiry) throw new Error("OTP Expired");
+
+        // Clear OTP on success
+        user.otp = undefined;
+        user.otpExpiry = undefined;
+        await user.save();
+
+        return {
+          id: user._id.toString(),
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        };
+      }
+    })
   ],
   pages: {
     signIn: '/login',
   },
   callbacks: {
     async signIn({ user, account, profile }) {
+      if (account?.provider === "credentials") {
+        return true;
+      }
+
       if (account?.provider === "google") {
         try {
           await connectToDatabase();

@@ -116,14 +116,14 @@ export default function Navbar() {
                   setShowSuggestions(false);
                   setSearchQuery("");
                 }} 
-                className="flex items-center gap-3 p-3 hover:bg-stone-50 border-b border-stone-50 last:border-0 transition-colors"
+                className="flex items-center gap-3 p-3 hover:bg-stone-50 dark:hover:bg-[#1f1f1f] border-b border-stone-50 dark:border-stone-800/50 last:border-0 transition-colors"
               >
                 <div className="w-10 h-10 relative shrink-0">
-                  <Image src={p.image} alt={p.name} fill className="rounded-md object-cover bg-stone-100" />
+                  <Image src={p.image} alt={p.name} fill className="rounded-md object-cover bg-stone-100 dark:bg-stone-800" />
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-sm font-bold text-stone-800 line-clamp-1">{p.name}</span>
-                  <span className="text-xs text-stone-500">{p.category} • ₹{p.price}</span>
+                  <span className="text-sm font-bold text-stone-800 dark:text-stone-200 line-clamp-1">{p.name}</span>
+                  <span className="text-xs text-stone-500 dark:text-stone-400">{p.category} • ₹{p.price}</span>
                 </div>
               </Link>
             ))}
@@ -134,10 +134,10 @@ export default function Navbar() {
       {/* Right Section: Links + Icons */}
       <div className="flex items-center gap-4 md:gap-8">
         {/* Desktop Links */}
-        <div className="hidden lg:flex items-center gap-8 text-[14px] font-medium text-gray-700">
-          <Link href="/" className="hover:text-amber-800 transition-colors">Home</Link>
-          <Link href="/products" className="hover:text-amber-800 transition-colors">Shop All</Link>
-          <Link href="/my-orders" className="hover:text-amber-800 transition-colors">My Orders</Link>
+        <div className="hidden lg:flex items-center gap-8 text-[14px] font-medium text-gray-700 dark:text-stone-300">
+          <Link href="/" className="hover:text-amber-800 dark:hover:text-amber-500 transition-colors">Home</Link>
+          <Link href="/products" className="hover:text-amber-800 dark:hover:text-amber-500 transition-colors">Shop All</Link>
+          <Link href="/my-orders" className="hover:text-amber-800 dark:hover:text-amber-500 transition-colors">My Orders</Link>
         </div>
 
         <div className="flex items-center gap-2 md:gap-4 md:border-l md:border-stone-200 md:pl-8 dark:border-stone-700">
