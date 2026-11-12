@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, ShoppingBag, Heart, Search, Moon, Sun, ArrowRight, User } from "lucide-react";
+import { Menu, ShoppingBag, Heart, Search, Moon, Sun, ArrowRight, User, X } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useCart } from "../app/context/CartContext";
 import { useWishlist } from "../app/context/WishlistContext";
@@ -20,12 +20,14 @@ export default function Navbar() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [allProducts, setAllProducts] = useState<any[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const mobileSearchRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -58,6 +60,9 @@ export default function Navbar() {
       if (mobileSearchRef.current && !mobileSearchRef.current.contains(event.target as Node)) {
         setShowSuggestions(false);
       }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
     }
     
     document.addEventListener("mousedown", handleClickOutside);
@@ -65,6 +70,10 @@ export default function Navbar() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
 
   const suggestions = searchQuery.trim() 
     ? allProducts.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase())).slice(0, 6)
@@ -74,12 +83,18 @@ export default function Navbar() {
     return null;
   }
 
+  const navLinks = [
+    { name: "Home", href: "/", isActive: pathname === "/" },
+    { name: "Shop All", href: "/products", isActive: pathname.startsWith("/products") },
+    { name: "My Orders", href: "/my-orders", isActive: pathname.startsWith("/my-orders") },
+  ];
+
   return (
     <nav className="sticky top-0 z-50 flex w-full flex-col bg-[#F7F5F0]/90 dark:bg-[#14100E]/90 backdrop-blur-md border-b border-[#EAE1D2] dark:border-[#2E241E] transition-colors duration-300">
       <div className="flex w-full items-center justify-between px-4 sm:px-8 lg:px-12 py-3.5 gap-4 max-w-[1440px] mx-auto">
         
         {/* Brand Logo & Name */}
-        <Link href="/" className="flex items-center gap-3 group">
+        <Link href="/" className="flex items-center gap-3 group shrink-0">
           <div className="relative w-10 h-10 rounded-xl overflow-hidden shadow-xs ring-1 ring-[#EAE1D2] dark:ring-[#2E241E] group-hover:ring-[#C49A50] transition-all duration-300">
             <Image
               src="/logo.jpeg"
@@ -99,7 +114,7 @@ export default function Navbar() {
         </Link>
 
         {/* Middle Section: Search Bar (Desktop) */}
-        <div className="hidden md:flex flex-grow max-w-xl px-6 relative" ref={searchContainerRef}>
+        <div className="hidden md:flex flex-grow max-w-md lg:max-w-lg px-4 relative" ref={searchContainerRef}>
           <form onSubmit={handleSearch} className="flex w-full items-center bg-white/80 dark:bg-[#1E1713]/80 rounded-full overflow-hidden border border-[#EAE1D2] dark:border-[#2E241E] focus-within:border-[#C49A50] focus-within:ring-2 focus-within:ring-[#C49A50]/20 transition-all shadow-xs relative z-10">
             <div className="pl-4 text-[#82786E] dark:text-[#A39A90]">
               <Search className="w-4 h-4" />
@@ -116,7 +131,7 @@ export default function Navbar() {
 
           {/* Desktop Suggestions Dropdown */}
           {showSuggestions && searchQuery.trim() && suggestions.length > 0 && (
-            <div className="absolute top-full left-6 right-6 mt-2 bg-[#F7F5F0] dark:bg-[#1E1713] rounded-2xl shadow-xl border border-[#EAE1D2] dark:border-[#2E241E] z-50 flex flex-col overflow-hidden max-h-80 overflow-y-auto">
+            <div className="absolute top-full left-4 right-4 mt-2 bg-[#F7F5F0] dark:bg-[#1E1713] rounded-2xl shadow-xl border border-[#EAE1D2] dark:border-[#2E241E] z-50 flex flex-col overflow-hidden max-h-80 overflow-y-auto">
               {suggestions.map((p) => (
                 <Link 
                   href={`/products/${p.id || p._id}`} 
@@ -142,13 +157,32 @@ export default function Navbar() {
         </div>
 
         {/* Right Section: Navigation Links & Action Icons */}
-        <div className="flex items-center gap-3 sm:gap-6">
+        <div className="flex items-center gap-2 sm:gap-4 lg:gap-6">
           
-          {/* Desktop Nav Links */}
-          <div className="hidden lg:flex items-center gap-7 text-[13px] font-medium tracking-wide text-[#241812]/80 dark:text-[#F7F5F0]/85">
-            <Link href="/" className="hover:text-[#65452F] dark:hover:text-[#C49A50] transition-colors">Home</Link>
-            <Link href="/products" className="hover:text-[#65452F] dark:hover:text-[#C49A50] transition-colors">Shop All</Link>
-            <Link href="/my-orders" className="hover:text-[#65452F] dark:hover:text-[#C49A50] transition-colors">My Orders</Link>
+          {/* Desktop Nav Links - Luxury Segmented Capsule */}
+          <div className="hidden lg:flex items-center gap-1 p-1 bg-[#EAE1D2]/50 dark:bg-[#1E1713]/80 rounded-full border border-[#EAE1D2] dark:border-[#2E241E] shadow-2xs">
+            {navLinks.map((link) => {
+              const active = link.isActive;
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={`group relative px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 select-none cursor-pointer ${
+                    active
+                      ? "bg-[#241812] text-[#F7F5F0] dark:bg-[#C49A50] dark:text-[#241812] shadow-sm ring-1 ring-[#C49A50]/40 scale-[1.02]"
+                      : "text-[#241812]/75 dark:text-[#F7F5F0]/75 hover:text-[#241812] dark:hover:text-[#F7F5F0] hover:bg-white/80 dark:hover:bg-[#2E241E] hover:shadow-xs hover:scale-[1.02]"
+                  }`}
+                >
+                  {active && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#C49A50] dark:bg-[#241812] animate-pulse shrink-0" />
+                  )}
+                  <span>{link.name}</span>
+                  {!active && (
+                    <span className="absolute bottom-1 left-4 right-4 h-0.5 bg-[#C49A50] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 rounded-full origin-center" />
+                  )}
+                </Link>
+              );
+            })}
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3 lg:border-l lg:border-[#EAE1D2] dark:lg:border-[#2E241E] lg:pl-6">
@@ -157,7 +191,7 @@ export default function Navbar() {
             {mounted && (
               <button
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="p-2 rounded-full text-[#241812] dark:text-[#F7F5F0] hover:bg-white/80 dark:hover:bg-[#2E241E] transition-all"
+                className="p-2 rounded-full text-[#241812] dark:text-[#F7F5F0] hover:bg-white/80 dark:hover:bg-[#2E241E] transition-all cursor-pointer"
                 aria-label="Toggle Theme"
               >
                 {theme === 'dark' ? (
@@ -237,7 +271,7 @@ export default function Navbar() {
                         setIsProfileOpen(false);
                         signOut();
                       }}
-                      className="w-full text-left px-4 py-2.5 text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-white/80 dark:hover:bg-[#2E241E] transition-colors border-t border-[#EAE1D2]/60 dark:border-[#2E241E]/60 mt-1"
+                      className="w-full text-left px-4 py-2.5 text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-white/80 dark:hover:bg-[#2E241E] transition-colors border-t border-[#EAE1D2]/60 dark:border-[#2E241E]/60 mt-1 cursor-pointer"
                     >
                       Sign Out
                     </button>
@@ -253,18 +287,51 @@ export default function Navbar() {
               </button>
             )}
 
-            {/* Mobile Shop Link */}
-            <Link 
-              href="/products" 
-              className="lg:hidden p-2 rounded-full text-[#241812] dark:text-[#F7F5F0] hover:bg-white/80 dark:hover:bg-[#2E241E] transition-all"
-              aria-label="Shop Catalog"
+            {/* Mobile Menu Toggle Button */}
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="lg:hidden p-2 rounded-full text-[#241812] dark:text-[#F7F5F0] hover:bg-white/80 dark:hover:bg-[#2E241E] transition-all cursor-pointer"
+              aria-label="Toggle Navigation Menu"
             >
-              <Menu className="w-5 h-5 stroke-[1.8]" />
-            </Link>
+              {isMobileMenuOpen ? (
+                <X className="w-5 h-5 stroke-[1.8] text-[#C49A50]" />
+              ) : (
+                <Menu className="w-5 h-5 stroke-[1.8]" />
+              )}
+            </button>
 
           </div>
         </div>
       </div>
+
+      {/* Mobile Navigation Drawer */}
+      {isMobileMenuOpen && (
+        <div ref={mobileMenuRef} className="lg:hidden w-full px-4 pb-3.5 pt-1 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="bg-white/95 dark:bg-[#1A130F]/95 rounded-2xl p-2.5 border border-[#EAE1D2] dark:border-[#2E241E] shadow-xl flex flex-col gap-1.5">
+            {navLinks.map((link) => {
+              const active = link.isActive;
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`px-4 py-2.5 rounded-xl text-xs uppercase font-bold tracking-wider flex items-center justify-between transition-all ${
+                    active
+                      ? "bg-[#241812] text-[#F7F5F0] dark:bg-[#C49A50] dark:text-[#241812] shadow-sm"
+                      : "text-[#241812]/80 dark:text-[#F7F5F0]/80 hover:bg-[#EAE1D2]/60 dark:hover:bg-[#2E241E]"
+                  }`}
+                >
+                  <span className="flex items-center gap-2">
+                    {active && <span className="w-1.5 h-1.5 rounded-full bg-[#C49A50] dark:bg-[#241812]" />}
+                    {link.name}
+                  </span>
+                  <ArrowRight className={`w-3.5 h-3.5 ${active ? "text-[#C49A50] dark:text-[#241812]" : "text-[#82786E]"}`} />
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
       
       {/* Mobile Search Bar */}
       <div className="md:hidden w-full px-4 pb-3 relative" ref={mobileSearchRef}>
