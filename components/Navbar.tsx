@@ -74,7 +74,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="sticky top-0 z-50 flex w-full flex-col bg-white dark:bg-[#121212] border-b border-gray-200 dark:border-stone-800 shadow-sm transition-colors duration-300">
+    <nav className="sticky top-0 z-50 flex w-full flex-col bg-[#fcfaf7]/95 dark:bg-[#0c0a09]/95 backdrop-blur-md border-b border-stone-200/80 dark:border-stone-850 shadow-xs transition-colors duration-300">
       <div className="flex w-full items-center justify-between px-4 md:px-8 lg:px-12 py-3 gap-4">
       <Link href="/" className="flex items-center gap-3">
         <Image

@@ -138,8 +138,9 @@ export default function Home() {
   const handleWishlistToggle = (e: React.MouseEvent, product: Product) => {
     e.preventDefault();
     e.stopPropagation();
+    const pid = product.id || (product as any)._id;
     toggleWishlist(product);
-    if (isInWishlist(product.id)) {
+    if (isInWishlist(pid)) {
       toast.info(`Removed from wishlist`);
     } else {
       toast.success(`Saved to your wishlist!`);
@@ -150,12 +151,9 @@ export default function Home() {
     ? allProducts
     : allProducts.filter(p => p.category?.toLowerCase() === selectedFilter.toLowerCase());
 
-  const trendingProducts = allProducts.slice(0, 8);
-  const newArrivals = allProducts.slice(4, 12);
-
   if (isLoading) {
     return (
-      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-stone-900 text-stone-200">
+      <div className="min-h-screen w-full flex flex-col items-center justify-center bg-[#0c0a09] text-stone-200">
         <div className="relative flex items-center justify-center mb-6">
           <div className="w-20 h-20 rounded-full border-2 border-amber-500/30 border-t-amber-500 animate-spin" />
           <Sparkles className="w-8 h-8 text-amber-500 absolute animate-pulse" />
@@ -168,8 +166,13 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-col w-full min-h-screen bg-[#faf8f5] dark:bg-[#0e0e0e] text-stone-900 dark:text-stone-100 transition-colors duration-300">
+    <main className="relative flex flex-col w-full min-h-screen bg-[#fcfaf7] dark:bg-[#0c0a09] text-stone-900 dark:text-stone-100 transition-colors duration-300 overflow-x-hidden">
       
+      {/* 🌟 Atmospheric Luxury Background Glows & Mesh Gradients */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[650px] bg-gradient-to-b from-amber-100/60 via-amber-50/20 to-transparent dark:from-amber-950/25 dark:via-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-[800px] -right-32 w-[600px] h-[600px] bg-amber-100/40 dark:bg-amber-900/10 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-[1800px] -left-32 w-[600px] h-[600px] bg-stone-200/50 dark:bg-amber-950/15 rounded-full blur-3xl pointer-events-none -z-10" />
+
       {/* 1. TOP ANNOUNCEMENT TICKER (Luxury Marquee Bar) */}
       <div className="w-full bg-gradient-to-r from-stone-950 via-amber-950 to-stone-950 text-amber-200 text-xs py-2.5 px-4 overflow-hidden border-b border-amber-900/40 select-none shadow-inner">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 font-sans tracking-wide">
@@ -199,14 +202,14 @@ export default function Home() {
       </div>
 
       {/* 2. REFINED CATEGORIES BAR (Modern Luxury Capsule Story Strips) */}
-      <section className="w-full bg-white/90 dark:bg-[#141414]/90 backdrop-blur-md border-b border-stone-200/80 dark:border-stone-800/80 sticky top-[69px] z-30 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 py-3 overflow-x-auto scrollbar-hide">
+      <section className="w-full bg-[#fcfaf7]/90 dark:bg-[#0e0c0b]/90 backdrop-blur-md border-b border-stone-200/80 dark:border-stone-800/80 sticky top-[69px] z-30 shadow-xs">
+        <div className="max-w-7xl mx-auto px-4 py-3.5 overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-3 md:gap-5 min-w-max mx-auto justify-start sm:justify-center">
             {categories.map((cat, idx) => (
               <Link 
                 href={cat.href} 
                 key={idx} 
-                className="group flex items-center gap-3 p-1.5 pr-4 rounded-full bg-stone-50 dark:bg-stone-900/80 border border-stone-200/70 dark:border-stone-800 hover:border-amber-500 dark:hover:border-amber-500 hover:bg-amber-50/50 dark:hover:bg-amber-950/20 transition-all duration-300 shadow-2xs hover:shadow-md"
+                className="group flex items-center gap-3 p-1.5 pr-4 rounded-full bg-white/90 dark:bg-stone-900/90 border border-stone-200/80 dark:border-stone-800 hover:border-amber-500 dark:hover:border-amber-500 hover:bg-amber-50/50 dark:hover:bg-amber-950/30 transition-all duration-300 shadow-xs hover:shadow-md"
               >
                 <div className="relative w-10 h-10 md:w-11 md:h-11 rounded-full overflow-hidden ring-2 ring-stone-200 dark:ring-stone-800 group-hover:ring-amber-500 transition-all">
                   <Image 
@@ -232,11 +235,11 @@ export default function Home() {
 
       {/* 3. HERO SHOWCASE (Cinematic Artisan Split & Carousel) */}
       <section className="w-full max-w-7xl mx-auto px-4 pt-6 md:pt-8 pb-4">
-        <div className="relative w-full rounded-3xl overflow-hidden bg-stone-950 shadow-2xl border border-stone-800/80">
+        <div className="relative w-full rounded-3xl overflow-hidden bg-stone-950 shadow-2xl border border-stone-850">
           
           {/* Background Ambient Glows */}
-          <div className="absolute -top-32 -left-32 w-96 h-96 bg-amber-600/20 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-amber-800/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -top-32 -left-32 w-96 h-96 bg-amber-600/25 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-amber-800/25 rounded-full blur-3xl pointer-events-none" />
 
           {/* Swiper Visual Carousel */}
           <div className="w-full h-[380px] sm:h-[450px] md:h-[520px] lg:h-[580px] relative">
@@ -284,14 +287,14 @@ export default function Home() {
                     <div className="flex flex-wrap items-center gap-3">
                       <Link 
                         href="/products" 
-                        className="bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold px-6 py-3 rounded-xl flex items-center gap-2 shadow-lg shadow-amber-600/30 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all text-sm md:text-base"
+                        className="bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold px-6 py-3 rounded-xl flex items-center gap-2 shadow-lg shadow-amber-600/30 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all text-sm md:text-base cursor-pointer"
                       >
                         Explore Masterpieces
                         <ArrowRight className="w-4 h-4" />
                       </Link>
                       <Link 
                         href="/products?category=Desk Accessories" 
-                        className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-semibold px-5 py-3 rounded-xl flex items-center gap-2 transition-all text-sm md:text-base hover:-translate-y-0.5"
+                        className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 font-semibold px-5 py-3 rounded-xl flex items-center gap-2 transition-all text-sm md:text-base hover:-translate-y-0.5 cursor-pointer"
                       >
                         Executive Desk Suite
                       </Link>
@@ -328,7 +331,7 @@ export default function Home() {
                     <div className="flex flex-wrap items-center gap-3">
                       <Link 
                         href="/products" 
-                        className="bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold px-6 py-3 rounded-xl flex items-center gap-2 shadow-lg shadow-amber-600/30 transition-all text-sm"
+                        className="bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold px-6 py-3 rounded-xl flex items-center gap-2 shadow-lg shadow-amber-600/30 transition-all text-sm cursor-pointer"
                       >
                         Shop All Collections
                         <ArrowRight className="w-4 h-4" />
@@ -366,7 +369,7 @@ export default function Home() {
                     <div className="flex flex-wrap items-center gap-3">
                       <Link 
                         href="/products?category=Kitchen" 
-                        className="bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold px-6 py-3 rounded-xl flex items-center gap-2 shadow-lg shadow-amber-600/30 transition-all text-sm"
+                        className="bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold px-6 py-3 rounded-xl flex items-center gap-2 shadow-lg shadow-amber-600/30 transition-all text-sm cursor-pointer"
                       >
                         Explore Dining Art
                         <ArrowRight className="w-4 h-4" />
@@ -378,7 +381,7 @@ export default function Home() {
             </Swiper>
 
             {/* Floating Glass Stats Bar */}
-            <div className="hidden lg:flex absolute bottom-6 right-8 z-20 items-center gap-6 bg-stone-900/80 backdrop-blur-xl border border-white/10 px-6 py-3.5 rounded-2xl shadow-2xl">
+            <div className="hidden lg:flex absolute bottom-6 right-8 z-20 items-center gap-6 bg-stone-900/85 backdrop-blur-xl border border-white/10 px-6 py-3.5 rounded-2xl shadow-2xl">
               <div className="flex flex-col">
                 <span className="text-amber-400 font-bold text-lg leading-tight">4.9 ★</span>
                 <span className="text-stone-400 text-[11px]">2,500+ Reviews</span>
@@ -403,8 +406,8 @@ export default function Home() {
       <section className="w-full max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           
-          <div className="flex items-start gap-4 p-5 rounded-2xl bg-white dark:bg-[#141414] border border-stone-200/80 dark:border-stone-800/80 hover:border-amber-500/50 transition-all shadow-xs hover:shadow-md group">
-            <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-950/50 flex items-center justify-center text-amber-700 dark:text-amber-400 shrink-0 group-hover:scale-110 transition-transform">
+          <div className="flex items-start gap-4 p-5 rounded-2xl bg-white/90 dark:bg-[#141210] border border-stone-200/90 dark:border-stone-800 hover:border-amber-500/60 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-md group">
+            <div className="w-12 h-12 rounded-xl bg-amber-100/80 dark:bg-amber-950/50 flex items-center justify-center text-amber-700 dark:text-amber-400 shrink-0 group-hover:scale-110 transition-transform">
               <Award className="w-6 h-6" />
             </div>
             <div>
@@ -415,8 +418,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex items-start gap-4 p-5 rounded-2xl bg-white dark:bg-[#141414] border border-stone-200/80 dark:border-stone-800/80 hover:border-amber-500/50 transition-all shadow-xs hover:shadow-md group">
-            <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-950/50 flex items-center justify-center text-amber-700 dark:text-amber-400 shrink-0 group-hover:scale-110 transition-transform">
+          <div className="flex items-start gap-4 p-5 rounded-2xl bg-white/90 dark:bg-[#141210] border border-stone-200/90 dark:border-stone-800 hover:border-amber-500/60 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-md group">
+            <div className="w-12 h-12 rounded-xl bg-amber-100/80 dark:bg-amber-950/50 flex items-center justify-center text-amber-700 dark:text-amber-400 shrink-0 group-hover:scale-110 transition-transform">
               <Leaf className="w-6 h-6" />
             </div>
             <div>
@@ -427,8 +430,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex items-start gap-4 p-5 rounded-2xl bg-white dark:bg-[#141414] border border-stone-200/80 dark:border-stone-800/80 hover:border-amber-500/50 transition-all shadow-xs hover:shadow-md group">
-            <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-950/50 flex items-center justify-center text-amber-700 dark:text-amber-400 shrink-0 group-hover:scale-110 transition-transform">
+          <div className="flex items-start gap-4 p-5 rounded-2xl bg-white/90 dark:bg-[#141210] border border-stone-200/90 dark:border-stone-800 hover:border-amber-500/60 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-md group">
+            <div className="w-12 h-12 rounded-xl bg-amber-100/80 dark:bg-amber-950/50 flex items-center justify-center text-amber-700 dark:text-amber-400 shrink-0 group-hover:scale-110 transition-transform">
               <Truck className="w-6 h-6" />
             </div>
             <div>
@@ -439,8 +442,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex items-start gap-4 p-5 rounded-2xl bg-white dark:bg-[#141414] border border-stone-200/80 dark:border-stone-800/80 hover:border-amber-500/50 transition-all shadow-xs hover:shadow-md group">
-            <div className="w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-950/50 flex items-center justify-center text-amber-700 dark:text-amber-400 shrink-0 group-hover:scale-110 transition-transform">
+          <div className="flex items-start gap-4 p-5 rounded-2xl bg-white/90 dark:bg-[#141210] border border-stone-200/90 dark:border-stone-800 hover:border-amber-500/60 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-md group">
+            <div className="w-12 h-12 rounded-xl bg-amber-100/80 dark:bg-amber-950/50 flex items-center justify-center text-amber-700 dark:text-amber-400 shrink-0 group-hover:scale-110 transition-transform">
               <ShieldCheck className="w-6 h-6" />
             </div>
             <div>
@@ -454,7 +457,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. INTERACTIVE CURATED SHOWCASE (Filterable Tabs + Elite Product Cards) */}
+      {/* 5. INTERACTIVE CURATED SHOWCASE (Filterable Tabs + FULLY CLICKABLE Product Cards) */}
       <section className="w-full max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
           <div>
@@ -475,8 +478,8 @@ export default function Home() {
                 onClick={() => setSelectedFilter(cat)}
                 className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-300 cursor-pointer ${
                   selectedFilter === cat
-                    ? "bg-amber-600 text-stone-950 shadow-md shadow-amber-600/30 scale-105"
-                    : "bg-white dark:bg-stone-900 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800 hover:border-amber-500/50"
+                    ? "bg-amber-600 text-stone-950 shadow-md shadow-amber-600/30 scale-105 font-bold"
+                    : "bg-white/90 dark:bg-stone-900 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800 hover:border-amber-500/50"
                 }`}
               >
                 {cat}
@@ -485,20 +488,24 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Product Grid / Swiper */}
+        {/* Product Grid - EVERY PRODUCT IS FULLY CLICKABLE! */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {filteredProducts.slice(0, 8).map((product) => {
-            const isSaved = isInWishlist(product.id);
+            const productId = product.id || (product as any)._id;
+            const isSaved = isInWishlist(productId);
             const originalPrice = product.originalPrice || Math.floor(product.price * 1.5);
             const discountPercent = Math.round(((originalPrice - product.price) / originalPrice) * 100);
 
             return (
               <div 
-                key={product.id}
-                className="group relative flex flex-col bg-white dark:bg-[#141414] rounded-2xl p-3 sm:p-4 border border-stone-200/80 dark:border-stone-800/80 hover:border-amber-500/60 transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
+                key={productId}
+                className="group relative flex flex-col bg-white dark:bg-[#141210] rounded-2xl p-3 sm:p-4 border border-stone-200/90 dark:border-stone-800/90 hover:border-amber-500/80 transition-all duration-300 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_32px_-4px_rgba(180,83,9,0.15)] hover:-translate-y-1.5"
               >
-                {/* Image Container with Badges & Wishlist Button */}
-                <div className="relative w-full aspect-square rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 mb-3">
+                {/* 🎯 CLICKABLE IMAGE CONTAINER: Navigates straight to Product Details Page */}
+                <Link 
+                  href={`/products/${productId}`}
+                  className="relative w-full aspect-square rounded-xl overflow-hidden bg-stone-100 dark:bg-stone-900 mb-3 block cursor-pointer"
+                >
                   <Image 
                     src={product.image} 
                     alt={product.name} 
@@ -508,16 +515,23 @@ export default function Home() {
                   
                   {/* Discount Badge */}
                   {discountPercent > 0 && (
-                    <span className="absolute top-2.5 left-2.5 bg-amber-600 text-stone-950 text-[10px] sm:text-xs font-extrabold px-2.5 py-1 rounded-md shadow-md uppercase tracking-wider">
+                    <span className="absolute top-2.5 left-2.5 bg-gradient-to-r from-amber-600 to-amber-700 text-white text-[10px] sm:text-xs font-extrabold px-2.5 py-1 rounded-md shadow-md uppercase tracking-wider z-10">
                       {discountPercent}% OFF
                     </span>
                   )}
+
+                  {/* Elegant "View Details" Pill Hover Reveal */}
+                  <div className="absolute inset-0 bg-stone-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-2 z-10">
+                    <span className="bg-white/95 dark:bg-stone-900/95 backdrop-blur-md text-stone-900 dark:text-stone-100 text-xs font-bold px-3.5 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                      View Details <ArrowRight className="w-3.5 h-3.5 text-amber-600" />
+                    </span>
+                  </div>
 
                   {/* Wishlist Heart Button */}
                   <button
                     onClick={(e) => handleWishlistToggle(e, product)}
                     aria-label="Save to Wishlist"
-                    className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/80 dark:bg-stone-900/80 backdrop-blur-md flex items-center justify-center text-stone-700 dark:text-stone-300 hover:scale-110 active:scale-95 transition-all shadow-md z-10 cursor-pointer"
+                    className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/90 dark:bg-stone-900/90 backdrop-blur-md flex items-center justify-center text-stone-700 dark:text-stone-300 hover:scale-110 active:scale-95 transition-all shadow-md z-20 cursor-pointer"
                   >
                     <Heart 
                       className={`w-4 h-4 transition-colors ${
@@ -525,15 +539,19 @@ export default function Home() {
                       }`} 
                     />
                   </button>
-                </div>
+                </Link>
 
-                {/* Product Meta */}
+                {/* Product Meta Info */}
                 <div className="flex flex-col flex-grow">
                   <span className="text-[11px] font-semibold text-amber-700 dark:text-amber-400 uppercase tracking-wider mb-1">
                     {product.category}
                   </span>
                   
-                  <Link href={`/products/${product.id}`} className="hover:text-amber-600 transition-colors">
+                  {/* 🎯 CLICKABLE TITLE: Navigates straight to Product Details Page */}
+                  <Link 
+                    href={`/products/${productId}`} 
+                    className="block group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors"
+                  >
                     <h3 className="font-bold text-sm sm:text-base text-stone-900 dark:text-stone-100 line-clamp-1 mb-1">
                       {product.name}
                     </h3>
@@ -552,8 +570,8 @@ export default function Home() {
                     </span>
                   </div>
 
-                  {/* Pricing and Action */}
-                  <div className="mt-auto pt-2 flex items-center justify-between border-t border-stone-100 dark:border-stone-800/60">
+                  {/* Pricing & Add to Cart Action */}
+                  <div className="mt-auto pt-2 flex items-center justify-between border-t border-stone-100 dark:border-stone-800/80">
                     <div className="flex flex-col">
                       <div className="flex items-baseline gap-1.5">
                         <span className="text-base sm:text-lg font-bold text-stone-950 dark:text-white">
@@ -571,7 +589,7 @@ export default function Home() {
                     <button
                       onClick={(e) => handleAddToCart(e, product)}
                       aria-label="Add to cart"
-                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-stone-900 dark:bg-stone-800 hover:bg-amber-600 dark:hover:bg-amber-600 text-white flex items-center justify-center transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer group-hover:scale-105"
+                      className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-stone-900 dark:bg-stone-800 hover:bg-amber-600 dark:hover:bg-amber-600 text-white flex items-center justify-center transition-all duration-300 shadow-xs hover:shadow-md cursor-pointer hover:scale-105 active:scale-95"
                     >
                       <ShoppingCart className="w-4 h-4" />
                     </button>
@@ -588,7 +606,7 @@ export default function Home() {
         <div className="mt-10 flex justify-center">
           <Link
             href="/products"
-            className="inline-flex items-center gap-2 bg-stone-950 dark:bg-white text-white dark:text-stone-950 font-bold px-8 py-3.5 rounded-full hover:bg-amber-600 dark:hover:bg-amber-400 dark:hover:text-stone-950 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm"
+            className="inline-flex items-center gap-2 bg-stone-950 dark:bg-white text-white dark:text-stone-950 font-bold px-8 py-3.5 rounded-full hover:bg-amber-600 dark:hover:bg-amber-400 dark:hover:text-stone-950 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm cursor-pointer"
           >
             Explore Complete Catalog ({allProducts.length}+ Pieces)
             <ArrowRight className="w-4 h-4" />
@@ -615,7 +633,7 @@ export default function Home() {
           {/* Card 1 */}
           <Link 
             href="/products?category=Desk Accessories"
-            className="group relative h-[360px] rounded-3xl overflow-hidden p-8 flex flex-col justify-end border border-stone-200/60 dark:border-stone-800 shadow-md hover:shadow-2xl transition-all duration-500"
+            className="group relative h-[360px] rounded-3xl overflow-hidden p-8 flex flex-col justify-end border border-stone-200/80 dark:border-stone-800 shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer"
           >
             <Image 
               src="/desk-accessories.jpg" 
@@ -643,7 +661,7 @@ export default function Home() {
           {/* Card 2 */}
           <Link 
             href="/products?category=Home Decor"
-            className="group relative h-[360px] rounded-3xl overflow-hidden p-8 flex flex-col justify-end border border-stone-200/60 dark:border-stone-800 shadow-md hover:shadow-2xl transition-all duration-500"
+            className="group relative h-[360px] rounded-3xl overflow-hidden p-8 flex flex-col justify-end border border-stone-200/80 dark:border-stone-800 shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer"
           >
             <Image 
               src="/home-decor.jpg" 
@@ -671,7 +689,7 @@ export default function Home() {
           {/* Card 3 */}
           <Link 
             href="/products?category=Kitchen"
-            className="group relative h-[360px] rounded-3xl overflow-hidden p-8 flex flex-col justify-end border border-stone-200/60 dark:border-stone-800 shadow-md hover:shadow-2xl transition-all duration-500"
+            className="group relative h-[360px] rounded-3xl overflow-hidden p-8 flex flex-col justify-end border border-stone-200/80 dark:border-stone-800 shadow-md hover:shadow-2xl transition-all duration-500 cursor-pointer"
           >
             <Image 
               src="/kitchen.jpg" 
@@ -766,7 +784,7 @@ export default function Home() {
           {testimonials.map((t, idx) => (
             <div 
               key={idx}
-              className="p-6 rounded-2xl bg-white dark:bg-[#141414] border border-stone-200/80 dark:border-stone-800/80 flex flex-col justify-between shadow-xs hover:shadow-md transition-all"
+              className="p-6 rounded-2xl bg-white/90 dark:bg-[#141210] border border-stone-200/90 dark:border-stone-800 flex flex-col justify-between shadow-[0_4px_16px_rgba(0,0,0,0.03)] hover:shadow-md transition-all"
             >
               <div>
                 <div className="flex items-center gap-1 text-amber-500 mb-3">
@@ -826,7 +844,7 @@ export default function Home() {
 
               <Link
                 href="/products"
-                className="bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-amber-600/30 transition-all text-sm"
+                className="bg-amber-600 hover:bg-amber-500 text-stone-950 font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-amber-600/30 transition-all text-sm cursor-pointer"
               >
                 Start Shopping Now →
               </Link>
