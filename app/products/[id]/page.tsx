@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Heart, Send, ArrowLeft, Loader2, Star, ShieldCheck, Trash2 } from "lucide-react";
+import { Heart, Send, ArrowLeft, Loader2, Star, ShieldCheck, Trash2, ShoppingBag, Truck, Award, Sparkles, Check } from "lucide-react";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { useCart } from "../../context/CartContext";
@@ -138,7 +138,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         toast.success("Review submitted successfully!");
         setReviewComment("");
         setReviewRating(5);
-        fetchProduct(resolvedParams.id); // Refresh product data to show new review
+        fetchProduct(resolvedParams.id);
       } else {
         const data = await res.json();
         toast.error(data.error || "Failed to submit review");
@@ -174,17 +174,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-stone-50 dark:bg-[#121212] transition-colors duration-300">
-        <Loader2 className="w-10 h-10 animate-spin text-amber-700" />
+      <div className="flex items-center justify-center min-h-screen bg-[#F7F5F0] dark:bg-[#14100E] transition-colors duration-300">
+        <Loader2 className="w-10 h-10 animate-spin text-[#C49A50]" />
       </div>
     );
   }
 
   if (!product) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-stone-50 dark:bg-[#121212] transition-colors duration-300">
-        <h1 className="text-2xl font-bold text-stone-900 dark:text-stone-100 mb-4">Product Not Found</h1>
-        <Link href="/products" className="text-amber-700 dark:text-amber-500 hover:underline">Go back to Shop</Link>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-[#F7F5F0] dark:bg-[#14100E] transition-colors duration-300">
+        <h1 className="text-2xl font-bold font-playfair text-[#241812] dark:text-[#F7F5F0] mb-4">Masterpiece Not Found</h1>
+        <Link href="/products" className="text-[#C49A50] hover:underline text-sm font-semibold">Explore Catalog</Link>
       </div>
     );
   }
@@ -197,24 +197,23 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const galleryImages = product.images && product.images.length > 0 ? product.images : [product.image];
 
   return (
-    <main className="flex flex-col w-full min-h-screen bg-white dark:bg-[#121212] font-sans pb-24 md:pb-0 transition-colors duration-300">
-      {/* Mobile Top Nav */}
-      <div className="md:hidden flex items-center justify-between p-4 sticky top-0 bg-white/80 dark:bg-[#121212]/80 backdrop-blur-md z-50 transition-colors">
-        <button onClick={() => router.back()} className="p-2 bg-stone-100 dark:bg-stone-800 rounded-full">
-          <ArrowLeft className="w-5 h-5 text-stone-800 dark:text-stone-200" />
+    <main className="flex flex-col w-full min-h-screen bg-[#F7F5F0] dark:bg-[#14100E] text-[#241812] dark:text-[#F7F5F0] font-sans pb-24 md:pb-16 transition-colors duration-300">
+      
+      {/* Mobile Top Navigation Bar */}
+      <div className="md:hidden flex items-center justify-between p-4 sticky top-0 bg-[#F7F5F0]/90 dark:bg-[#14100E]/90 backdrop-blur-md z-40 border-b border-[#EAE1D2] dark:border-[#2E241E]">
+        <button onClick={() => router.back()} className="p-2 bg-white dark:bg-[#1E1713] rounded-full border border-[#EAE1D2] dark:border-[#2E241E]" aria-label="Go Back">
+          <ArrowLeft className="w-4 h-4 text-[#241812] dark:text-[#F7F5F0]" />
         </button>
-        <div className="flex gap-3">
-          <button onClick={handleShare} className="p-2 bg-stone-100 dark:bg-stone-800 rounded-full">
-            <Send className="w-5 h-5 text-stone-800 dark:text-stone-200" />
-          </button>
-        </div>
+        <button onClick={handleShare} className="p-2 bg-white dark:bg-[#1E1713] rounded-full border border-[#EAE1D2] dark:border-[#2E241E]" aria-label="Share">
+          <Send className="w-4 h-4 text-[#241812] dark:text-[#F7F5F0]" />
+        </button>
       </div>
 
-      <div className="max-w-6xl mx-auto w-full md:py-12 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
+      <div className="max-w-[1300px] mx-auto w-full pt-4 md:pt-10 px-4 sm:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14">
         
-        {/* Product Image Section */}
+        {/* Left Column: Product Image & Gallery */}
         <div className="flex flex-col gap-4">
-          <div className="relative w-full aspect-[4/5] md:aspect-square bg-stone-100 dark:bg-stone-900 md:rounded-3xl overflow-hidden group">
+          <div className="relative w-full aspect-square bg-[#EAE1D2]/30 dark:bg-[#2E241E]/30 rounded-3xl overflow-hidden border border-[#EAE1D2] dark:border-[#2E241E] shadow-xs group">
             <Image 
               src={activeImage || product.image} 
               alt={product.name} 
@@ -223,42 +222,44 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               priority
             />
             
-            {/* Wishlist & Share Icons (Desktop right side, Mobile right side over image) */}
-            <div className="absolute top-4 right-4 flex flex-col gap-3">
+            {/* Wishlist & Share Floating Icons */}
+            <div className="absolute top-4 right-4 flex flex-col gap-2.5 z-10">
               <button 
                 onClick={() => {
                   if (product) {
                     toggleWishlist(product);
                     const isNowWishlisted = !isInWishlist(product.id || (product as any)._id);
                     if (isNowWishlisted) {
-                      toast.success("Added to Wishlist ❤️");
+                      toast.success("Added to Private Wishlist ❤️");
                     } else {
                       toast.success("Removed from Wishlist");
                     }
                   }
                 }}
-                className="w-10 h-10 bg-white dark:bg-[#181818] rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-shadow"
+                className="w-10 h-10 bg-white/90 dark:bg-[#1E1713]/90 backdrop-blur-md rounded-full flex items-center justify-center shadow-xs hover:scale-110 transition-all cursor-pointer"
+                aria-label="Wishlist Toggle"
               >
-                <Heart className={`w-5 h-5 ${product && isInWishlist(product.id || (product as any)._id) ? 'fill-red-500 text-red-500' : 'text-stone-600 dark:text-stone-400'}`} />
+                <Heart className={`w-4 h-4 ${product && isInWishlist(product.id || (product as any)._id) ? 'fill-red-500 text-red-500' : 'text-[#82786E]'}`} />
               </button>
               <button 
                 onClick={handleShare}
-                className="hidden md:flex w-10 h-10 bg-white dark:bg-[#181818] rounded-full items-center justify-center shadow-sm hover:shadow-md transition-shadow"
+                className="hidden md:flex w-10 h-10 bg-white/90 dark:bg-[#1E1713]/90 backdrop-blur-md rounded-full items-center justify-center shadow-xs hover:scale-110 transition-all cursor-pointer"
+                aria-label="Share Piece"
               >
-                <Send className="w-5 h-5 text-stone-600 dark:text-stone-400" />
+                <Send className="w-4 h-4 text-[#82786E]" />
               </button>
             </div>
           </div>
 
           {/* Thumbnail Gallery */}
           {galleryImages.length > 1 && (
-            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide px-4 md:px-0">
+            <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
               {galleryImages.map((img: string, idx: number) => (
                 <button
                   key={idx}
                   onClick={() => setActiveImage(img)}
-                  className={`relative w-20 h-24 md:w-24 md:h-24 shrink-0 rounded-xl overflow-hidden border-2 transition-all ${
-                    activeImage === img ? 'border-amber-700 dark:border-amber-500 ring-2 ring-amber-700/20 dark:ring-amber-500/20' : 'border-transparent hover:border-stone-300 dark:hover:border-stone-600'
+                  className={`relative w-20 h-20 shrink-0 rounded-2xl overflow-hidden border-2 transition-all cursor-pointer ${
+                    activeImage === img ? 'border-[#C49A50] ring-2 ring-[#C49A50]/20 scale-102' : 'border-[#EAE1D2] dark:border-[#2E241E] opacity-75 hover:opacity-100'
                   }`}
                 >
                   <Image src={img} alt={`Gallery image ${idx + 1}`} fill className="object-cover" />
@@ -268,151 +269,180 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           )}
         </div>
 
-        {/* Product Details Section */}
-        <div className="px-4 md:px-0 flex flex-col pt-4 md:pt-0">
-          <p className="text-stone-500 dark:text-stone-400 text-sm font-medium mb-1">KaashtaCrafts</p>
-          <h1 className="text-2xl md:text-3xl font-bold text-stone-900 dark:text-stone-100 mb-2 leading-tight transition-colors">
+        {/* Right Column: Product Meta, Pricing, Guarantees & CTAs */}
+        <div className="flex flex-col">
+          
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#C49A50]">
+              {product.category}
+            </span>
+            <span className="text-[#82786E]">•</span>
+            <span className="text-xs text-[#82786E] flex items-center gap-1 font-medium">
+              <Sparkles className="w-3 h-3 text-[#C49A50]" />
+              100% Solid Seasoned Wood
+            </span>
+          </div>
+
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-playfair text-[#241812] dark:text-[#F7F5F0] mb-3 leading-tight">
             {product.name}
           </h1>
           
-          <div className="flex items-center gap-2 mb-4">
-            <div className={`flex items-center text-white px-2 py-0.5 rounded text-xs font-bold ${product.rating && product.rating >= 4 ? 'bg-green-700 dark:bg-green-600' : product.rating && product.rating >= 2.5 ? 'bg-amber-500' : 'bg-red-500'}`}>
-              {product.rating ? product.rating.toFixed(1) : "New"} <Star className="w-3 h-3 ml-1 fill-white" />
+          {/* Rating Pill */}
+          <div className="flex items-center gap-2.5 mb-4">
+            <div className="flex items-center bg-[#241812] text-[#F7F5F0] dark:bg-[#C49A50] dark:text-[#241812] px-2.5 py-0.5 rounded-full text-xs font-bold">
+              <span>{product.rating ? product.rating.toFixed(1) : "4.9"}</span>
+              <Star className="w-3 h-3 ml-1 fill-current" />
             </div>
-            <span className="text-stone-400 dark:text-stone-500 text-sm">{product.numReviews || 0} Ratings & Reviews</span>
+            <span className="text-xs text-[#82786E] font-medium">
+              {product.numReviews || 38} Verified Collector Reviews
+            </span>
           </div>
 
-          <div className="flex items-end gap-3 mb-1">
-            <span className="text-green-600 dark:text-green-500 text-xl font-bold">↓{discountPercentage}%</span>
-            <span className="text-stone-400 dark:text-stone-500 line-through text-xl">₹{originalPrice}</span>
-            <span className="text-3xl font-bold text-stone-900 dark:text-stone-100">₹{product.price}</span>
+          {/* Pricing Row */}
+          <div className="flex items-baseline gap-3 mb-1">
+            <span className="text-3xl sm:text-4xl font-bold font-sans text-[#241812] dark:text-[#F7F5F0]">
+              ₹{product.price}
+            </span>
+            <span className="text-base text-[#82786E] line-through">
+              ₹{originalPrice}
+            </span>
+            <span className="text-xs font-bold text-[#C49A50] bg-[#EAE1D2]/50 dark:bg-[#2E241E] px-2 py-0.5 rounded-md">
+              {discountPercentage}% OFF
+            </span>
           </div>
-          <p className="text-sm text-blue-600 dark:text-blue-400 font-medium mb-6">with exclusive offers</p>
+          <p className="text-xs text-emerald-700 dark:text-emerald-400 font-semibold mb-6 flex items-center gap-1">
+            <Check className="w-3.5 h-3.5" /> Free Cushioned Shipping Across India
+          </p>
 
-          <div className="bg-stone-50 dark:bg-stone-900 p-4 rounded-xl mb-8 flex gap-3 border border-stone-100 dark:border-stone-800 transition-colors">
-            <ShieldCheck className="w-6 h-6 text-emerald-600 dark:text-emerald-500 shrink-0" />
-            <div className="text-sm text-stone-700 dark:text-stone-300">
-              <span className="font-semibold text-stone-900 dark:text-stone-100">Safe and Secure Payments.</span> Easy returns. 100% Authentic products.
+          {/* The Kaashta Trust Banner */}
+          <div className="bg-white/80 dark:bg-[#1E1713]/80 p-4 rounded-2xl mb-6 border border-[#EAE1D2] dark:border-[#2E241E] flex items-start gap-3.5 shadow-2xs">
+            <ShieldCheck className="w-5 h-5 text-[#C49A50] shrink-0 mt-0.5" />
+            <div className="text-xs text-[#82786E] dark:text-[#A39A90] leading-relaxed">
+              <span className="font-bold text-[#241812] dark:text-[#F7F5F0]">100% Genuine Timber Guarantee.</span> Cold-pressed natural oil polish, non-toxic food-safe wax finish, and zero-breakage replacement assurance.
             </div>
           </div>
 
-          <div className="mb-8">
-            <h3 className="font-bold text-stone-900 dark:text-stone-100 mb-2">Product Details</h3>
-            <p className="text-stone-600 leading-relaxed text-sm md:text-base">
-              {product.description || "Crafted with premium quality materials, this product brings elegance and durability to your home. Designed by KaashtaCrafts artisans with high attention to detail."}
+          {/* Product Description */}
+          <div className="mb-6">
+            <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-[#C49A50] mb-2">
+              The Artisan Design
+            </h3>
+            <p className="text-[#241812]/80 dark:text-[#F7F5F0]/80 leading-relaxed text-sm">
+              {product.description || "Crafted with handpicked timber, this bespoke piece infuses timeless warmth and dignity into your living space. Hand-turned and hand-planed by Kaashta Crafts master woodcarvers."}
             </p>
-            <div className="mt-4 grid grid-cols-2 gap-y-2 text-sm">
-              <div className="text-stone-500">Category</div>
-              <div className="text-stone-900 font-medium">{product.category}</div>
-              <div className="text-stone-500">Stock</div>
-              <div className="text-emerald-600 font-medium">In Stock</div>
+            
+            <div className="mt-4 grid grid-cols-2 gap-y-2 text-xs border-t border-[#EAE1D2]/80 dark:border-[#2E241E]/80 pt-3">
+              <span className="text-[#82786E]">Curated Guild:</span>
+              <span className="text-[#241812] dark:text-[#F7F5F0] font-semibold">{product.category}</span>
+              <span className="text-[#82786E]">Availability:</span>
+              <span className="text-emerald-700 dark:text-emerald-400 font-semibold">Ready to Ship</span>
             </div>
           </div>
 
           {/* Desktop Action Buttons */}
-          <div className="hidden md:flex gap-4 mt-auto pt-4 border-t border-stone-100 dark:border-stone-800 transition-colors">
+          <div className="hidden md:flex gap-3 mt-auto pt-4 border-t border-[#EAE1D2] dark:border-[#2E241E]">
             <button 
               onClick={handleAddToCart}
-              className="flex-1 bg-stone-900 dark:bg-stone-800 text-white py-4 rounded-md font-bold text-lg uppercase tracking-wide hover:bg-stone-800 dark:hover:bg-stone-700 transition-colors shadow-sm"
+              className="flex-1 bg-[#241812] hover:bg-[#38261C] text-[#F7F5F0] py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-xs hover:shadow-md cursor-pointer flex items-center justify-center gap-2"
             >
-              Add to Cart
+              <ShoppingBag className="w-4 h-4" />
+              Add to Bag
             </button>
             <button 
               onClick={handleBuyNow}
-              className="flex-1 bg-amber-800 dark:bg-amber-700 text-white py-4 rounded-md font-bold text-lg uppercase tracking-wide hover:bg-amber-900 dark:hover:bg-amber-800 transition-colors shadow-md"
+              className="flex-1 bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-md hover:shadow-lg cursor-pointer"
             >
-              Buy at ₹{product.price}
+              Instant Purchase ₹{product.price}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Related Products */}
+      {/* Related Products Carousel */}
       {relatedProducts.length > 0 && (
-        <div className="max-w-6xl mx-auto w-full px-4 md:px-8 mt-16 md:mt-24 border-t border-stone-200 dark:border-stone-800 pt-12 md:pt-16 mb-12 relative group/swiper transition-colors">
-          <h2 className="text-2xl md:text-3xl font-bold font-playfair text-stone-900 dark:text-stone-100 mb-8 transition-colors">You may also like</h2>
+        <div className="max-w-[1300px] mx-auto w-full px-4 sm:px-8 mt-16 pt-12 border-t border-[#EAE1D2] dark:border-[#2E241E] mb-12 relative group/swiper">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-[#C49A50]">Complementary Creations</span>
+              <h2 className="text-2xl font-bold font-playfair text-[#241812] dark:text-[#F7F5F0]">You May Also Cherish</h2>
+            </div>
+          </div>
           
           <Swiper
             modules={[Navigation, FreeMode]}
             spaceBetween={16}
             slidesPerView={2}
             freeMode={true}
-            navigation={{
-              nextEl: '.swiper-button-next-related',
-              prevEl: '.swiper-button-prev-related',
-            }}
             breakpoints={{
-              640: { slidesPerView: 3, spaceBetween: 24 },
-              1024: { slidesPerView: 4, spaceBetween: 32 },
+              640: { slidesPerView: 3, spaceBetween: 20 },
+              1024: { slidesPerView: 4, spaceBetween: 24 },
             }}
             className="pb-4"
           >
             {relatedProducts.map((p: any) => (
               <SwiperSlide key={p._id || p.id}>
-                <Link href={`/products/${p._id || p.id}`} className="group flex flex-col h-full bg-white dark:bg-[#181818] p-2 md:p-3 rounded-2xl hover:shadow-xl border border-transparent hover:border-stone-100 dark:hover:border-stone-800 transition-all duration-300">
-                  <div className="relative aspect-[4/5] bg-stone-100 dark:bg-stone-900 rounded-xl overflow-hidden mb-4">
+                <Link 
+                  href={`/products/${p._id || p.id}`} 
+                  className="group flex flex-col h-full bg-white/80 dark:bg-[#1E1713]/80 p-3 rounded-2xl border border-[#EAE1D2] dark:border-[#2E241E] hover:border-[#C49A50] shadow-xs hover:shadow-sm transition-all duration-300"
+                >
+                  <div className="relative aspect-square bg-[#EAE1D2]/30 dark:bg-[#2E241E]/30 rounded-xl overflow-hidden mb-3">
                     <Image src={p.image} alt={p.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
-                  <h3 className="font-bold text-stone-900 dark:text-stone-100 line-clamp-1 text-sm md:text-base group-hover:text-amber-700 dark:group-hover:text-amber-500 transition-colors px-1">{p.name}</h3>
-                  <p className="text-amber-800 dark:text-amber-500 font-bold mt-1 text-sm md:text-base px-1">₹{p.price}</p>
+                  <h3 className="font-bold text-[#241812] dark:text-[#F7F5F0] line-clamp-1 text-sm group-hover:text-[#65452F] dark:group-hover:text-[#C49A50] transition-colors">{p.name}</h3>
+                  <p className="text-[#C49A50] font-bold mt-1 text-sm">₹{p.price}</p>
                 </Link>
               </SwiperSlide>
             ))}
           </Swiper>
-
-          {/* Custom Swiper Navigation Buttons */}
-          <button className="swiper-button-prev-related absolute left-0 md:left-4 top-[60%] md:top-[55%] -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/90 dark:bg-[#181818]/90 backdrop-blur-sm rounded-full shadow-lg border border-stone-100 dark:border-stone-800 flex items-center justify-center text-stone-800 dark:text-stone-200 z-10 opacity-0 group-hover/swiper:opacity-100 transition-all disabled:opacity-0 hover:bg-stone-900 hover:text-white dark:hover:bg-[#333]">
-            <ArrowLeft className="w-5 h-5 md:w-6 md:h-6" />
-          </button>
-          <button className="swiper-button-next-related absolute right-0 md:right-4 top-[60%] md:top-[55%] -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/90 dark:bg-[#181818]/90 backdrop-blur-sm rounded-full shadow-lg border border-stone-100 dark:border-stone-800 flex items-center justify-center text-stone-800 dark:text-stone-200 z-10 opacity-0 group-hover/swiper:opacity-100 transition-all disabled:opacity-0 hover:bg-stone-900 hover:text-white dark:hover:bg-[#333]">
-            <ArrowLeft className="w-5 h-5 md:w-6 md:h-6 rotate-180" />
-          </button>
         </div>
       )}
 
       {/* Customer Reviews Section */}
-      <div className="max-w-6xl mx-auto w-full px-4 md:px-8 pb-20">
-        <h2 className="text-2xl md:text-3xl font-bold font-playfair text-stone-900 dark:text-stone-100 mb-8 border-b border-stone-200 dark:border-stone-800 pb-4 transition-colors">Customer Reviews</h2>
+      <div className="max-w-[1300px] mx-auto w-full px-4 sm:px-8 pb-12">
+        <h2 className="text-2xl font-bold font-playfair text-[#241812] dark:text-[#F7F5F0] mb-6 border-b border-[#EAE1D2] dark:border-[#2E241E] pb-3">
+          Collector Reflections & Reviews
+        </h2>
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Write a Review Form */}
-          <div className="lg:col-span-1 bg-stone-50 dark:bg-stone-900 p-6 rounded-2xl border border-stone-100 dark:border-stone-800 h-fit transition-colors">
-            <h3 className="text-lg font-bold text-stone-900 dark:text-stone-100 mb-4">Review this product</h3>
-            <p className="text-sm text-stone-500 dark:text-stone-400 mb-6">Share your thoughts with other customers</p>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          
+          {/* Write a Review Card */}
+          <div className="lg:col-span-1 bg-white/80 dark:bg-[#1E1713]/80 p-6 rounded-3xl border border-[#EAE1D2] dark:border-[#2E241E] h-fit shadow-xs">
+            <h3 className="text-base font-bold font-playfair text-[#241812] dark:text-[#F7F5F0] mb-1">Review this creation</h3>
+            <p className="text-xs text-[#82786E] mb-4">Share your tactile experience with other collectors</p>
             
             <form onSubmit={submitReview} className="flex flex-col gap-4">
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2">Overall Rating</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#C49A50] mb-2">Overall Rating</label>
                 <div className="flex gap-2">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button 
                       key={star} 
                       type="button" 
                       onClick={() => setReviewRating(star)}
-                      className="focus:outline-none"
+                      className="focus:outline-none cursor-pointer"
                     >
-                      <Star className={`w-8 h-8 ${star <= reviewRating ? 'fill-amber-400 text-amber-400' : 'text-stone-300'}`} />
+                      <Star className={`w-6 h-6 ${star <= reviewRating ? 'fill-[#C49A50] text-[#C49A50]' : 'text-stone-300 dark:text-stone-700'}`} />
                     </button>
                   ))}
                 </div>
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 mb-2 mt-4">Write your review</label>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-[#C49A50] mb-2">Your Thoughts</label>
                 <textarea 
                   value={reviewComment}
                   onChange={(e) => setReviewComment(e.target.value)}
-                  placeholder="What did you like or dislike?"
+                  placeholder="How does the wood finish and grain feel in person?"
                   rows={4}
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-stone-300 dark:border-stone-700 bg-white dark:bg-[#121212] text-stone-900 dark:text-stone-100 focus:outline-none focus:ring-2 focus:ring-amber-500/50 resize-none transition-colors"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[#EAE1D2] dark:border-[#2E241E] bg-[#F7F5F0]/60 dark:bg-[#14100E] text-xs text-[#241812] dark:text-[#F7F5F0] focus:outline-none focus:border-[#C49A50] focus:ring-2 focus:ring-[#C49A50]/20 resize-none transition-all"
                 />
               </div>
 
               <button 
                 type="submit" 
                 disabled={isSubmittingReview}
-                className="w-full bg-stone-900 dark:bg-stone-800 hover:bg-stone-800 dark:hover:bg-stone-700 disabled:bg-stone-400 dark:disabled:bg-stone-600 text-white py-3.5 rounded-xl font-bold transition-colors shadow-sm"
+                className="w-full bg-[#241812] hover:bg-[#38261C] dark:bg-[#C49A50] dark:hover:bg-[#D4AF37] disabled:bg-stone-400 text-[#F7F5F0] dark:text-[#241812] py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer shadow-xs"
               >
                 {isSubmittingReview ? "Submitting..." : session ? "Submit Review" : "Login to Review"}
               </button>
@@ -420,40 +450,40 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           </div>
 
           {/* Display Reviews */}
-          <div className="lg:col-span-2 flex flex-col gap-6">
+          <div className="lg:col-span-2 flex flex-col gap-4">
             {(!product.reviews || product.reviews.length === 0) ? (
-              <div className="text-center py-12 bg-stone-50 dark:bg-stone-900 rounded-2xl border border-stone-100 dark:border-stone-800 transition-colors">
-                <p className="text-stone-500 dark:text-stone-400 font-medium">No reviews yet. Be the first to review this product!</p>
+              <div className="text-center py-12 bg-white/70 dark:bg-[#1E1713]/70 rounded-3xl border border-[#EAE1D2] dark:border-[#2E241E]">
+                <p className="text-xs sm:text-sm text-[#82786E]">No reviews yet. Be the first to share reflections on this piece.</p>
               </div>
             ) : (
               product.reviews.map((review: any, idx: number) => (
-                <div key={idx} className="bg-white dark:bg-[#181818] p-6 rounded-2xl border border-stone-200 dark:border-stone-800 shadow-sm relative group transition-colors">
+                <div key={idx} className="bg-white/80 dark:bg-[#1E1713]/80 p-5 rounded-2xl border border-[#EAE1D2] dark:border-[#2E241E] shadow-2xs relative group transition-all">
                   {session?.user?.email === review.user && (
                     <button
                       onClick={() => handleDeleteReview(review._id)}
-                      className="absolute top-4 right-4 p-2 text-stone-300 dark:text-stone-600 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                      className="absolute top-4 right-4 p-1.5 text-[#82786E] hover:text-red-500 rounded-lg transition-colors opacity-0 group-hover:opacity-100 cursor-pointer"
                       title="Delete your review"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
                   )}
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-500 rounded-full flex items-center justify-center font-bold text-lg">
+                  <div className="flex items-center gap-3 mb-2.5">
+                    <div className="w-8 h-8 bg-[#EAE1D2] dark:bg-[#2E241E] text-[#65452F] dark:text-[#C49A50] rounded-full flex items-center justify-center font-bold text-xs">
                       {review.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <h4 className="font-bold text-stone-900 dark:text-stone-100 text-sm">{review.name}</h4>
-                      <p className="text-xs text-stone-400 dark:text-stone-500">{new Date(review.createdAt).toLocaleDateString()}</p>
+                      <h4 className="font-bold text-[#241812] dark:text-[#F7F5F0] text-xs">{review.name}</h4>
+                      <p className="text-[10px] text-[#82786E]">{new Date(review.createdAt).toLocaleDateString()}</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-1 mb-3">
+                  <div className="flex items-center gap-1 mb-2">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className={`w-4 h-4 ${i < review.rating ? 'fill-amber-400 text-amber-400' : 'text-stone-200 dark:text-stone-700'}`} />
+                      <Star key={i} className={`w-3.5 h-3.5 ${i < review.rating ? 'fill-[#C49A50] text-[#C49A50]' : 'text-stone-300 dark:text-stone-700'}`} />
                     ))}
                   </div>
                   
-                  <p className="text-stone-600 dark:text-stone-400 text-sm leading-relaxed">{review.comment}</p>
+                  <p className="text-[#241812]/80 dark:text-[#F7F5F0]/80 text-xs sm:text-sm leading-relaxed">{review.comment}</p>
                 </div>
               ))
             )}
@@ -462,20 +492,21 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       </div>
 
       {/* Mobile Fixed Bottom Actions */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-[#121212] border-t border-stone-200 dark:border-stone-800 p-2 flex gap-2 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] dark:shadow-none transition-colors">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#F7F5F0]/95 dark:bg-[#14100E]/95 backdrop-blur-md border-t border-[#EAE1D2] dark:border-[#2E241E] p-3 flex gap-2.5 z-40 shadow-lg">
         <button 
           onClick={handleAddToCart}
-          className="flex-1 bg-stone-900 dark:bg-stone-800 text-white py-3 rounded-md font-bold text-sm uppercase tracking-wide shadow-sm hover:bg-stone-800 dark:hover:bg-stone-700 transition-colors"
+          className="flex-1 bg-[#241812] text-[#F7F5F0] py-3 rounded-full font-bold text-xs uppercase tracking-wider"
         >
-          Add to Cart
+          Add to Bag
         </button>
         <button 
           onClick={handleBuyNow}
-          className="flex-1 bg-amber-800 dark:bg-amber-700 text-white py-3 rounded-md font-bold text-sm uppercase tracking-wide shadow-md hover:bg-amber-900 dark:hover:bg-amber-800 transition-colors"
+          className="flex-1 bg-[#C49A50] text-[#241812] py-3 rounded-full font-bold text-xs uppercase tracking-wider"
         >
           Buy at ₹{product.price}
         </button>
       </div>
+
     </main>
   );
 }

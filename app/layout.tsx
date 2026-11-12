@@ -34,7 +34,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${outfit.variable} ${playfair.variable} h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col font-sans text-stone-800 bg-stone-50 dark:bg-[#121212] dark:text-stone-200 selection:bg-amber-900 selection:text-white transition-colors duration-300">
+      <body className="min-h-full flex flex-col font-sans text-[#241812] bg-[#F7F5F0] dark:bg-[#121212] dark:text-[#F7F5F0] selection:bg-[#C49A50] selection:text-[#241812] transition-colors duration-300">
         <Providers>
           <CartProvider>
             <WishlistProvider>

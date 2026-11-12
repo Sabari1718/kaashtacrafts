@@ -3,24 +3,71 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ivory: #F7F5F0;
+  --champagne: #EAE1D2;
+  --espresso: #241812;
+  --walnut: #65452F;
+  --gold: #C49A50;
+  --charcoal: #292929;
+  --warmgrey: #82786E;
+  --background: #F7F5F0;
+  --foreground: #241812;
 }
 
 .dark {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #14100E;
+  --foreground: #F7F5F0;
+  --ivory: #1E1713;
+  --champagne: #2E241E;
+  --espresso: #F7F5F0;
+  --walnut: #C49A50;
+  --gold: #D4AF37;
+  --charcoal: #EAE1D2;
+  --warmgrey: #A39A90;
 }
 
 @theme inline {
+  --color-ivory: var(--ivory);
+  --color-champagne: var(--champagne);
+  --color-espresso: var(--espresso);
+  --color-walnut: var(--walnut);
+  --color-gold: var(--gold);
+  --color-charcoal: var(--charcoal);
+  --color-warmgrey: var(--warmgrey);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-playfair: var(--font-playfair), ui-serif, Georgia, serif;
+  --font-sans: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-playfair: var(--font-playfair), Georgia, serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar for Luxury Editorial Vibe */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(101, 69, 47, 0.2);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(101, 69, 47, 0.4);
+}
+
+/* Smooth Focus Rings */
+input:focus, select:focus, textarea:focus, button:focus-visible {
+  outline: none;
 }

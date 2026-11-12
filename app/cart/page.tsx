@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Trash2, Minus, Plus, ArrowRight, ShieldCheck } from "lucide-react";
+import { Trash2, Minus, Plus, ArrowRight, ShieldCheck, ShoppingBag, Sparkles } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 export default function CartPage() {
@@ -11,7 +11,6 @@ export default function CartPage() {
   
   const [selectedItemIds, setSelectedItemIds] = useState<string[]>([]);
   useEffect(() => {
-    // If items are removed and no longer in cart, remove from selection
     setSelectedItemIds(prev => prev.filter(id => cartItems.some(item => item.id === id)));
   }, [cartItems]);
 
@@ -23,49 +22,69 @@ export default function CartPage() {
 
   const selectedCartItems = cartItems.filter(item => selectedItemIds.includes(item.id));
   const subtotal = selectedCartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
-  const shipping = subtotal > 0 ? 0 : 0; // Free shipping
-  const total = subtotal + shipping;
+  const total = subtotal;
 
   return (
-    <main className="flex flex-col w-full min-h-screen bg-stone-50 pt-8 pb-24 font-sans">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 w-full">
-        <h1 className="text-3xl md:text-4xl font-semibold text-stone-900 mb-2 tracking-tight">
-          Shopping Cart
-        </h1>
-        <p className="text-stone-500 mb-10">
-          Review your items and proceed to checkout.
-        </p>
+    <main className="flex flex-col w-full min-h-screen bg-[#F7F5F0] dark:bg-[#14100E] text-[#241812] dark:text-[#F7F5F0] pt-8 pb-24 font-sans transition-colors duration-300">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-8 w-full">
+        
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-2 text-[#C49A50] text-xs font-bold uppercase tracking-[0.16em] mb-1">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Private Bag</span>
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold font-playfair tracking-tight text-[#241812] dark:text-[#F7F5F0]">
+            Shopping Bag
+          </h1>
+          <p className="text-xs sm:text-sm text-[#82786E] dark:text-[#A39A90] mt-1">
+            Review your selected handcrafted creations and proceed to checkout.
+          </p>
+        </div>
 
         {cartItems.length > 0 ? (
-          <div className="flex flex-col lg:flex-row gap-12">
+          <div className="flex flex-col lg:flex-row gap-10 items-start">
+            
             {/* Cart Items List */}
-            <div className="flex-grow flex flex-col gap-6">
+            <div className="flex-grow w-full flex flex-col gap-4">
               {cartItems.map((item) => (
-                <div key={item.id} className={`flex flex-col sm:flex-row items-center gap-4 p-4 rounded-2xl shadow-sm transition-all hover:shadow-md border-2 ${selectedItemIds.includes(item.id) ? 'border-amber-500/60 bg-amber-50/40' : 'border-stone-100 bg-white'}`}>
+                <div 
+                  key={item.id} 
+                  className={`flex flex-col sm:flex-row items-center gap-4 p-4 rounded-3xl transition-all duration-300 border ${
+                    selectedItemIds.includes(item.id) 
+                      ? 'border-[#C49A50] bg-white dark:bg-[#1E1713] shadow-xs' 
+                      : 'border-[#EAE1D2] dark:border-[#2E241E] bg-white/70 dark:bg-[#1E1713]/70'
+                  }`}
+                >
                   
-                  {/* Selection Checkbox */}
+                  {/* Selection Checkbox (Desktop) */}
                   <button 
                     onClick={() => toggleSelection(item.id)}
-                    className="shrink-0 p-2 focus:outline-none hidden sm:flex items-center justify-center transition-all"
+                    className="shrink-0 p-1 focus:outline-none hidden sm:flex items-center justify-center cursor-pointer"
+                    aria-label="Select piece"
                   >
-                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${selectedItemIds.includes(item.id) ? 'bg-amber-600 border-2 border-amber-600 shadow-sm shadow-amber-600/30' : 'bg-white border-2 border-stone-300 hover:border-amber-400'}`}>
+                    <div className={`w-6 h-6 rounded-lg flex items-center justify-center transition-all ${
+                      selectedItemIds.includes(item.id) 
+                        ? 'bg-[#241812] dark:bg-[#C49A50] text-[#F7F5F0] dark:text-[#241812]' 
+                        : 'border border-[#EAE1D2] dark:border-[#2E241E] bg-white/60 dark:bg-[#14100E]'
+                    }`}>
                       {selectedItemIds.includes(item.id) && (
-                        <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                         </svg>
                       )}
                     </div>
                   </button>
 
-                  <div className="relative w-full sm:w-32 h-32 rounded-xl overflow-hidden bg-stone-100 shrink-0 flex items-center justify-center sm:block">
-                    {/* Mobile Checkbox overlaid on image */}
+                  {/* Thumbnail Image */}
+                  <div className="relative w-full sm:w-28 h-28 rounded-2xl overflow-hidden bg-[#EAE1D2]/30 dark:bg-[#2E241E]/30 shrink-0">
                     <button 
                       onClick={() => toggleSelection(item.id)}
-                      className="absolute top-2 left-2 z-10 p-1.5 rounded-lg sm:hidden bg-white/60 backdrop-blur-sm shadow-sm"
+                      className="absolute top-2 left-2 z-10 p-1 rounded-md sm:hidden bg-white/90 dark:bg-[#1E1713]/90 shadow-xs"
                     >
-                      <div className={`w-5 h-5 rounded flex items-center justify-center transition-all ${selectedItemIds.includes(item.id) ? 'bg-amber-600 border-amber-600' : 'bg-white border-2 border-stone-300'}`}>
+                      <div className={`w-4 h-4 rounded flex items-center justify-center ${selectedItemIds.includes(item.id) ? 'bg-[#241812] text-white' : 'border border-stone-300'}`}>
                         {selectedItemIds.includes(item.id) && (
-                          <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                           </svg>
                         )}
@@ -79,50 +98,50 @@ export default function CartPage() {
                     />
                   </div>
                   
+                  {/* Meta & Controls */}
                   <div className="flex flex-col flex-grow w-full">
                     <div className="flex justify-between items-start mb-2">
                       <div>
-                        <h3 className="text-lg font-semibold text-stone-900">{item.name}</h3>
-                        <p className="text-sm text-stone-500">{item.category}</p>
+                        <span className="text-[10px] font-bold tracking-[0.16em] uppercase text-[#C49A50]">{item.category}</span>
+                        <h3 className="text-base font-bold text-[#241812] dark:text-[#F7F5F0] line-clamp-1">{item.name}</h3>
                       </div>
-                      <span className="text-lg font-bold text-amber-800">
+                      <span className="text-base font-bold text-[#241812] dark:text-[#F7F5F0]">
                         ₹{item.price * item.quantity}
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between mt-auto pt-4">
-                      {/* Quantity Controls */}
-                      <div className="flex items-center gap-4 bg-stone-50 border border-stone-200 rounded-full px-3 py-1">
+                    <div className="flex items-center justify-between mt-auto pt-3 border-t border-[#EAE1D2]/60 dark:border-[#2E241E]/60">
+                      
+                      {/* Quantity Stepper */}
+                      <div className="flex items-center gap-3 bg-[#F7F5F0] dark:bg-[#14100E] border border-[#EAE1D2] dark:border-[#2E241E] rounded-full px-3 py-1">
                         <button 
                           onClick={() => updateQuantity(item.id, -1)}
-                          className="p-1 hover:text-amber-700 transition-colors"
+                          className="text-[#82786E] hover:text-[#241812] dark:hover:text-[#F7F5F0] transition-colors cursor-pointer"
                         >
-                          <Minus className="w-4 h-4" />
+                          <Minus className="w-3.5 h-3.5" />
                         </button>
-                        <span className="w-4 text-center font-semibold text-stone-800 text-sm">{item.quantity}</span>
+                        <span className="w-4 text-center font-bold text-xs text-[#241812] dark:text-[#F7F5F0]">{item.quantity}</span>
                         <button 
                           onClick={() => updateQuantity(item.id, 1)}
-                          className="p-1 hover:text-amber-700 transition-colors"
+                          className="text-[#82786E] hover:text-[#241812] dark:hover:text-[#F7F5F0] transition-colors cursor-pointer"
                         >
-                          <Plus className="w-4 h-4" />
+                          <Plus className="w-3.5 h-3.5" />
                         </button>
                       </div>
 
-                      <div className="flex items-center gap-6">
-                        {/* Buy Now Button */}
+                      <div className="flex items-center gap-4">
                         <Link 
                           href={`/checkout?buyNow=${item.id}`}
-                          className="text-amber-700 hover:text-amber-800 flex items-center gap-1.5 text-sm font-bold transition-colors"
+                          className="text-[#C49A50] hover:underline flex items-center gap-1 text-xs font-bold transition-colors"
                         >
-                          Buy this now <ArrowRight className="w-3.5 h-3.5" />
+                          Buy Now <ArrowRight className="w-3 h-3" />
                         </Link>
 
-                        {/* Remove Button */}
                         <button 
                           onClick={() => removeFromCart(item.id)}
-                          className="text-stone-400 hover:text-red-500 flex items-center gap-1.5 text-sm font-medium transition-colors"
+                          className="text-[#82786E] hover:text-red-500 flex items-center gap-1 text-xs font-medium transition-colors cursor-pointer"
                         >
-                          <Trash2 className="w-4 h-4" /> Remove
+                          <Trash2 className="w-3.5 h-3.5" /> Remove
                         </button>
                       </div>
                     </div>
@@ -131,90 +150,68 @@ export default function CartPage() {
               ))}
             </div>
 
-            {/* Order Summary */}
+            {/* Order Summary Box */}
             <div className="w-full lg:w-96 shrink-0">
-              <div className="bg-white p-8 rounded-3xl shadow-sm border border-stone-200 sticky top-28">
-                <h2 className="text-xl font-bold font-playfair text-stone-900 mb-6">Order Summary</h2>
+              <div className="bg-white/85 dark:bg-[#1E1713]/85 p-6 sm:p-8 rounded-3xl shadow-xs border border-[#EAE1D2] dark:border-[#2E241E] sticky top-28">
+                <h2 className="text-xl font-bold font-playfair text-[#241812] dark:text-[#F7F5F0] mb-5">Summary</h2>
                 
-                <div className="flex flex-col gap-4 text-stone-600 mb-6">
+                <div className="flex flex-col gap-3.5 text-xs sm:text-sm text-[#82786E] dark:text-[#A39A90] mb-5">
                   <div className="flex justify-between items-center">
                     <span>Subtotal</span>
-                    <span className="font-medium text-stone-900">₹{subtotal}</span>
+                    <span className="font-bold text-[#241812] dark:text-[#F7F5F0]">₹{subtotal}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span>Shipping</span>
-                    <span className="font-medium text-emerald-600">Free</span>
+                    <span className="font-semibold text-emerald-700 dark:text-emerald-400">Complimentary</span>
                   </div>
                 </div>
 
-                <div className="border-t border-stone-200 pt-6 mb-8">
+                <div className="border-t border-[#EAE1D2] dark:border-[#2E241E] pt-4 mb-6">
                   <div className="flex justify-between items-center">
-                    <span className="text-lg font-semibold text-stone-900">Total ({selectedItemIds.length} items)</span>
-                    <span className="text-2xl font-bold text-amber-800">₹{total}</span>
+                    <span className="text-sm font-semibold text-[#241812] dark:text-[#F7F5F0]">Total ({selectedItemIds.length} items)</span>
+                    <span className="text-2xl font-bold text-[#241812] dark:text-[#F7F5F0]">₹{total}</span>
                   </div>
-                  <p className="text-xs text-stone-400 mt-1 text-right">Including all taxes</p>
+                  <p className="text-[10px] text-[#82786E] mt-1 text-right">All taxes & cushioned delivery included</p>
                 </div>
 
                 <Link 
                   href={selectedItemIds.length > 0 ? `/checkout?selectedIds=${selectedItemIds.join(",")}` : "#"} 
-                  className={`w-full py-4 rounded-full font-semibold tracking-wide transition-all shadow-md flex items-center justify-center gap-2 group mb-4
+                  className={`w-full py-3.5 rounded-full font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 mb-4 cursor-pointer
                     ${selectedItemIds.length > 0 
-                      ? "bg-stone-900 hover:bg-stone-800 text-white hover:shadow-lg" 
-                      : "bg-stone-300 text-stone-500 cursor-not-allowed"}`}
+                      ? "bg-[#241812] hover:bg-[#38261C] text-[#F7F5F0] dark:bg-[#C49A50] dark:hover:bg-[#D4AF37] dark:text-[#241812] shadow-sm hover:shadow-md" 
+                      : "bg-[#EAE1D2] text-[#82786E] cursor-not-allowed"}`}
                   onClick={(e) => {
                     if (selectedItemIds.length === 0) {
                       e.preventDefault();
-                      alert("Please select at least one item to proceed to checkout.");
+                      alert("Please check at least one piece to proceed.");
                     }
                   }}
                 >
-                  Proceed to Checkout <ArrowRight className={`w-5 h-5 ${selectedItemIds.length > 0 ? 'group-hover:translate-x-1 transition-transform' : ''}`} />
+                  Proceed to Checkout <ArrowRight className="w-4 h-4" />
                 </Link>
 
-                <div className="flex items-center justify-center gap-2 text-xs font-medium text-stone-500">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  Secure Checkout
+                <div className="flex items-center justify-center gap-2 text-xs text-[#82786E]">
+                  <ShieldCheck className="w-4 h-4 text-[#C49A50]" />
+                  <span>Safe & Encrypted Checkout</span>
                 </div>
               </div>
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-stone-200 shadow-sm text-center px-4">
-            <div className="w-24 h-24 bg-stone-50 rounded-full flex items-center justify-center mb-6">
-              <ShoppingCart className="w-10 h-10 text-stone-300" />
+          <div className="flex flex-col items-center justify-center py-20 bg-white/70 dark:bg-[#1E1713]/70 rounded-3xl border border-[#EAE1D2] dark:border-[#2E241E] text-center px-4">
+            <div className="w-20 h-20 bg-[#EAE1D2]/50 dark:bg-[#2E241E] rounded-full flex items-center justify-center mb-5">
+              <ShoppingBag className="w-8 h-8 text-[#82786E]" />
             </div>
-            <h2 className="text-2xl font-bold font-playfair text-stone-900 mb-3">Your cart is empty</h2>
-            <p className="text-stone-500 max-w-md mb-8">
-              Looks like you haven't added any premium wooden crafts to your cart yet.
+            <h2 className="text-2xl font-bold font-playfair text-[#241812] dark:text-[#F7F5F0] mb-2">Your Bag is Empty</h2>
+            <p className="text-xs sm:text-sm text-[#82786E] max-w-sm mb-6">
+              You haven't reserved any handcrafted wooden creations yet.
             </p>
-            <Link href="/products" className="bg-amber-800 hover:bg-amber-700 text-white px-8 py-3.5 rounded-full font-medium tracking-wide transition-all shadow-md">
-              Start Shopping
+            <Link href="/products" className="bg-[#241812] hover:bg-[#38261C] text-[#F7F5F0] px-8 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-sm">
+              Discover Masterpieces
             </Link>
           </div>
         )}
       </div>
     </main>
   );
-}
-
-// Simple fallback icon since lucide-react ShoppingCart isn't imported above to avoid conflict
-function ShoppingCart(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="8" cy="21" r="1" />
-      <circle cx="19" cy="21" r="1" />
-      <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-    </svg>
-  )
 }

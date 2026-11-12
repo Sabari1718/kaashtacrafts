@@ -153,34 +153,39 @@ export default function ProfilePage() {
 
   if (status === "loading" || isLoading) {
     return (
-      <main className="min-h-screen bg-stone-50 flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-amber-500" />
+      <main className="min-h-screen bg-[#F7F5F0] dark:bg-[#121212] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-[#C49A50]" />
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-stone-50 font-sans pb-24">
+    <main className="min-h-screen bg-[#F7F5F0] dark:bg-[#121212] font-sans pb-24 text-[#241812] dark:text-[#F7F5F0]">
       {/* Header Profile Banner */}
-      <div className="bg-stone-950 text-white pt-24 pb-32 px-4 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+      <div className="bg-[#241812] text-[#F7F5F0] pt-24 pb-32 px-4 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#C49A50]/15 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+        <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-[#65452F]/20 rounded-full blur-3xl"></div>
+        
         <div className="max-w-5xl mx-auto relative z-10 flex flex-col md:flex-row items-center md:items-end gap-6">
-          <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-stone-800 bg-stone-800 relative shadow-xl shrink-0">
+          <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl overflow-hidden border-2 border-[#C49A50]/40 bg-[#1A120D] relative shadow-2xl shrink-0 p-1">
             {session?.user?.image ? (
-              <Image src={session.user.image} alt="Profile" fill className="object-cover" />
+              <div className="w-full h-full relative rounded-2xl overflow-hidden">
+                <Image src={session.user.image} alt="Profile" fill className="object-cover" />
+              </div>
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-amber-500 text-stone-900 text-4xl font-bold">
+              <div className="w-full h-full rounded-2xl flex items-center justify-center bg-gradient-to-br from-[#65452F] to-[#241812] text-[#F7F5F0] text-4xl font-serif font-bold">
                 {name.charAt(0).toUpperCase() || "U"}
               </div>
             )}
           </div>
           <div className="text-center md:text-left flex-grow">
-            <h1 className="text-3xl md:text-4xl font-bold font-playfair mb-2">{name || session?.user?.name}</h1>
-            <p className="text-stone-400">{session?.user?.email}</p>
+            <span className="text-[11px] uppercase tracking-[0.25em] text-[#C49A50] font-bold">Client Account</span>
+            <h1 className="text-3xl md:text-4xl font-serif font-bold text-[#F7F5F0] mt-1 mb-1">{name || session?.user?.name}</h1>
+            <p className="text-[#82786E] text-sm">{session?.user?.email}</p>
           </div>
           <button 
             onClick={() => signOut()}
-            className="flex items-center gap-2 px-5 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl font-medium transition-colors shrink-0"
+            className="flex items-center gap-2 px-5 py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/20 rounded-full font-medium text-xs tracking-wider uppercase transition-all shrink-0 cursor-pointer"
           >
             <LogOut className="w-4 h-4" /> Sign Out
           </button>
@@ -190,38 +195,41 @@ export default function ProfilePage() {
       <div className="max-w-5xl mx-auto px-4 -mt-16 relative z-20 flex flex-col md:flex-row gap-8 items-start">
         
         {/* Left Column: Basic Details */}
-        <div className="w-full md:w-1/3 bg-white rounded-3xl shadow-xl shadow-stone-200/50 p-6 md:p-8 border border-stone-100 shrink-0">
-          <h2 className="text-xl font-bold text-stone-900 mb-6">Personal Details</h2>
+        <div className="w-full md:w-1/3 bg-white dark:bg-[#1A1A1A] rounded-3xl shadow-xl shadow-[#241812]/5 p-6 md:p-8 border border-[#EAE1D2] dark:border-[#2D2A26] shrink-0">
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#EAE1D2] dark:border-[#2D2A26]">
+            <h2 className="text-lg font-serif font-bold text-[#241812] dark:text-[#F7F5F0]">Personal Details</h2>
+            <span className="w-2 h-2 rounded-full bg-[#C49A50]"></span>
+          </div>
           
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-5">
             <div>
-              <label className="block text-sm font-medium text-stone-700 mb-2">Full Name</label>
+              <label className="block text-xs uppercase tracking-wider font-semibold text-[#82786E] mb-2">Full Name</label>
               <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 w-5 h-5" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 text-[#82786E] w-4 h-4" />
                 <input 
                   type="text" 
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-amber-500 outline-none text-sm"
+                  className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#F7F5F0] dark:bg-[#242424] border border-[#EAE1D2] dark:border-[#333333] focus:border-[#C49A50] focus:ring-2 focus:ring-[#C49A50]/20 outline-none text-sm font-medium text-[#241812] dark:text-[#F7F5F0] transition-all"
                 />
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-stone-700 mb-2">Primary Phone</label>
+              <label className="block text-xs uppercase tracking-wider font-semibold text-[#82786E] mb-2">Primary Phone</label>
               <div className="relative">
-                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 w-5 h-5" />
+                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 text-[#82786E] w-4 h-4" />
                 <input 
                   type="tel" 
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full pl-12 pr-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-amber-500 outline-none text-sm"
+                  className="w-full pl-11 pr-4 py-3 rounded-2xl bg-[#F7F5F0] dark:bg-[#242424] border border-[#EAE1D2] dark:border-[#333333] focus:border-[#C49A50] focus:ring-2 focus:ring-[#C49A50]/20 outline-none text-sm font-medium text-[#241812] dark:text-[#F7F5F0] transition-all"
                 />
               </div>
             </div>
             <button 
               onClick={() => handleSaveProfile()}
               disabled={isSaving}
-              className="mt-2 bg-stone-100 hover:bg-stone-200 text-stone-800 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-colors"
+              className="mt-2 bg-[#241812] dark:bg-[#C49A50] text-[#F7F5F0] dark:text-[#121212] py-3.5 rounded-2xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#65452F] dark:hover:bg-[#b0883f] transition-all shadow-md cursor-pointer disabled:opacity-50"
             >
               {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
               Save Changes
@@ -230,55 +238,58 @@ export default function ProfilePage() {
         </div>
 
         {/* Right Column: Address Book */}
-        <div className="w-full md:w-2/3 bg-white rounded-3xl shadow-xl shadow-stone-200/50 p-6 md:p-8 border border-stone-100">
-          <div className="flex justify-between items-center mb-6 border-b border-stone-100 pb-4">
-            <h2 className="text-xl font-bold text-stone-900">Address Book</h2>
+        <div className="w-full md:w-2/3 bg-white dark:bg-[#1A1A1A] rounded-3xl shadow-xl shadow-[#241812]/5 p-6 md:p-8 border border-[#EAE1D2] dark:border-[#2D2A26]">
+          <div className="flex justify-between items-center mb-6 border-b border-[#EAE1D2] dark:border-[#2D2A26] pb-4">
+            <div>
+              <h2 className="text-lg font-serif font-bold text-[#241812] dark:text-[#F7F5F0]">Address Book</h2>
+              <p className="text-xs text-[#82786E] mt-0.5">Manage delivery addresses for expedited checkout</p>
+            </div>
             <button 
               onClick={() => setShowAddForm(!showAddForm)}
-              className="text-amber-700 hover:text-amber-800 font-bold text-sm flex items-center gap-1 bg-amber-50 px-3 py-1.5 rounded-lg transition-colors"
+              className="text-[#65452F] dark:text-[#C49A50] font-bold text-xs tracking-wider uppercase flex items-center gap-1.5 bg-[#EAE1D2]/50 dark:bg-[#2A241F] hover:bg-[#EAE1D2] px-4 py-2 rounded-full transition-all cursor-pointer"
             >
-              {showAddForm ? "Cancel" : <><Plus className="w-4 h-4" /> Add New</>}
+              {showAddForm ? "Cancel" : <><Plus className="w-3.5 h-3.5" /> Add New</>}
             </button>
           </div>
 
           {/* Add New Address Form */}
           {showAddForm && (
-            <form onSubmit={handleAddAddress} className="bg-stone-50 p-6 rounded-2xl border border-stone-200 mb-8 animate-in fade-in slide-in-from-top-4 duration-300">
-              <h3 className="font-bold text-stone-900 mb-4">Add New Delivery Address</h3>
+            <form onSubmit={handleAddAddress} className="bg-[#F7F5F0] dark:bg-[#242424] p-6 rounded-3xl border border-[#EAE1D2] dark:border-[#333333] mb-8 animate-in fade-in slide-in-from-top-4 duration-300">
+              <h3 className="font-serif font-bold text-base text-[#241812] dark:text-[#F7F5F0] mb-4">Add New Delivery Address</h3>
               
               <div className="flex gap-4 mb-6">
                 {['Home', 'Work', 'Other'].map(lbl => (
-                  <label key={lbl} className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="label" checked={newAddress.label === lbl} onChange={() => setNewAddress({...newAddress, label: lbl})} className="text-amber-600 focus:ring-amber-500" />
-                    <span className="text-sm font-medium text-stone-700">{lbl}</span>
+                  <label key={lbl} className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-[#241812] dark:text-[#F7F5F0]">
+                    <input type="radio" name="label" checked={newAddress.label === lbl} onChange={() => setNewAddress({...newAddress, label: lbl})} className="accent-[#C49A50] w-4 h-4 cursor-pointer" />
+                    <span>{lbl}</span>
                   </label>
                 ))}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                  <input type="text" placeholder="Name" required value={newAddress.name} onChange={e => setNewAddress({...newAddress, name: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-amber-500 outline-none text-sm bg-white" />
+                  <input type="text" placeholder="Full Name" required value={newAddress.name} onChange={e => setNewAddress({...newAddress, name: e.target.value})} className="w-full px-4 py-3 rounded-2xl border border-[#EAE1D2] dark:border-[#3D3A36] bg-white dark:bg-[#1A1A1A] focus:border-[#C49A50] focus:ring-2 focus:ring-[#C49A50]/20 outline-none text-xs text-[#241812] dark:text-[#F7F5F0]" />
                 </div>
                 <div>
-                  <input type="tel" placeholder="Phone Number" required value={newAddress.phone} onChange={e => setNewAddress({...newAddress, phone: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-amber-500 outline-none text-sm bg-white" />
+                  <input type="tel" placeholder="Phone Number" required value={newAddress.phone} onChange={e => setNewAddress({...newAddress, phone: e.target.value})} className="w-full px-4 py-3 rounded-2xl border border-[#EAE1D2] dark:border-[#3D3A36] bg-white dark:bg-[#1A1A1A] focus:border-[#C49A50] focus:ring-2 focus:ring-[#C49A50]/20 outline-none text-xs text-[#241812] dark:text-[#F7F5F0]" />
                 </div>
                 <div className="md:col-span-2">
-                  <textarea placeholder="Street Address, Area, Building" required rows={2} value={newAddress.street} onChange={e => setNewAddress({...newAddress, street: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-amber-500 outline-none text-sm bg-white resize-none" />
+                  <textarea placeholder="Street Address, Building, Apartment" required rows={2} value={newAddress.street} onChange={e => setNewAddress({...newAddress, street: e.target.value})} className="w-full px-4 py-3 rounded-2xl border border-[#EAE1D2] dark:border-[#3D3A36] bg-white dark:bg-[#1A1A1A] focus:border-[#C49A50] focus:ring-2 focus:ring-[#C49A50]/20 outline-none text-xs text-[#241812] dark:text-[#F7F5F0] resize-none" />
                 </div>
                 <div>
-                  <input type="text" placeholder="City" required value={newAddress.city} onChange={e => setNewAddress({...newAddress, city: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-amber-500 outline-none text-sm bg-white" />
+                  <input type="text" placeholder="City" required value={newAddress.city} onChange={e => setNewAddress({...newAddress, city: e.target.value})} className="w-full px-4 py-3 rounded-2xl border border-[#EAE1D2] dark:border-[#3D3A36] bg-white dark:bg-[#1A1A1A] focus:border-[#C49A50] focus:ring-2 focus:ring-[#C49A50]/20 outline-none text-xs text-[#241812] dark:text-[#F7F5F0]" />
                 </div>
                 <div>
-                  <input type="text" placeholder="Pincode" required value={newAddress.pincode} onChange={e => setNewAddress({...newAddress, pincode: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-stone-300 focus:ring-2 focus:ring-amber-500 outline-none text-sm bg-white" />
+                  <input type="text" placeholder="Pincode" required value={newAddress.pincode} onChange={e => setNewAddress({...newAddress, pincode: e.target.value})} className="w-full px-4 py-3 rounded-2xl border border-[#EAE1D2] dark:border-[#3D3A36] bg-white dark:bg-[#1A1A1A] focus:border-[#C49A50] focus:ring-2 focus:ring-[#C49A50]/20 outline-none text-xs text-[#241812] dark:text-[#F7F5F0]" />
                 </div>
               </div>
 
               <div className="flex items-center gap-2 mb-6">
-                <input type="checkbox" id="isDefault" checked={newAddress.isDefault} onChange={e => setNewAddress({...newAddress, isDefault: e.target.checked})} className="rounded text-amber-600 focus:ring-amber-500" />
-                <label htmlFor="isDefault" className="text-sm text-stone-600 cursor-pointer">Set as default delivery address</label>
+                <input type="checkbox" id="isDefault" checked={newAddress.isDefault} onChange={e => setNewAddress({...newAddress, isDefault: e.target.checked})} className="accent-[#C49A50] rounded w-4 h-4 cursor-pointer" />
+                <label htmlFor="isDefault" className="text-xs text-[#82786E] cursor-pointer">Set as default delivery address</label>
               </div>
 
-              <button type="submit" className="w-full bg-stone-900 text-white py-3 rounded-xl font-bold text-sm hover:bg-stone-800 transition-colors">
+              <button type="submit" className="w-full bg-[#241812] hover:bg-[#65452F] text-[#F7F5F0] py-3.5 rounded-2xl font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer">
                 Save Address
               </button>
             </form>
@@ -286,42 +297,43 @@ export default function ProfilePage() {
 
           {/* Saved Addresses List */}
           {addresses.length === 0 ? (
-            <div className="text-center py-12 text-stone-500">
-              <MapPin className="w-12 h-12 mx-auto text-stone-300 mb-3" />
-              <p>No saved addresses yet. Add one to checkout faster.</p>
+            <div className="text-center py-16 text-[#82786E]">
+              <MapPin className="w-12 h-12 mx-auto text-[#EAE1D2] mb-3" />
+              <p className="text-sm font-medium">No saved addresses yet.</p>
+              <p className="text-xs text-[#82786E] mt-1">Add your shipping details for rapid checkout.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {addresses.map((addr, idx) => (
-                <div key={idx} className={`p-5 rounded-2xl border-2 transition-colors relative ${addr.isDefault ? 'border-amber-500 bg-amber-50/30' : 'border-stone-100 bg-white hover:border-stone-300'}`}>
+                <div key={idx} className={`p-5 rounded-3xl border transition-all relative ${addr.isDefault ? 'border-[#C49A50] bg-[#C49A50]/5 shadow-sm' : 'border-[#EAE1D2] dark:border-[#2D2A26] bg-[#F7F5F0]/50 dark:bg-[#202020] hover:border-[#65452F]/40'}`}>
                   
                   {addr.isDefault && (
-                    <span className="absolute -top-3 left-4 bg-amber-500 text-white text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shadow-sm">
-                      Default
+                    <span className="absolute -top-2.5 left-4 bg-[#C49A50] text-[#241812] text-[9px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full shadow-sm">
+                      Default Address
                     </span>
                   )}
 
-                  <div className="flex justify-between items-start mb-3">
-                    <div className="flex items-center gap-2 text-stone-500 text-sm font-bold bg-stone-100 px-2 py-1 rounded-md">
-                      {addr.label === 'Home' ? <Home className="w-4 h-4" /> : addr.label === 'Work' ? <Briefcase className="w-4 h-4" /> : <Map className="w-4 h-4" />}
+                  <div className="flex justify-between items-start mb-3 pt-1">
+                    <div className="flex items-center gap-1.5 text-xs font-bold text-[#65452F] dark:text-[#C49A50] bg-[#EAE1D2]/60 dark:bg-[#2D2620] px-2.5 py-1 rounded-full uppercase tracking-wider">
+                      {addr.label === 'Home' ? <Home className="w-3.5 h-3.5" /> : addr.label === 'Work' ? <Briefcase className="w-3.5 h-3.5" /> : <Map className="w-3.5 h-3.5" />}
                       {addr.label}
                     </div>
                     
                     <div className="flex items-center gap-3">
                       {!addr.isDefault && (
-                        <button onClick={() => handleSetDefault(idx)} className="text-[10px] uppercase font-bold text-stone-400 hover:text-amber-700">
+                        <button onClick={() => handleSetDefault(idx)} className="text-[10px] uppercase font-bold text-[#82786E] hover:text-[#C49A50] tracking-wider transition-colors cursor-pointer">
                           Set Default
                         </button>
                       )}
-                      <button onClick={() => handleDeleteAddress(idx)} className="text-stone-300 hover:text-red-500 transition-colors">
-                        <Trash2 className="w-4 h-4" />
+                      <button onClick={() => handleDeleteAddress(idx)} className="text-[#82786E] hover:text-red-500 transition-colors cursor-pointer p-1">
+                        <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </div>
 
-                  <p className="font-bold text-stone-900 mb-1">{addr.name}</p>
-                  <p className="text-sm text-stone-600 mb-2 leading-relaxed">{addr.street}, {addr.city} - {addr.pincode}</p>
-                  <p className="text-sm font-medium text-stone-700 flex items-center gap-2"><Phone className="w-3 h-3 text-stone-400" /> {addr.phone}</p>
+                  <p className="font-serif font-bold text-sm text-[#241812] dark:text-[#F7F5F0] mb-1">{addr.name}</p>
+                  <p className="text-xs text-[#82786E] mb-3 leading-relaxed">{addr.street}, {addr.city} - {addr.pincode}</p>
+                  <p className="text-xs font-medium text-[#241812] dark:text-[#F7F5F0] flex items-center gap-2"><Phone className="w-3 h-3 text-[#C49A50]" /> {addr.phone}</p>
                 </div>
               ))}
             </div>
