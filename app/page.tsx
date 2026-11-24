@@ -137,16 +137,16 @@ export default function Home() {
       <div className="absolute top-[1800px] -left-24 w-[500px] h-[500px] bg-[#EAE1D2]/30 dark:bg-[#241812]/40 rounded-full blur-3xl pointer-events-none -z-10" />
 
       {/* 2. REFINED CATEGORIES BAR (Warm Ivory & Soft Champagne Capsule Strips) */}
-      <section className="w-full bg-[#F7F5F0]/95 dark:bg-[#14100E]/95 backdrop-blur-md border-b border-[#EAE1D2]/80 dark:border-[#2E241E]/80 sticky top-[44px] sm:top-[48px] z-30 shadow-2xs">
-        <div className="max-w-[1400px] mx-auto px-2 sm:px-4 py-1 sm:py-1.5 overflow-x-auto scrollbar-hide">
-          <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-max mx-auto justify-start sm:justify-center">
+      <section className="w-full bg-[#F7F5F0]/95 dark:bg-[#14100E]/95 backdrop-blur-md border-b border-[#EAE1D2]/80 dark:border-[#2E241E]/80 sticky top-[40px] sm:top-[42px] z-30 shadow-2xs">
+        <div className="max-w-[1400px] mx-auto px-2 sm:px-4 pt-1 pb-1 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center gap-1.5 sm:gap-2 min-w-max mx-auto justify-start sm:justify-center">
             {categories.map((cat, idx) => (
               <Link 
                 href={cat.href} 
                 key={idx} 
-                className="group flex items-center gap-1.5 sm:gap-2 p-0.5 pr-2.5 sm:pr-3 rounded-full bg-white/85 dark:bg-[#1E1713]/85 border border-[#EAE1D2] dark:border-[#2E241E] hover:border-[#C49A50] dark:hover:border-[#C49A50] hover:bg-white dark:hover:bg-[#2E241E] transition-all duration-300 shadow-2xs hover:shadow-xs"
+                className="group flex items-center gap-1.5 p-0.5 pr-2.5 rounded-full bg-white/85 dark:bg-[#1E1713]/85 border border-[#EAE1D2] dark:border-[#2E241E] hover:border-[#C49A50] dark:hover:border-[#C49A50] hover:bg-white dark:hover:bg-[#2E241E] transition-all duration-300 shadow-2xs hover:shadow-xs"
               >
-                <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden ring-1 ring-[#EAE1D2] dark:ring-[#2E241E] group-hover:ring-[#C49A50] transition-all shrink-0">
+                <div className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden ring-1 ring-[#EAE1D2] dark:ring-[#2E241E] group-hover:ring-[#C49A50] transition-all shrink-0">
                   <Image 
                     src={cat.image} 
                     alt={cat.name} 
@@ -169,7 +169,7 @@ export default function Home() {
       </section>
 
       {/* 3. HERO SHOWCASE (Cinematic Editorial Split Carousel - Mobile Optimized) */}
-      <section className="w-full max-w-[1400px] mx-auto px-2 sm:px-4 pt-1 sm:pt-1.5 pb-2 md:pb-4">
+      <section className="w-full max-w-[1400px] mx-auto px-2 sm:px-4 pt-1 pb-2 md:pb-4">
         <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden bg-[#241812] shadow-xl border border-[#38261C]">
           
           {/* Subtle Warm Spotlight */}
