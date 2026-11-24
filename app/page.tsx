@@ -81,6 +81,8 @@ export default function Home() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState("All");
+  const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+  const [swiperInstance, setSwiperInstance] = useState<any>(null);
 
   useEffect(() => {
     fetch("/api/products")
@@ -125,23 +127,29 @@ export default function Home() {
     <main className="flex flex-col w-full overflow-x-hidden bg-paper dark:bg-[#12100E]">
 
       {/* ══════════════════════════════════════════════
-          1. CATEGORY NAVIGATION BAR
+          1. CATEGORY NAVIGATION BAR (MAJOR LUXURY REDESIGN)
           ══════════════════════════════════════════════ */}
-      <section className="w-full bg-[#F7F3EB]/95 dark:bg-[#1A1410]/95 backdrop-blur-md border-b border-[#E0D3BE]/60 dark:border-[#2C2018]/60">
-        <div className="max-w-[1440px] mx-auto px-3 sm:px-6 py-2 overflow-x-auto scrollbar-hide">
-          <div className="flex items-center gap-2 sm:gap-3 min-w-max mx-auto justify-start sm:justify-center">
+      <section className="w-full bg-[#F7F3EB]/95 dark:bg-[#1A1410]/95 backdrop-blur-md border-b border-[#C99A45]/30 dark:border-[#C99A45]/20 shadow-2xs">
+        <div className="max-w-[1440px] mx-auto px-3 sm:px-6 py-2.5 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-max mx-auto justify-start sm:justify-center">
             {categories.map((cat, idx) => (
               <Link
                 href={cat.href}
                 key={idx}
-                className="cat-pill group flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/85 dark:bg-[#1E1510]/85 border border-[#E0D3BE] dark:border-[#2C2018] shadow-2xs cursor-pointer"
+                className="group relative flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/90 dark:bg-[#1E130E]/90 border border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-gradient-to-r hover:from-white hover:to-[#F5EAD4] dark:hover:from-[#21130E] dark:hover:to-[#38251A] shadow-[0_2px_8px_rgba(33,19,14,0.04)] hover:shadow-[0_8px_20px_-2px_rgba(201,154,69,0.3),0_2px_6px_rgba(33,19,14,0.08)] hover:-translate-y-1 active:translate-y-0 transition-all duration-300 ease-out cursor-pointer overflow-hidden"
               >
-                <div className="relative w-7 h-7 rounded-full overflow-hidden ring-1 ring-[#E0D3BE] dark:ring-[#2C2018] group-hover:ring-[#D6A64C] group-hover:scale-105 transition-all duration-300 shrink-0">
-                  <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-115 transition-transform duration-500 ease-out" />
+                {/* Active/Hover Gold Accent Bar on Bottom */}
+                <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-transparent via-[#C99A45] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                {/* Scaled Icon Image */}
+                <div className="relative w-8 h-8 rounded-xl overflow-hidden ring-1 ring-[#C99A45]/30 group-hover:ring-[#C99A45] group-hover:scale-110 transition-all duration-300 shrink-0 shadow-2xs">
+                  <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-120 transition-transform duration-500 ease-out" />
                 </div>
+
+                {/* Text Content */}
                 <div className="flex flex-col leading-none">
-                  <span className="text-[11.5px] font-bold text-[#21150F] dark:text-[#F7F3EB] group-hover:text-[#352116] dark:group-hover:text-[#D6A64C] transition-colors">{cat.name}</span>
-                  <span className="text-[8px] text-[#7A6E63] dark:text-[#A09285] tracking-wider uppercase mt-0.5 font-medium">{cat.tag}</span>
+                  <span className="text-[12px] font-bold text-[#21130E] dark:text-[#F7F3EB] group-hover:text-[#38251A] dark:group-hover:text-[#E6C477] transition-colors tracking-tight">{cat.name}</span>
+                  <span className="text-[8.5px] text-[#7A6E63] dark:text-[#A09285] group-hover:text-[#C99A45] tracking-wider uppercase mt-1 font-semibold transition-colors">{cat.tag}</span>
                 </div>
               </Link>
             ))}
@@ -150,21 +158,18 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════
-          2. PROMOTIONAL BANNER CAROUSEL (FLIPKART STYLE)
-             Horizontal landscape banners, side-by-side with peek
+          2. PROMOTIONAL BANNER CAROUSEL (MAJOR LUXURY REDESIGN)
           ══════════════════════════════════════════════ */}
       <section className="w-full py-4 sm:py-6 bg-[#F7F3EB] dark:bg-[#12100E] border-b border-[#E0D3BE]/40 dark:border-[#2C2018]/40">
         <div className="max-w-[1440px] mx-auto px-3 sm:px-6 relative group">
           <Swiper
-            modules={[Pagination, Autoplay, Navigation]}
+            modules={[Autoplay, Navigation]}
             navigation={{
               prevEl: ".promo-swiper-prev",
               nextEl: ".promo-swiper-next",
             }}
-            pagination={{
-              clickable: true,
-              dynamicBullets: true,
-            }}
+            onSwiper={(swiper) => setSwiperInstance(swiper)}
+            onSlideChange={(swiper) => setActiveSlideIndex(swiper.realIndex)}
             autoplay={{
               delay: 4500,
               disableOnInteraction: false,
@@ -183,11 +188,7 @@ export default function Home() {
                 spaceBetween: 20,
               },
             }}
-            style={{
-              "--swiper-pagination-color": "#C69A4B",
-              "--swiper-pagination-bullet-inactive-color": "#7A6E63",
-            } as any}
-            className="w-full pb-9"
+            className="w-full"
           >
             {promoBanners.map((banner, index) => (
               <SwiperSlide key={index}>
@@ -207,14 +208,14 @@ export default function Home() {
 
                   {/* Top Badge */}
                   <div className="absolute top-3.5 left-4 sm:left-6 z-10 flex items-center gap-2">
-                    <span className="bg-[#21150F]/80 backdrop-blur-md text-[#DEB96A] text-[9.5px] font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full border border-[#C69A4B]/30 shadow-xs">
+                    <span className="bg-[#21150F]/85 backdrop-blur-md text-[#E6C477] text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full border border-[#C99A45]/40 shadow-xs">
                       {banner.badge}
                     </span>
                   </div>
 
                   {/* Banner Content */}
                   <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 z-10 max-w-[80%] sm:max-w-[70%]">
-                    <p className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#DEB96A] mb-1.5 line-clamp-1">
+                    <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#E6C477] mb-1.5 line-clamp-1">
                       {banner.tag}
                     </p>
                     <h3 className="heading-display text-xl sm:text-2xl lg:text-[26px] text-[#F7F3EB] font-bold leading-tight mb-1.5 drop-shadow-sm">
@@ -226,7 +227,7 @@ export default function Home() {
                     <div>
                       <Link
                         href={banner.href}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#C69A4B] hover:bg-[#DEB96A] text-[#21150F] text-[11px] font-bold tracking-wider uppercase transition-all shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98]"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#C99A45] to-[#E6C477] text-[#21130E] text-[11px] font-extrabold tracking-wider uppercase transition-all shadow-[0_4px_12px_rgba(201,154,69,0.35)] hover:shadow-[0_6px_18px_rgba(201,154,69,0.5)] hover:scale-[1.03] active:scale-[0.98]"
                       >
                         {banner.btnText}
                         <ArrowRight className="w-3.5 h-3.5" />
@@ -251,6 +252,22 @@ export default function Home() {
           >
             <ChevronRight className="w-5 h-5" />
           </button>
+
+          {/* ── CUSTOM LUXURY PROGRESS PILL INDICATORS ── */}
+          <div className="flex items-center justify-center gap-2.5 pt-4 pb-1">
+            {promoBanners.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => swiperInstance?.slideToLoop(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                className={`relative h-[6px] rounded-full transition-all duration-500 ease-out cursor-pointer ${
+                  activeSlideIndex === idx
+                    ? "w-10 bg-gradient-to-r from-[#E6C477] via-[#C99A45] to-[#B88528] shadow-[0_0_12px_rgba(201,154,69,0.7),0_1px_3px_rgba(33,19,14,0.3)] ring-1 ring-[#E6C477]/80"
+                    : "w-3 bg-[#38251A]/40 dark:bg-[#5A483C]/50 hover:bg-[#C99A45]/60 hover:w-5"
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -285,21 +302,27 @@ export default function Home() {
               </h2>
             </div>
 
-            {/* Filter Pills with Luxury Glow & Active State */}
+            {/* Filter Pills with Luxury Glow & Active State (Major Redesign) */}
             <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
-              {["All", "Desk Accessories", "Home Decor", "Kitchen", "Stationery"].map(cat => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedFilter(cat)}
-                  className={`filter-chip px-4 sm:px-4.5 py-2 rounded-full text-[11px] font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer ${
-                    selectedFilter === cat
-                      ? "filter-chip-active"
-                      : "filter-chip-inactive bg-white/80 dark:bg-[#1E1510]/80 text-[#7A6E63] dark:text-[#A09285] border border-[#E0D3BE] dark:border-[#2C2018]"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+              {["All", "Desk Accessories", "Home Decor", "Kitchen", "Stationery"].map(cat => {
+                const isActive = selectedFilter === cat;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedFilter(cat)}
+                    className={`relative px-4 sm:px-5 py-2.5 rounded-full text-[11px] font-extrabold tracking-wider uppercase whitespace-nowrap cursor-pointer transition-all duration-300 flex items-center gap-2 ${
+                      isActive
+                        ? "bg-gradient-to-r from-[#21130E] to-[#38251A] text-[#F7F3EB] dark:text-[#E6C477] border-2 border-[#C99A45] shadow-[0_6px_20px_rgba(33,19,14,0.35),0_0_16px_rgba(201,154,69,0.45)] -translate-y-0.5"
+                        : "bg-[#F7F3EB] dark:bg-[#1E130E] text-[#38251A] dark:text-[#EDE4D6] border border-[#C99A45]/30 hover:border-[#C99A45] hover:bg-[#E6C477]/20 hover:text-[#21130E] dark:hover:text-[#E6C477] hover:-translate-y-0.5 hover:shadow-sm"
+                    }`}
+                  >
+                    {isActive && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#E6C477] to-[#C99A45] shadow-[0_0_6px_#C99A45] animate-pulse" />
+                    )}
+                    <span>{cat}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
