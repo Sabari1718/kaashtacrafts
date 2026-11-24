@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Package, PlusCircle, LayoutDashboard, Settings, LogOut, UploadCloud, TrendingUp, ShoppingBag, Clock, ShieldAlert, MessageSquare, Trash2, Star, Lock, Search, Edit2, X, Check } from "lucide-react";
+import { Package, PlusCircle, LayoutDashboard, Settings, LogOut, UploadCloud, TrendingUp, ShoppingBag, Clock, ShieldAlert, MessageSquare, Trash2, Star, Lock, Search, Edit2, X, Check, RefreshCw } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
 export default function AdminPage() {
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
@@ -230,6 +230,10 @@ export default function AdminPage() {
         );
         alert(`Product "${editName}" updated successfully!`);
         setEditingProduct(null);
+      } else if (res.status === 404) {
+        setProducts((prev) => prev.filter((p) => (p._id || p.id) !== prodId));
+        alert("This product was already removed from the store.");
+        setEditingProduct(null);
       } else {
         alert(data.error || "Failed to update product");
       }
@@ -250,8 +254,8 @@ export default function AdminPage() {
       const res = await fetch(`/api/products/${productId}`, {
         method: "DELETE",
       });
-      const data = await res.json();
-      if (res.ok) {
+      const data = await res.json().catch(() => ({}));
+      if (res.ok || res.status === 404) {
         setProducts((prev) => prev.filter((p) => (p._id || p.id) !== productId));
         alert(`Product "${productName}" was deleted successfully.`);
       } else {
@@ -562,12 +566,21 @@ export default function AdminPage() {
                   View your live products, edit details/price, or delete items you no longer want.
                 </p>
               </div>
-              <button
-                onClick={() => setActiveTab("add-product")}
-                className="bg-amber-800 hover:bg-amber-700 text-white px-5 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 transition-colors shadow-sm"
-              >
-                <PlusCircle className="w-4 h-4" /> Add New Product
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => fetchDashboardData()}
+                  className="bg-stone-100 hover:bg-stone-200 text-stone-700 px-4 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 transition-colors border border-stone-200 cursor-pointer shadow-xs"
+                  title="Reload all products from store"
+                >
+                  <RefreshCw className="w-4 h-4 text-stone-500" /> Refresh List
+                </button>
+                <button
+                  onClick={() => setActiveTab("add-product")}
+                  className="bg-amber-800 hover:bg-amber-700 text-white px-5 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 transition-colors shadow-sm cursor-pointer"
+                >
+                  <PlusCircle className="w-4 h-4" /> Add New Product
+                </button>
+              </div>
             </div>
 
             {/* Filter and Search Bar */}
