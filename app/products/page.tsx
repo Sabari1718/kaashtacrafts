@@ -3,7 +3,10 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingBag, Search, Filter, Loader2, Heart, Star, ChevronDown, Check, Sparkles, ArrowRight } from "lucide-react";
+import {
+  ShoppingBag, Search, Filter, Loader2, Heart, Star,
+  Check, Sparkles, X, SlidersHorizontal, RotateCcw, ArrowRight
+} from "lucide-react";
 import { toast } from "sonner";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
@@ -27,7 +30,7 @@ export interface Product {
 export default function ProductsPage() {
   return (
     <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen bg-[#F8F5EF] dark:bg-[#140F0C]">
+      <div className="flex items-center justify-center min-h-screen bg-[#F7F3EB] dark:bg-[#12100E]">
         <Loader2 className="w-10 h-10 animate-spin text-[#C69A4B]" />
       </div>
     }>
@@ -54,11 +57,10 @@ function ProductsContent() {
   const [minRating, setMinRating] = useState(0);
   const [sortBy, setSortBy] = useState("Newest");
   
-  // Mobile Filter Sidebar State
-  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  // Slide-in Filter Drawer State (Replaces permanent sidebar)
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
   useEffect(() => {
-    // Sync state if URL changes
     setSearchQuery(searchParams.get("search") || "");
     setSelectedCategory(searchParams.get("category") || "All");
   }, [searchParams]);
@@ -79,6 +81,18 @@ function ProductsContent() {
     }
     fetchProducts();
   }, []);
+
+  // Prevent body scrolling when filter drawer is open
+  useEffect(() => {
+    if (isFilterDrawerOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isFilterDrawerOpen]);
 
   const categories = ["All", ...Array.from(new Set(products.map(p => p.category)))];
 
@@ -101,7 +115,6 @@ function ProductsContent() {
     if (sortBy === "PriceLowToHigh") return a.price - b.price;
     if (sortBy === "PriceHighToLow") return b.price - a.price;
     if (sortBy === "RatingHighToLow") return (b.rating || 0) - (a.rating || 0);
-    // Newest is default
     return 0; 
   });
 
@@ -114,31 +127,39 @@ function ProductsContent() {
     router.push("/products");
   };
 
+  const activeFiltersCount = 
+    (selectedCategory !== "All" ? 1 : 0) +
+    (priceRange !== "All" ? 1 : 0) +
+    (minRating > 0 ? 1 : 0) +
+    (searchQuery ? 1 : 0);
+
   return (
-    <main className="flex flex-col w-full min-h-screen bg-[#F8F5EF] dark:bg-[#140F0C] text-[#241710] dark:text-[#F8F5EF] pt-6 pb-24 font-sans transition-colors duration-300">
-      <div className="max-w-[1400px] mx-auto px-4 md:px-8 w-full">
+    <main className="flex flex-col w-full min-h-screen bg-paper dark:bg-[#12100E] text-[#21150F] dark:text-[#F7F3EB] pt-6 pb-24 font-sans transition-colors duration-300">
+      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
-        {/* Top Header & Search Bar (Editorial Style) */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 bg-white/75 dark:bg-[#1D1510]/75 backdrop-blur-md p-5 md:p-6 rounded-3xl shadow-xs border border-[#E5D8C5] dark:border-[#2D221A] transition-colors duration-300">
+        {/* Top Header & Action Bar */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 bg-white/80 dark:bg-[#1E1510]/80 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-xs border border-[#E0D3BE] dark:border-[#2C2018]">
           <div>
-            <div className="flex items-center gap-2 text-[#C69A4B] text-xs font-bold uppercase tracking-[0.2em] mb-1">
+            <div className="flex items-center gap-2 text-[#C69A4B] text-[11px] font-bold uppercase tracking-[0.2em] mb-1">
               <Sparkles className="w-3.5 h-3.5 text-[#C69A4B]" />
-              <span>Artisan Catalog</span>
+              <span>Artisan Catalogue</span>
             </div>
-            <h1 className="text-2xl md:text-3xl font-bold font-playfair text-[#241710] dark:text-[#F8F5EF] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold font-playfair text-[#21150F] dark:text-[#F7F3EB] tracking-tight">
               Curated Wooden Masterpieces
             </h1>
-            <p className="text-[#7D7368] dark:text-[#A3968A] text-xs sm:text-sm mt-0.5">
-              Showing {filteredProducts.length} handcrafted pieces
+            <p className="text-[#7A6E63] dark:text-[#A09285] text-xs sm:text-sm mt-0.5 font-medium">
+              Showing {filteredProducts.length} handcrafted pieces {selectedCategory !== "All" && `in ${selectedCategory}`}
             </p>
           </div>
           
-          <div className="flex w-full md:w-auto items-center gap-3">
-            <div className="relative flex-grow md:w-80">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7D7368] w-4 h-4" />
+          {/* Controls: Search, Filter Button & Sort */}
+          <div className="flex flex-wrap w-full md:w-auto items-center gap-2.5 sm:gap-3">
+            {/* Search Input */}
+            <div className="relative flex-grow sm:flex-grow-0 sm:w-64 lg:w-72">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7A6E63] w-4 h-4" />
               <input 
                 type="text" 
-                placeholder="Search collection..." 
+                placeholder="Search pieces..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
@@ -146,53 +167,258 @@ function ProductsContent() {
                     router.push(`/products?search=${encodeURIComponent(searchQuery)}${selectedCategory !== 'All' ? `&category=${selectedCategory}` : ''}`);
                   }
                 }}
-                className="w-full pl-11 pr-4 py-2.5 rounded-full border border-[#E5D8C5] dark:border-[#2D221A] bg-white/80 dark:bg-[#140F0C] focus:outline-none focus:border-[#C69A4B] focus:ring-2 focus:ring-[#C69A4B]/20 text-[#241710] dark:text-[#F8F5EF] placeholder:text-[#7D7368]/70 text-xs sm:text-sm transition-all shadow-2xs"
+                className="w-full pl-10 pr-4 py-2 rounded-full border border-[#E0D3BE] dark:border-[#2C2018] bg-[#F7F3EB]/60 dark:bg-[#140F0C] focus:outline-none focus:border-[#C69A4B] focus:ring-2 focus:ring-[#C69A4B]/20 text-[#21150F] dark:text-[#F7F3EB] placeholder:text-[#7A6E63]/70 text-xs sm:text-sm transition-all shadow-2xs"
               />
             </div>
+
+            {/* Filter & Sort Trigger Button */}
             <button 
-              onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
-              className="md:hidden flex items-center justify-center p-2.5 rounded-full bg-[#241710] dark:bg-[#C69A4B] text-[#F8F5EF] dark:text-[#241710]"
-              aria-label="Open Filters"
+              onClick={() => setIsFilterDrawerOpen(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#21150F] hover:bg-[#38251C] dark:bg-[#C69A4B] dark:hover:bg-[#DEB96A] text-[#F7F3EB] dark:text-[#21150F] text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer"
             >
-              <Filter className="w-4 h-4" />
+              <SlidersHorizontal className="w-3.5 h-3.5" />
+              <span>Filters</span>
+              {activeFiltersCount > 0 && (
+                <span className="w-4.5 h-4.5 rounded-full bg-[#C69A4B] dark:bg-[#21150F] text-[#21150F] dark:text-[#F7F3EB] text-[10px] font-black flex items-center justify-center">
+                  {activeFiltersCount}
+                </span>
+              )}
             </button>
+
+            {/* Quick Sort Dropdown */}
+            <div className="flex items-center gap-1.5 bg-[#F7F3EB]/80 dark:bg-[#140F0C] px-3.5 py-2 rounded-full border border-[#E0D3BE] dark:border-[#2C2018] shadow-2xs text-xs sm:text-sm">
+              <span className="text-[#7A6E63] text-xs hidden sm:inline font-medium">Sort:</span>
+              <select 
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                aria-label="Sort products"
+                className="bg-transparent font-bold text-[#21150F] dark:text-[#F7F3EB] focus:outline-none cursor-pointer text-xs dark:[&>option]:bg-[#1E1510]"
+              >
+                <option value="Newest">Newest Arrivals</option>
+                <option value="PriceLowToHigh">Price: Low to High</option>
+                <option value="PriceHighToLow">Price: High to Low</option>
+                <option value="RatingHighToLow">Top Customer Rated</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-8 items-start">
-          
-          {/* Left Sidebar Filters (Desktop) & Mobile Drawer */}
-          <aside className={`
-            ${isMobileFilterOpen ? 'fixed inset-0 z-50 bg-[#F8F5EF] dark:bg-[#140F0C] p-6 overflow-y-auto' : 'hidden md:block w-64 shrink-0'}
-            md:sticky md:top-28 md:bg-transparent md:p-0 md:z-auto
-          `}>
-            {isMobileFilterOpen && (
-              <div className="flex justify-between items-center mb-6 md:hidden">
-                <h2 className="text-xl font-bold font-playfair text-[#241710] dark:text-[#F8F5EF]">Filters</h2>
-                <button onClick={() => setIsMobileFilterOpen(false)} className="text-[#7D7368] font-bold p-2 text-lg">✕</button>
-              </div>
-            )}
+        {/* Category Pills Quick Bar */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-4 scrollbar-hide">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => {
+                setSelectedCategory(category);
+                router.push(`/products?category=${encodeURIComponent(category)}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`);
+              }}
+              className={`px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                selectedCategory === category
+                  ? "bg-[#21150F] text-[#F7F3EB] dark:bg-[#C69A4B] dark:text-[#21150F] shadow-sm"
+                  : "bg-white/80 dark:bg-[#1E1510]/80 text-[#7A6E63] dark:text-[#A09285] border border-[#E0D3BE] dark:border-[#2C2018] hover:border-[#C69A4B]/60"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+          {activeFiltersCount > 0 && (
+            <button
+              onClick={clearFilters}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer shrink-0"
+            >
+              <RotateCcw className="w-3 h-3" />
+              Reset All
+            </button>
+          )}
+        </div>
 
-            <div className="bg-white/80 dark:bg-[#1D1510]/80 p-6 rounded-3xl shadow-xs border border-[#E5D8C5] dark:border-[#2D221A] flex flex-col gap-7 transition-colors duration-300">
-              
-              {/* Categories */}
+        {/* Full-Width Balanced Product Grid (NO PERMANENT SIDEBAR) */}
+        <div className="w-full">
+          {isLoading ? (
+            <div className="py-32 flex flex-col items-center justify-center bg-white/70 dark:bg-[#1E1510]/70 rounded-3xl border border-[#E0D3BE] dark:border-[#2C2018] shadow-2xs">
+              <Loader2 className="w-10 h-10 text-[#C69A4B] animate-spin mb-4" />
+              <p className="text-[#7A6E63] font-medium text-sm">Gathering Masterpieces...</p>
+            </div>
+          ) : filteredProducts.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+              {filteredProducts.map((product) => {
+                const productId = product.id || (product as any)._id;
+                const isSaved = isInWishlist(productId);
+                const origPrice = product.originalPrice || Math.floor(product.price * 1.5);
+                const discount = Math.round(((origPrice - product.price) / origPrice) * 100);
+
+                return (
+                  <div
+                    key={productId}
+                    className="product-card-luxury dark:bg-[#1E1510] group flex flex-col"
+                  >
+                    {/* Product Image Frame */}
+                    <Link
+                      href={`/products/${productId}`}
+                      className="block relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-b from-[#EDE5D8] to-[#E0D3BE] dark:from-[#261D15] dark:to-[#1E1510]"
+                    >
+                      <Image 
+                        src={product.image} 
+                        alt={product.name}
+                        fill
+                        className="object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
+                      />
+
+                      {/* Hover Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#21150F]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                      {/* Discount Badge */}
+                      {discount > 0 && (
+                        <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 bg-[#21150F] text-[#DEB96A] text-[9px] sm:text-[10px] font-black px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full tracking-wider uppercase shadow-xs">
+                          −{discount}%
+                        </div>
+                      )}
+
+                      {/* Wishlist Button */}
+                      <button 
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleWishlist(product);
+                          toast.success(isInWishlist(productId) ? "Removed from Wishlist" : "Saved to Wishlist");
+                        }}
+                        aria-label="Toggle Wishlist"
+                        className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 bg-white/90 dark:bg-[#1E1510]/90 backdrop-blur w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center hover:scale-110 shadow-xs transition-all z-10 cursor-pointer border border-[#E0D3BE]/50"
+                      >
+                        <Heart className={`w-3.5 h-3.5 transition-colors ${isSaved ? "fill-red-500 text-red-500" : "text-[#21150F] dark:text-[#F7F3EB] hover:text-red-500"}`} />
+                      </button>
+                      
+                      {!product.inStock && (
+                        <div className="absolute inset-0 bg-[#21150F]/65 flex items-center justify-center backdrop-blur-[2px]">
+                          <span className="bg-white dark:bg-[#1E1510] px-4 py-1.5 rounded-full font-bold text-[#21150F] dark:text-[#F7F3EB] tracking-widest text-[10px] uppercase shadow-md">Sold Out</span>
+                        </div>
+                      )}
+                    </Link>
+
+                    {/* Content Details */}
+                    <div className="p-3.5 sm:p-4.5 flex flex-col flex-grow">
+                      <div className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.2em] uppercase text-[#C69A4B] mb-1">
+                        {product.category}
+                      </div>
+
+                      <Link href={`/products/${productId}`}>
+                        <h3 className="font-playfair font-bold text-xs sm:text-[15px] text-[#21150F] dark:text-[#F7F3EB] leading-tight mb-1.5 line-clamp-1 group-hover:text-[#38251C] dark:group-hover:text-[#DEB96A] transition-colors">
+                          {product.name}
+                        </h3>
+                      </Link>
+
+                      {/* Rating */}
+                      <div className="flex items-center gap-1.5 mb-2.5">
+                        <Star className="w-3 h-3 fill-[#C69A4B] text-[#C69A4B]" />
+                        <span className="text-[11px] font-bold text-[#21150F] dark:text-[#F7F3EB]">
+                          {product.rating || 4.9}
+                        </span>
+                        <span className="text-[10px] text-[#7A6E63]">
+                          ({product.numReviews || 24})
+                        </span>
+                      </div>
+                      
+                      {/* Price & Add to Cart */}
+                      <div className="mt-auto flex items-center justify-between pt-2.5 border-t border-[#E0D3BE]/60 dark:border-[#2C2018]/60">
+                        <div>
+                          <span className="font-playfair font-bold text-sm sm:text-base text-[#21150F] dark:text-[#F7F3EB]">
+                            ₹{product.price}
+                          </span>
+                          {origPrice && (
+                            <span className="ml-1.5 text-[10px] sm:text-[11px] text-[#7A6E63] line-through">
+                              ₹{origPrice}
+                            </span>
+                          )}
+                          <p className="text-[8.5px] text-emerald-600 dark:text-emerald-400 font-semibold">Free Delivery</p>
+                        </div>
+
+                        <button 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            addToCart(product);
+                            toast.success(`${product.name} added to cart`);
+                          }}
+                          disabled={!product.inStock}
+                          aria-label="Add to cart"
+                          className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#21150F] hover:bg-[#38251C] dark:bg-[#C69A4B] dark:hover:bg-[#DEB96A] disabled:bg-stone-200 dark:disabled:bg-stone-800 disabled:text-stone-400 text-[#F7F3EB] dark:text-[#21150F] flex items-center justify-center transition-all shadow-xs hover:shadow-md hover:scale-105 active:scale-95 cursor-pointer"
+                        >
+                          <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="py-24 flex flex-col items-center justify-center text-center bg-white/70 dark:bg-[#1E1510]/70 rounded-3xl border border-[#E0D3BE] dark:border-[#2C2018] shadow-2xs">
+              <div className="w-14 h-14 bg-[#EDE5D8]/60 dark:bg-[#2C2018] rounded-full flex items-center justify-center mb-3">
+                <Search className="w-5 h-5 text-[#7A6E63]" />
+              </div>
+              <h3 className="text-lg font-bold font-playfair text-[#21150F] dark:text-[#F7F3EB] mb-1.5">No matching pieces</h3>
+              <p className="text-[#7A6E63] max-w-sm mb-5 text-xs">
+                Try adjusting your filters or search query to find your desired woodcraft.
+              </p>
+              <button 
+                onClick={clearFilters}
+                className="bg-[#21150F] hover:bg-[#38251C] text-[#F7F3EB] px-5 py-2 rounded-full font-bold text-xs transition-colors shadow-xs cursor-pointer"
+              >
+                Clear all filters
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════════
+          SLIDE-IN FILTER DRAWER (REPLACES PERMANENT SIDEBAR)
+          ══════════════════════════════════════════════ */}
+      {isFilterDrawerOpen && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          {/* Backdrop */}
+          <div 
+            onClick={() => setIsFilterDrawerOpen(false)}
+            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity duration-300 animate-in fade-in"
+          />
+
+          {/* Drawer Body */}
+          <div className="relative w-full max-w-md bg-[#F7F3EB] dark:bg-[#1A1410] h-full shadow-2xl flex flex-col z-50 overflow-hidden border-l border-[#E0D3BE] dark:border-[#2C2018] animate-in slide-in-from-right duration-300">
+            {/* Drawer Header */}
+            <div className="p-5 border-b border-[#E0D3BE] dark:border-[#2C2018] flex items-center justify-between bg-white/60 dark:bg-[#21150F]/60">
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="w-4 h-4 text-[#C69A4B]" />
+                <h2 className="text-lg font-bold font-playfair text-[#21150F] dark:text-[#F7F3EB]">Filter &amp; Refine</h2>
+              </div>
+              <button 
+                onClick={() => setIsFilterDrawerOpen(false)}
+                className="w-8 h-8 rounded-full flex items-center justify-center text-[#7A6E63] hover:text-[#21150F] hover:bg-[#EDE5D8] dark:hover:bg-[#2C2018] transition-colors"
+                aria-label="Close Filter Drawer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Drawer Filter Options */}
+            <div className="p-6 flex-1 overflow-y-auto flex flex-col gap-6">
+              {/* Category Filter */}
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#C69A4B] mb-3.5">
-                  Category
+                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#C69A4B] mb-3">
+                  Product Category
                 </h3>
-                <div className="flex flex-col gap-2">
-                  {categories.map(category => (
+                <div className="flex flex-col gap-1.5">
+                  {categories.map((category) => (
                     <button
                       key={category}
                       onClick={() => {
                         setSelectedCategory(category);
                         router.push(`/products?category=${encodeURIComponent(category)}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`);
                       }}
-                      className={`text-left flex items-center gap-3 text-xs sm:text-sm py-1.5 transition-colors cursor-pointer ${
-                        selectedCategory === category ? "text-[#241710] dark:text-[#DFB76C] font-bold" : "text-[#7D7368] dark:text-[#A3968A] hover:text-[#241710] dark:hover:text-[#F8F5EF]"
+                      className={`text-left flex items-center gap-3 text-xs sm:text-sm py-2 px-3 rounded-xl transition-all cursor-pointer ${
+                        selectedCategory === category 
+                          ? "bg-[#21150F] text-[#F7F3EB] dark:bg-[#C69A4B] dark:text-[#21150F] font-bold" 
+                          : "text-[#7A6E63] dark:text-[#A09285] hover:bg-[#EDE5D8]/50 dark:hover:bg-[#2C2018]/50"
                       }`}
                     >
-                      <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${selectedCategory === category ? "border-[#C69A4B] bg-[#C69A4B] text-[#241710]" : "border-[#E5D8C5] dark:border-[#2D221A]"}`}>
+                      <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${selectedCategory === category ? "border-[#C69A4B] bg-[#C69A4B] text-[#21150F]" : "border-[#E0D3BE] dark:border-[#2C2018]"}`}>
                         {selectedCategory === category && <Check className="w-3 h-3 stroke-[3]" />}
                       </div>
                       {category}
@@ -201,12 +427,14 @@ function ProductsContent() {
                 </div>
               </div>
 
-              <div className="h-px bg-[#E5D8C5]/80 dark:bg-[#2D221A]/80"></div>
+              <div className="h-px bg-[#E0D3BE]/60 dark:bg-[#2C2018]/60"></div>
 
-              {/* Price Range */}
+              {/* Price Range Filter */}
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#C69A4B] mb-3.5">Price Bracket</h3>
-                <div className="flex flex-col gap-2">
+                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#C69A4B] mb-3">
+                  Price Bracket
+                </h3>
+                <div className="flex flex-col gap-1.5">
                   {[
                     { id: "All", label: "Any Price" },
                     { id: "Under500", label: "Under ₹500" },
@@ -216,11 +444,13 @@ function ProductsContent() {
                     <button
                       key={range.id}
                       onClick={() => setPriceRange(range.id)}
-                      className={`text-left flex items-center gap-3 text-xs sm:text-sm py-1.5 transition-colors cursor-pointer ${
-                        priceRange === range.id ? "text-[#241710] dark:text-[#DFB76C] font-bold" : "text-[#7D7368] dark:text-[#A3968A] hover:text-[#241710] dark:hover:text-[#F8F5EF]"
+                      className={`text-left flex items-center gap-3 text-xs sm:text-sm py-2 px-3 rounded-xl transition-all cursor-pointer ${
+                        priceRange === range.id 
+                          ? "bg-[#21150F] text-[#F7F3EB] dark:bg-[#C69A4B] dark:text-[#21150F] font-bold" 
+                          : "text-[#7A6E63] dark:text-[#A09285] hover:bg-[#EDE5D8]/50 dark:hover:bg-[#2C2018]/50"
                       }`}
                     >
-                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${priceRange === range.id ? "border-[#C69A4B]" : "border-[#E5D8C5] dark:border-[#2D221A]"}`}>
+                      <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ${priceRange === range.id ? "border-[#C69A4B]" : "border-[#E0D3BE] dark:border-[#2C2018]"}`}>
                         {priceRange === range.id && <div className="w-2 h-2 rounded-full bg-[#C69A4B]"></div>}
                       </div>
                       {range.label}
@@ -229,18 +459,22 @@ function ProductsContent() {
                 </div>
               </div>
 
-              <div className="h-px bg-[#E5D8C5]/80 dark:bg-[#2D221A]/80"></div>
+              <div className="h-px bg-[#E0D3BE]/60 dark:bg-[#2C2018]/60"></div>
 
-              {/* Customer Reviews */}
+              {/* Rating Filter */}
               <div>
-                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#C69A4B] mb-3.5">Rating</h3>
-                <div className="flex flex-col gap-2">
+                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-[#C69A4B] mb-3">
+                  Minimum Rating
+                </h3>
+                <div className="flex flex-col gap-1.5">
                   {[4, 3, 2, 1].map(rating => (
                     <button
                       key={rating}
                       onClick={() => setMinRating(rating === minRating ? 0 : rating)}
-                      className={`flex items-center gap-2 text-xs sm:text-sm py-1.5 transition-colors cursor-pointer ${
-                        minRating === rating ? "font-bold text-[#241710] dark:text-[#DFB76C]" : "text-[#7D7368] dark:text-[#A3968A] hover:text-[#241710] dark:hover:text-[#F8F5EF]"
+                      className={`flex items-center gap-2 text-xs sm:text-sm py-2 px-3 rounded-xl transition-all cursor-pointer ${
+                        minRating === rating 
+                          ? "bg-[#21150F] text-[#F7F3EB] dark:bg-[#C69A4B] dark:text-[#21150F] font-bold" 
+                          : "text-[#7A6E63] dark:text-[#A09285] hover:bg-[#EDE5D8]/50 dark:hover:bg-[#2C2018]/50"
                       }`}
                     >
                       <div className="flex gap-0.5">
@@ -248,152 +482,31 @@ function ProductsContent() {
                           <Star key={i} className={`w-3.5 h-3.5 ${i < rating ? 'fill-[#C69A4B] text-[#C69A4B]' : 'text-stone-300 dark:text-stone-700'}`} />
                         ))}
                       </div>
-                      <span className="text-xs">& Up</span>
+                      <span className="text-xs">&amp; Up</span>
                     </button>
                   ))}
                 </div>
               </div>
-
-              {(searchQuery || selectedCategory !== "All" || priceRange !== "All" || minRating > 0) && (
-                <button 
-                  onClick={clearFilters}
-                  className="w-full py-2.5 bg-[#EFE7DA]/50 dark:bg-[#2D221A] text-[#38251C] dark:text-[#DFB76C] font-bold text-xs rounded-xl hover:bg-[#EFE7DA] dark:hover:bg-[#342217] transition-colors cursor-pointer"
-                >
-                  Reset All Filters
-                </button>
-              )}
-
-            </div>
-          </aside>
-
-          {/* Right Main Grid */}
-          <div className="flex-grow w-full">
-            
-            {/* Sort Dropdown */}
-            <div className="flex justify-end items-center mb-6 z-20 relative">
-              <div className="flex items-center gap-2 bg-white/80 dark:bg-[#1D1510]/80 px-4 py-2 rounded-full border border-[#E5D8C5] dark:border-[#2D221A] shadow-2xs text-xs sm:text-sm transition-colors">
-                <span className="text-[#7D7368] dark:text-[#A3968A] font-medium">Sort by:</span>
-                <select 
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="bg-transparent font-bold text-[#241710] dark:text-[#F8F5EF] focus:outline-none cursor-pointer appearance-none pr-5 relative dark:[&>option]:bg-[#1D1510]"
-                  style={{ backgroundImage: 'url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23C69A4B%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right .2em top 55%', backgroundSize: '.65em auto' }}
-                >
-                  <option value="Newest">Newest Arrivals</option>
-                  <option value="PriceLowToHigh">Price: Low to High</option>
-                  <option value="PriceHighToLow">Price: High to Low</option>
-                  <option value="RatingHighToLow">Avg. Customer Review</option>
-                </select>
-              </div>
             </div>
 
-            {/* Product Grid */}
-            {isLoading ? (
-              <div className="py-32 flex flex-col items-center justify-center bg-white/70 dark:bg-[#1D1510]/70 rounded-3xl border border-[#E5D8C5] dark:border-[#2D221A] shadow-2xs">
-                <Loader2 className="w-10 h-10 text-[#C69A4B] animate-spin mb-4" />
-                <p className="text-[#7D7368] font-medium text-sm">Gathering Masterpieces...</p>
-              </div>
-            ) : filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProducts.map((product) => {
-                  const productId = product.id || (product as any)._id;
-                  const isSaved = isInWishlist(productId);
-
-                  return (
-                    <div
-                      key={productId}
-                      className="group flex flex-col bg-white/90 dark:bg-[#1D1510]/90 rounded-3xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-400 border border-[#E5D8C5] dark:border-[#2D221A] hover:border-[#C69A4B]/70 hover:-translate-y-1"
-                    >
-                      <Link href={`/products/${productId}`} className="block relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-b from-[#F4EFE6] to-[#EFE7DA] dark:from-[#261D17] dark:to-[#1D1510]">
-                        <Image 
-                          src={product.image} 
-                          alt={product.name}
-                          fill
-                          className="object-cover group-hover:scale-106 transition-transform duration-700 ease-out"
-                        />
-                        {/* Rating Badge */}
-                        {product.rating ? (
-                          <div className="absolute bottom-3.5 left-3.5 bg-white/95 dark:bg-[#1D1510]/95 backdrop-blur px-2.5 py-1 rounded-lg shadow-xs flex items-center gap-1 border border-[#E5D8C5]/50 dark:border-[#2D221A]">
-                            <span className="text-xs font-bold text-[#241710] dark:text-[#F8F5EF]">{product.rating.toFixed(1)}</span>
-                            <Star className="w-3 h-3 fill-[#C69A4B] text-[#C69A4B]" />
-                            <span className="text-[10px] text-[#7D7368] ml-1">({product.numReviews})</span>
-                          </div>
-                        ) : null}
-                        
-                        {/* Wishlist Button */}
-                        <button 
-                          onClick={(e) => {
-                            e.preventDefault();
-                            toggleWishlist(product);
-                            toast.success(isInWishlist(productId) ? "Removed from Wishlist" : "Added to Wishlist");
-                          }}
-                          className="absolute top-3.5 right-3.5 bg-white/90 dark:bg-[#1D1510]/90 backdrop-blur p-2.5 rounded-full hover:scale-110 shadow-xs transition-all z-10 cursor-pointer border border-[#E5D8C5]/50 dark:border-[#2D221A]"
-                        >
-                          <Heart className={`w-4 h-4 transition-colors ${isSaved ? "fill-red-500 text-red-500" : "text-[#7D7368] hover:text-red-500"}`} />
-                        </button>
-                        
-                        {!product.inStock && (
-                          <div className="absolute inset-0 bg-[#241710]/50 flex items-center justify-center backdrop-blur-[2px]">
-                            <span className="bg-white dark:bg-[#1D1510] px-5 py-2 rounded-full font-bold text-[#241710] dark:text-[#F8F5EF] tracking-widest text-[11px] uppercase shadow-md">Sold Out</span>
-                          </div>
-                        )}
-                      </Link>
-
-                      <div className="p-5 flex flex-col flex-grow">
-                        <Link href={`/products/${productId}`} className="flex flex-col mb-4 group-hover:text-[#38251C] dark:group-hover:text-[#DFB76C] transition-colors">
-                          <div className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#C69A4B] mb-1">{product.category}</div>
-                          <h3 className="text-base font-bold font-playfair text-[#241710] dark:text-[#F8F5EF] leading-snug mb-2 line-clamp-2">
-                            {product.name}
-                          </h3>
-                          <div className="flex items-center gap-2">
-                            <span className="text-lg font-bold text-[#241710] dark:text-[#F8F5EF]">
-                              ₹{product.price}
-                            </span>
-                            {product.originalPrice && (
-                              <span className="text-xs font-medium text-[#7D7368] line-through">
-                                ₹{product.originalPrice}
-                              </span>
-                            )}
-                          </div>
-                        </Link>
-                        
-                        <button 
-                          onClick={(e) => {
-                            e.preventDefault();
-                            addToCart(product);
-                            toast.success(`${product.name} added to cart`);
-                          }}
-                          disabled={!product.inStock}
-                          className="mt-auto w-full bg-[#241710] hover:bg-[#38251C] dark:bg-[#C69A4B] dark:hover:bg-[#DFB76C] disabled:bg-stone-200 dark:disabled:bg-stone-800 disabled:text-stone-400 text-[#F8F5EF] dark:text-[#241710] py-3 rounded-xl text-xs font-bold tracking-wide transition-all flex justify-center items-center gap-2 cursor-pointer shadow-xs hover:shadow-md hover:scale-[1.01] active:scale-98"
-                        >
-                          <ShoppingBag className="w-3.5 h-3.5" /> 
-                          {product.inStock ? "Add to Cart" : "Out of Stock"}
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="py-32 flex flex-col items-center justify-center text-center bg-white/70 dark:bg-[#1D1510]/70 rounded-3xl border border-[#E5D8C5] dark:border-[#2D221A] shadow-2xs">
-                <div className="w-16 h-16 bg-[#EFE7DA]/50 dark:bg-[#2D221A] rounded-full flex items-center justify-center mb-4">
-                  <Search className="w-6 h-6 text-[#7D7368]" />
-                </div>
-                <h3 className="text-xl font-bold font-playfair text-[#241710] dark:text-[#F8F5EF] mb-2">No matching pieces</h3>
-                <p className="text-[#7D7368] max-w-sm mb-6 text-xs sm:text-sm">
-                  Try adjusting your filters or search query to find your desired woodcraft.
-                </p>
-                <button 
-                  onClick={clearFilters}
-                  className="bg-[#241710] hover:bg-[#38251C] text-[#F8F5EF] px-6 py-2.5 rounded-full font-bold text-xs transition-colors shadow-sm cursor-pointer"
-                >
-                  Clear all filters
-                </button>
-              </div>
-            )}
+            {/* Drawer Footer Actions */}
+            <div className="p-4 border-t border-[#E0D3BE] dark:border-[#2C2018] bg-white/80 dark:bg-[#21150F]/80 flex items-center gap-3">
+              <button
+                onClick={clearFilters}
+                className="flex-1 py-3 px-4 rounded-xl border border-[#E0D3BE] dark:border-[#2C2018] text-[#21150F] dark:text-[#F7F3EB] text-xs font-bold uppercase tracking-wider hover:bg-[#EDE5D8] transition-colors cursor-pointer"
+              >
+                Clear All
+              </button>
+              <button
+                onClick={() => setIsFilterDrawerOpen(false)}
+                className="flex-1 py-3 px-4 rounded-xl bg-[#21150F] hover:bg-[#38251C] dark:bg-[#C69A4B] dark:hover:bg-[#DEB96A] text-[#F7F3EB] dark:text-[#21150F] text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer text-center"
+              >
+                Apply Filters
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </main>
   );
 }

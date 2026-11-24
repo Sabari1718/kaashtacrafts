@@ -29,12 +29,12 @@ const categories = [
   { name: "Gifts & Curios",   tag: "Bespoke Tokens",   image: "/gifts.jpg",             href: "/products" },
 ];
 
-/* ─── PROMOTIONAL BANNERS DATA (FLIPKART STYLE CAROUSEL) ─── */
+/* ─── PROMOTIONAL BANNERS DATA (3 REFINED LUXURY SLIDES) ─── */
 const promoBanners = [
   {
     tag: "Artisanal Executive Suite",
     title: "Crafted for Everyday Luxury",
-    subtitle: "Explore handcrafted wooden desk organizers and executive suites.",
+    subtitle: "Explore handcrafted wooden desk organizers, trays and executive suites.",
     btnText: "Explore Desk Suite",
     href: "/products?category=Desk Accessories",
     image: "/desk-accessories.jpg",
@@ -60,26 +60,6 @@ const promoBanners = [
     image: "/kitchen.jpg",
     accent: "from-[#21150F]/90 via-[#21150F]/65 to-transparent",
     badge: "Food Safe",
-  },
-  {
-    tag: "Minimalist Blocks",
-    title: "Made by Hand. Made to Last.",
-    subtitle: "Artisanal bookends, pen stands and sculpted paperweights.",
-    btnText: "Discover Stationery",
-    href: "/products?category=Stationery",
-    image: "/stationery.jpg",
-    accent: "from-[#21150F]/90 via-[#21150F]/65 to-transparent",
-    badge: "Solid Hardwood",
-  },
-  {
-    tag: "Bespoke Tokens",
-    title: "Thoughtful Gifts That Endure",
-    subtitle: "Heirloom grade wooden tokens carved with love in Tamil Nadu.",
-    btnText: "Shop Curated Gifts",
-    href: "/products",
-    image: "/gifts.jpg",
-    accent: "from-[#21150F]/90 via-[#21150F]/65 to-transparent",
-    badge: "Limited Edition",
   },
 ];
 
@@ -292,14 +272,14 @@ export default function Home() {
           4. PRODUCT SHOWCASE — "BEST OF KAASHTA CRAFTS"
              Editorial Asymmetric Luxury Grid
           ══════════════════════════════════════════════ */}
-      <section className="w-full bg-paper dark:bg-[#12100E] py-20 md:py-28">
-        <div className="max-w-[1400px] mx-auto px-5 sm:px-8">
+      <section className="w-full bg-paper dark:bg-[#12100E] py-10 sm:py-14 md:py-16">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-8">
 
           {/* Section Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
             <div>
-              <p className="label-luxury text-[#C69A4B] mb-3">Handcrafted Treasures</p>
-              <h2 className="heading-display text-4xl sm:text-5xl md:text-[52px] text-[#21150F] dark:text-[#F7F3EB] leading-[1.1]">
+              <p className="label-luxury text-[#C69A4B] mb-2 sm:mb-2.5">Handcrafted Treasures</p>
+              <h2 className="heading-display text-3xl sm:text-4xl md:text-[46px] text-[#21150F] dark:text-[#F7F3EB] leading-[1.15]">
                 Best of{" "}
                 <span className="text-gold-gradient">Kaashta Crafts</span>
               </h2>
