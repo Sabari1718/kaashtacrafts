@@ -5,7 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ShoppingCart, Heart, Star, Sparkles, Leaf, Flame,
-  ArrowRight, Award, ShieldCheck, Truck, ArrowUpRight
+  ArrowRight, Award, ShieldCheck, Truck, ArrowUpRight,
+  ChevronLeft, ChevronRight
 } from "lucide-react";
 import { toast } from "sonner";
 import { useCart } from "./context/CartContext";
@@ -13,10 +14,10 @@ import { useWishlist } from "./context/WishlistContext";
 import { Product } from "./products/page";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Autoplay, EffectFade } from "swiper/modules";
+import { Pagination, Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import "swiper/css/effect-fade";
+import "swiper/css/navigation";
 
 /* ─── CATEGORY DATA ─── */
 const categories = [
@@ -26,6 +27,60 @@ const categories = [
   { name: "Kitchen & Dining", tag: "Culinary Art",     image: "/kitchen.jpg",           href: "/products?category=Kitchen" },
   { name: "Stationery",       tag: "Minimalist Blocks",image: "/stationery.jpg",        href: "/products?category=Stationery" },
   { name: "Gifts & Curios",   tag: "Bespoke Tokens",   image: "/gifts.jpg",             href: "/products" },
+];
+
+/* ─── PROMOTIONAL BANNERS DATA (FLIPKART STYLE CAROUSEL) ─── */
+const promoBanners = [
+  {
+    tag: "Artisanal Executive Suite",
+    title: "Crafted for Everyday Luxury",
+    subtitle: "Explore handcrafted wooden desk organizers and executive suites.",
+    btnText: "Explore Desk Suite",
+    href: "/products?category=Desk Accessories",
+    image: "/desk-accessories.jpg",
+    accent: "from-[#21150F]/90 via-[#21150F]/65 to-transparent",
+    badge: "Handcrafted Teak",
+  },
+  {
+    tag: "Sanctuary Living",
+    title: "Bring Nature Into Your Home",
+    subtitle: "Discover timeless wooden wall art, candle holders and heirloom accents.",
+    btnText: "Shop Home Decor",
+    href: "/products?category=Home Decor",
+    image: "/home-decor.jpg",
+    accent: "from-[#21150F]/90 via-[#21150F]/65 to-transparent",
+    badge: "100% Organic",
+  },
+  {
+    tag: "Culinary Woodcraft",
+    title: "Timeless Wooden Creations",
+    subtitle: "Turn dining into ritual with hand-turned acacia boards and platters.",
+    btnText: "Explore Dining Art",
+    href: "/products?category=Kitchen",
+    image: "/kitchen.jpg",
+    accent: "from-[#21150F]/90 via-[#21150F]/65 to-transparent",
+    badge: "Food Safe",
+  },
+  {
+    tag: "Minimalist Blocks",
+    title: "Made by Hand. Made to Last.",
+    subtitle: "Artisanal bookends, pen stands and sculpted paperweights.",
+    btnText: "Discover Stationery",
+    href: "/products?category=Stationery",
+    image: "/stationery.jpg",
+    accent: "from-[#21150F]/90 via-[#21150F]/65 to-transparent",
+    badge: "Solid Hardwood",
+  },
+  {
+    tag: "Bespoke Tokens",
+    title: "Thoughtful Gifts That Endure",
+    subtitle: "Heirloom grade wooden tokens carved with love in Tamil Nadu.",
+    btnText: "Shop Curated Gifts",
+    href: "/products",
+    image: "/gifts.jpg",
+    accent: "from-[#21150F]/90 via-[#21150F]/65 to-transparent",
+    badge: "Limited Edition",
+  },
 ];
 
 /* ─── MARQUEE ITEMS ─── */
@@ -115,113 +170,107 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════
-          2. HERO — CINEMATIC FULL-WIDTH EDITORIAL
+          2. PROMOTIONAL BANNER CAROUSEL (FLIPKART STYLE)
+             Horizontal landscape banners, side-by-side with peek
           ══════════════════════════════════════════════ */}
-      <section className="w-full">
-        <div className="relative w-full bg-[#21150F] overflow-hidden" style={{ height: "clamp(420px, 56vw, 540px)" }}>
+      <section className="w-full py-4 sm:py-6 bg-[#F7F3EB] dark:bg-[#12100E] border-b border-[#E0D3BE]/40 dark:border-[#2C2018]/40">
+        <div className="max-w-[1440px] mx-auto px-3 sm:px-6 relative group">
           <Swiper
-            modules={[Pagination, Autoplay, EffectFade]}
-            effect="fade"
-            pagination={{ clickable: true, dynamicBullets: true }}
-            autoplay={{ delay: 6000, disableOnInteraction: false }}
+            modules={[Pagination, Autoplay, Navigation]}
+            navigation={{
+              prevEl: ".promo-swiper-prev",
+              nextEl: ".promo-swiper-next",
+            }}
+            pagination={{
+              clickable: true,
+              dynamicBullets: true,
+            }}
+            autoplay={{
+              delay: 4500,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
             loop={true}
-            style={{ "--swiper-pagination-color": "#C69A4B", "--swiper-pagination-bullet-inactive-color": "#7A6E63" } as any}
-            className="w-full h-full"
+            spaceBetween={14}
+            slidesPerView={1}
+            breakpoints={{
+              640: {
+                slidesPerView: 1.25,
+                spaceBetween: 16,
+              },
+              1024: {
+                slidesPerView: 2.15,
+                spaceBetween: 20,
+              },
+            }}
+            style={{
+              "--swiper-pagination-color": "#C69A4B",
+              "--swiper-pagination-bullet-inactive-color": "#7A6E63",
+            } as any}
+            className="w-full pb-9"
           >
-            {/* ── Slide 1 ── */}
-            <SwiperSlide>
-              <div className="relative w-full h-full">
-                <Image src="/banner1.jpg" alt="Artisan Woodcraft" fill priority className="object-cover scale-105 animate-reveal-up" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#21150F]/95 via-[#21150F]/60 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#21150F]/80 via-transparent to-transparent" />
-                <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-20 max-w-[640px] pb-8">
-                  <div className="label-luxury text-[#DEB96A] mb-4 flex items-center gap-2">
-                    <span className="w-6 h-px bg-[#C69A4B]" />
-                    Artisanal Heritage Collections
-                  </div>
-                  <h1 className="heading-display text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] text-[#F7F3EB] leading-[1.08] mb-3">
-                    Artistry in Every Grain.<br />
-                    <span className="text-gold-gradient">Soul in Every Curve.</span>
-                  </h1>
-                  <p className="text-[#E0D3BE]/80 text-[13px] sm:text-sm leading-relaxed mb-6 max-w-xs font-sans font-normal">
-                    Sculpted from sustainably seasoned teak and sheesham — designed to bring organic warmth, dignity, and calm into every living space.
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <Link href="/products" className="btn-luxury-primary">
-                      Explore Collection <ArrowRight className="w-4 h-4" />
-                    </Link>
-                    <Link href="/products?category=Desk Accessories" className="btn-luxury-ghost">
-                      Executive Suite
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
+            {promoBanners.map((banner, index) => (
+              <SwiperSlide key={index}>
+                <div className="relative w-full h-[240px] sm:h-[280px] lg:h-[310px] rounded-2xl overflow-hidden shadow-md group/banner border border-[#E0D3BE]/60 dark:border-[#2C2018]/80 bg-[#21150F]">
+                  {/* Banner Image */}
+                  <Image
+                    src={banner.image}
+                    alt={banner.title}
+                    fill
+                    priority={index < 2}
+                    className="object-cover object-center group-hover/banner:scale-105 transition-transform duration-700 ease-out"
+                  />
 
-            {/* ── Slide 2 ── */}
-            <SwiperSlide>
-              <div className="relative w-full h-full">
-                <Image src="/banner2.jpg" alt="Handcrafted Warmth" fill className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#21150F]/95 via-[#21150F]/55 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#21150F]/75 via-transparent to-transparent" />
-                <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-20 max-w-[640px] pb-8">
-                  <div className="label-luxury text-[#DEB96A] mb-4 flex items-center gap-2">
-                    <Flame className="w-3 h-3" />
-                    Limited Batch Edition
-                  </div>
-                  <h1 className="heading-display text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] text-[#F7F3EB] leading-[1.08] mb-3">
-                    Handcrafted Warmth<br />
-                    <span className="text-gold-gradient">For Your Sanctuary.</span>
-                  </h1>
-                  <p className="text-[#E0D3BE]/80 text-[13px] sm:text-sm leading-relaxed mb-6 max-w-xs font-sans font-normal">
-                    Hand-rubbed with natural botanical oils, preserving the golden richness and authentic tactile feel of real timber.
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <Link href="/products" className="btn-luxury-primary">
-                      Shop Collections <ArrowRight className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
+                  {/* Gradient Overlay for Text Readability */}
+                  <div className={`absolute inset-0 bg-gradient-to-r ${banner.accent}`} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#21150F]/70 via-transparent to-transparent" />
 
-            {/* ── Slide 3 ── */}
-            <SwiperSlide>
-              <div className="relative w-full h-full">
-                <Image src="/banner3.jpg" alt="Dining Sculptures" fill className="object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#21150F]/95 via-[#21150F]/55 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#21150F]/75 via-transparent to-transparent" />
-                <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-24 max-w-3xl pb-10">
-                  <div className="label-luxury text-emerald-400 mb-5 flex items-center gap-2">
-                    <Leaf className="w-3 h-3" />
-                    100% Food-Safe & Organic
+                  {/* Top Badge */}
+                  <div className="absolute top-3.5 left-4 sm:left-6 z-10 flex items-center gap-2">
+                    <span className="bg-[#21150F]/80 backdrop-blur-md text-[#DEB96A] text-[9.5px] font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full border border-[#C69A4B]/30 shadow-xs">
+                      {banner.badge}
+                    </span>
                   </div>
-                  <h1 className="heading-display text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] text-[#F7F3EB] leading-[1.08] mb-3">
-                    Dining Sculptures<br />
-                    <span className="text-gold-gradient">Carved To Endure.</span>
-                  </h1>
-                  <p className="text-[#E0D3BE]/80 text-[13px] sm:text-sm leading-relaxed mb-6 max-w-xs font-sans font-normal">
-                    Turn everyday hosting into ritual. Hand-turned acacia boards and artisanal platters carved to endure generations.
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <Link href="/products?category=Kitchen" className="btn-luxury-primary">
-                      Dining Collection <ArrowRight className="w-4 h-4" />
-                    </Link>
+
+                  {/* Banner Content */}
+                  <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 z-10 max-w-[80%] sm:max-w-[70%]">
+                    <p className="text-[10px] uppercase tracking-[0.2em] font-semibold text-[#DEB96A] mb-1.5 line-clamp-1">
+                      {banner.tag}
+                    </p>
+                    <h3 className="heading-display text-xl sm:text-2xl lg:text-[26px] text-[#F7F3EB] font-bold leading-tight mb-1.5 drop-shadow-sm">
+                      {banner.title}
+                    </h3>
+                    <p className="text-[12px] sm:text-[13px] text-[#E0D3BE]/85 line-clamp-1 sm:line-clamp-2 leading-relaxed mb-3.5 font-sans font-normal">
+                      {banner.subtitle}
+                    </p>
+                    <div>
+                      <Link
+                        href={banner.href}
+                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#C69A4B] hover:bg-[#DEB96A] text-[#21150F] text-[11px] font-bold tracking-wider uppercase transition-all shadow-sm hover:shadow-md hover:scale-[1.02] active:scale-[0.98]"
+                      >
+                        {banner.btnText}
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </SwiperSlide>
+              </SwiperSlide>
+            ))}
           </Swiper>
 
-          {/* Floating stats — compact for smaller hero */}
-          <div className="hidden lg:flex absolute bottom-6 right-8 z-20 items-center gap-4 bg-[#21150F]/80 backdrop-blur-xl border border-[#C69A4B]/20 px-5 py-3 rounded-xl shadow-2xl">
-            {[["4.9★", "2,500+ Reviews"], ["100%", "Solid Hardwood"], ["0%", "Chemical Sealants"]].map(([val, lbl], i) => (
-              <div key={i} className={`flex flex-col items-center ${i > 0 ? "pl-4 border-l border-[#38251C]" : ""}`}>
-                <span className={`font-playfair font-bold text-base ${i === 0 ? "text-[#DEB96A]" : i === 2 ? "text-emerald-400" : "text-[#F7F3EB]"}`}>{val}</span>
-                <span className="text-[9px] text-[#7A6E63] mt-0.5 tracking-wide">{lbl}</span>
-              </div>
-            ))}
-          </div>
+          {/* Navigation Arrows (Desktop) */}
+          <button
+            aria-label="Previous Banner"
+            className="promo-swiper-prev absolute left-1 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#F7F3EB]/90 dark:bg-[#21150F]/90 text-[#21150F] dark:text-[#F7F3EB] border border-[#E0D3BE] dark:border-[#38251C] shadow-lg flex items-center justify-center hover:bg-[#C69A4B] hover:text-[#21150F] transition-all cursor-pointer opacity-0 group-hover:opacity-100 disabled:opacity-0"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            aria-label="Next Banner"
+            className="promo-swiper-next absolute right-1 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#F7F3EB]/90 dark:bg-[#21150F]/90 text-[#21150F] dark:text-[#F7F3EB] border border-[#E0D3BE] dark:border-[#38251C] shadow-lg flex items-center justify-center hover:bg-[#C69A4B] hover:text-[#21150F] transition-all cursor-pointer opacity-0 group-hover:opacity-100 disabled:opacity-0"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
       </section>
 
