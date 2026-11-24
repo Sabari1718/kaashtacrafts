@@ -90,20 +90,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   const handleBuyNow = () => {
     if (product) {
-      const currentUrl = typeof window !== "undefined" ? window.location.href : `https://kaashtacrafts.vercel.app/products/${product.id || (product as any)._id}`;
-      const message = 
-`🛍️ *ORDER INQUIRY - KAASHTA CRAFTS*
-━━━━━━━━━━━━━━━━━━━━
-Hello! I want to buy this product directly:
-📦 *Product:* ${product.name}
-💰 *Price:* ₹${product.price}
-🏷️ *Category:* ${product.category}
-🔗 *Link:* ${currentUrl}
-━━━━━━━━━━━━━━━━━━━━
-Please share payment and delivery details!`;
-
-      const whatsappUrl = `https://wa.me/918838098116?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, '_blank');
+      router.push(`/checkout?buyNow=${product.id || (product as any)._id}`);
     }
   };
 
@@ -363,9 +350,9 @@ Please share payment and delivery details!`;
             </button>
             <button 
               onClick={handleBuyNow}
-              className="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
+              className="flex-1 bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
             >
-              <span>Instant Buy via WhatsApp ₹{product.price}</span>
+              <span>Buy Now ₹{product.price}</span>
             </button>
           </div>
         </div>
@@ -515,9 +502,9 @@ Please share payment and delivery details!`;
         </button>
         <button 
           onClick={handleBuyNow}
-          className="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md"
+          className="flex-1 bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] py-3 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md"
         >
-          Buy Now (WhatsApp) ₹{product.price}
+          Buy Now ₹{product.price}
         </button>
       </div>
 

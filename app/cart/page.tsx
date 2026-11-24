@@ -130,23 +130,12 @@ export default function CartPage() {
                       </div>
 
                       <div className="flex items-center gap-4">
-                        <button 
-                          onClick={() => {
-                            const waText = 
-`🛍️ *DIRECT ORDER - KAASHTA CRAFTS*
-━━━━━━━━━━━━━━━━━━━━
-Hello! I want to buy this item:
-📦 *Product:* ${item.name}
-🔢 *Quantity:* ${item.quantity}
-💰 *Total:* ₹${item.price * item.quantity}
-━━━━━━━━━━━━━━━━━━━━
-Please share payment and delivery details!`;
-                            window.open(`https://wa.me/918838098116?text=${encodeURIComponent(waText)}`, '_blank');
-                          }}
-                          className="text-[#25D366] hover:underline flex items-center gap-1 text-xs font-bold transition-colors cursor-pointer"
+                        <Link 
+                          href={`/checkout?buyNow=${item.id}`}
+                          className="text-[#C49A50] hover:underline flex items-center gap-1 text-xs font-bold transition-colors"
                         >
-                          Buy on WhatsApp <ArrowRight className="w-3 h-3" />
-                        </button>
+                          Buy Now <ArrowRight className="w-3 h-3" />
+                        </Link>
 
                         <button 
                           onClick={() => removeFromCart(item.id)}
