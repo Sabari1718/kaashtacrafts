@@ -91,11 +91,11 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 flex w-full flex-col bg-[#F7F5F0]/95 dark:bg-[#14100E]/95 backdrop-blur-md border-b border-[#EAE1D2]/80 dark:border-[#2E241E]/80 transition-colors duration-300">
-      <div className="flex w-full items-center justify-between px-3 sm:px-8 lg:px-12 py-2 sm:py-2.5 gap-3 sm:gap-4 max-w-[1440px] mx-auto">
+      <div className="flex w-full items-center justify-between px-3 sm:px-6 lg:px-10 py-1 sm:py-1.5 gap-3 sm:gap-4 max-w-[1440px] mx-auto">
         
         {/* Brand Logo & Name */}
-        <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-          <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-xl overflow-hidden shadow-xs ring-1 ring-[#EAE1D2] dark:ring-[#2E241E] group-hover:ring-[#C49A50] transition-all duration-300">
+        <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
+          <div className="relative w-7 h-7 sm:w-9 sm:h-9 rounded-xl overflow-hidden shadow-xs ring-1 ring-[#EAE1D2] dark:ring-[#2E241E] group-hover:ring-[#C49A50] transition-all duration-300">
             <Image
               src="/logo.jpeg"
               alt="KaashtaCrafts"
@@ -104,10 +104,10 @@ export default function Navbar() {
             />
           </div>
           <div className="flex flex-col">
-            <span className="text-lg sm:text-2xl font-bold font-playfair tracking-tight text-[#241812] dark:text-[#F7F5F0] transition-colors leading-tight">
+            <span className="text-base sm:text-xl font-bold font-playfair tracking-tight text-[#241812] dark:text-[#F7F5F0] transition-colors leading-tight">
               Kaashta Crafts
             </span>
-            <span className="text-[8px] sm:text-[9px] uppercase tracking-[0.2em] text-[#82786E] dark:text-[#A39A90] font-sans font-medium -mt-0.5 hidden sm:block">
+            <span className="text-[8px] uppercase tracking-[0.2em] text-[#82786E] dark:text-[#A39A90] font-sans font-medium -mt-0.5 hidden sm:block">
               Artisanal Woodcraft
             </span>
           </div>
@@ -116,8 +116,8 @@ export default function Navbar() {
         {/* Middle Section: Search Bar (Desktop) */}
         <div className="hidden md:flex flex-grow max-w-md lg:max-w-lg px-4 relative" ref={searchContainerRef}>
           <form onSubmit={handleSearch} className="flex w-full items-center bg-white/80 dark:bg-[#1E1713]/80 rounded-full overflow-hidden border border-[#EAE1D2] dark:border-[#2E241E] focus-within:border-[#C49A50] focus-within:ring-2 focus-within:ring-[#C49A50]/20 transition-all shadow-xs relative z-10">
-            <div className="pl-4 text-[#82786E] dark:text-[#A39A90]">
-              <Search className="w-4 h-4" />
+            <div className="pl-3.5 text-[#82786E] dark:text-[#A39A90]">
+              <Search className="w-3.5 h-3.5" />
             </div>
             <input 
               type="text" 
@@ -125,7 +125,7 @@ export default function Navbar() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={() => setShowSuggestions(true)}
-              className="w-full bg-transparent px-3.5 py-2 text-sm text-[#241812] dark:text-[#F7F5F0] placeholder:text-[#82786E]/70 dark:placeholder:text-[#A39A90]/60 outline-none"
+              className="w-full bg-transparent px-3 py-1.5 text-xs sm:text-sm text-[#241812] dark:text-[#F7F5F0] placeholder:text-[#82786E]/70 dark:placeholder:text-[#A39A90]/60 outline-none"
             />
           </form>
 
@@ -334,10 +334,10 @@ export default function Navbar() {
       )}
       
       {/* Mobile Search Bar */}
-      <div className="md:hidden w-full px-3 pb-2 relative" ref={mobileSearchRef}>
+      <div className="md:hidden w-full px-3 pb-1.5 relative" ref={mobileSearchRef}>
         <form onSubmit={handleSearch} className="flex w-full items-center bg-white/90 dark:bg-[#1E1713]/90 rounded-full overflow-hidden border border-[#EAE1D2] dark:border-[#2E241E] focus-within:border-[#C49A50] shadow-2xs">
-          <div className="pl-3.5 text-[#82786E]">
-            <Search className="w-4 h-4" />
+          <div className="pl-3 text-[#82786E]">
+            <Search className="w-3.5 h-3.5" />
           </div>
           <input 
             type="text" 
@@ -345,7 +345,7 @@ export default function Navbar() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setShowSuggestions(true)}
-            className="w-full bg-transparent px-3 py-1.5 text-xs text-[#241812] dark:text-[#F7F5F0] placeholder:text-[#82786E]/70 outline-none"
+            className="w-full bg-transparent px-2.5 py-1 text-xs text-[#241812] dark:text-[#F7F5F0] placeholder:text-[#82786E]/70 outline-none"
           />
         </form>
 
