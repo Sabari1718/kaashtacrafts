@@ -10,10 +10,8 @@ import {
   Heart, 
   Star, 
   Sparkles, 
-  ShieldCheck, 
   Truck, 
   Leaf, 
-  Award, 
   Check, 
   Copy, 
   Flame, 
@@ -233,16 +231,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 3. HERO SHOWCASE (Cinematic Editorial Split Carousel) */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 pt-6 md:pt-8 pb-4">
-        <div className="relative w-full rounded-3xl overflow-hidden bg-[#241812] shadow-xl border border-[#38261C]">
+      {/* 3. HERO SHOWCASE (Cinematic Editorial Split Carousel - Mobile Optimized) */}
+      <section className="w-full max-w-[1400px] mx-auto px-4 pt-4 md:pt-8 pb-2 md:pb-4">
+        <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden bg-[#241812] shadow-xl border border-[#38261C]">
           
           {/* Subtle Warm Spotlight */}
           <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#C49A50]/20 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[#65452F]/30 rounded-full blur-3xl pointer-events-none" />
 
           {/* Visual Swiper */}
-          <div className="w-full h-[400px] sm:h-[460px] md:h-[530px] lg:h-[590px] relative">
+          <div className="w-full h-[460px] sm:h-[480px] md:h-[530px] lg:h-[590px] relative">
             <Swiper
               modules={[Pagination, Autoplay]}
               pagination={{ 
@@ -267,34 +265,34 @@ export default function Home() {
                     priority 
                     className="object-cover opacity-85 hover:scale-102 transition-transform duration-1000" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#241812]/95 via-[#241812]/65 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1C130D]/95 via-[#241812]/80 to-[#241812]/30 md:bg-gradient-to-r md:from-[#241812]/95 md:via-[#241812]/65 md:to-transparent" />
                   
                   {/* Overlay Content */}
-                  <div className="absolute inset-0 flex flex-col justify-end md:justify-center p-6 sm:p-10 md:p-14 lg:p-16 max-w-2xl">
-                    <span className="inline-flex items-center gap-2 bg-[#C49A50]/20 backdrop-blur-md text-[#C49A50] border border-[#C49A50]/40 text-xs font-bold px-3 py-1.5 rounded-full w-fit mb-3 uppercase tracking-[0.18em]">
+                  <div className="absolute inset-0 flex flex-col justify-center px-5 py-6 sm:p-10 md:p-14 lg:p-16 max-w-2xl pb-12 sm:pb-10 md:pb-14">
+                    <span className="inline-flex items-center gap-1.5 bg-[#C49A50]/20 backdrop-blur-md text-[#C49A50] border border-[#C49A50]/40 text-[10px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full w-fit mb-2.5 sm:mb-3 uppercase tracking-wider">
                       <Sparkles className="w-3.5 h-3.5" />
                       Artisanal Heritage Collections
                     </span>
-                    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-playfair font-bold text-[#F7F5F0] tracking-tight leading-[1.12] mb-4">
+                    <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-playfair font-bold text-[#F7F5F0] tracking-tight leading-[1.18] sm:leading-[1.12] mb-2 sm:mb-4">
                       Artistry in Every Grain. <br/>
                       <span className="text-[#C49A50]">
                         Soul in Every Curve.
                       </span>
                     </h1>
-                    <p className="text-[#EAE1D2]/85 text-sm sm:text-base leading-relaxed mb-6 font-sans line-clamp-2 sm:line-clamp-3 max-w-xl">
+                    <p className="text-[#EAE1D2]/85 text-xs sm:text-sm md:text-base leading-relaxed mb-4 sm:mb-6 font-sans line-clamp-2 sm:line-clamp-3 max-w-xl">
                       Thoughtfully sculpted from sustainably seasoned teak and sheesham. Designed to infuse organic warmth, dignity, and calm into modern living spaces.
                     </p>
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
                       <Link 
                         href="/products" 
-                        className="bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] font-bold px-6 py-3 rounded-full flex items-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all text-sm cursor-pointer"
+                        className="bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] font-bold px-5 py-2.5 sm:px-6 sm:py-3 rounded-full flex items-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all text-xs sm:text-sm cursor-pointer"
                       >
                         Explore Masterpieces
-                        <ArrowRight className="w-4 h-4" />
+                        <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </Link>
                       <Link 
                         href="/products?category=Desk Accessories" 
-                        className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-[#F7F5F0] border border-white/20 font-semibold px-5 py-3 rounded-full flex items-center gap-2 transition-all text-sm hover:-translate-y-0.5 cursor-pointer"
+                        className="bg-white/10 hover:bg-white/20 backdrop-blur-md text-[#F7F5F0] border border-white/20 font-semibold px-4 py-2.5 sm:px-5 sm:py-3 rounded-full flex items-center gap-2 transition-all text-xs sm:text-sm hover:-translate-y-0.5 cursor-pointer"
                       >
                         Executive Desk Suite
                       </Link>
@@ -312,29 +310,29 @@ export default function Home() {
                     fill 
                     className="object-cover opacity-85 hover:scale-102 transition-transform duration-1000" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#241812]/95 via-[#241812]/65 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1C130D]/95 via-[#241812]/80 to-[#241812]/30 md:bg-gradient-to-r md:from-[#241812]/95 md:via-[#241812]/65 md:to-transparent" />
                   
-                  <div className="absolute inset-0 flex flex-col justify-end md:justify-center p-6 sm:p-10 md:p-14 lg:p-16 max-w-2xl">
-                    <span className="inline-flex items-center gap-2 bg-[#C49A50]/20 backdrop-blur-md text-[#C49A50] border border-[#C49A50]/40 text-xs font-bold px-3 py-1.5 rounded-full w-fit mb-3 uppercase tracking-[0.18em]">
+                  <div className="absolute inset-0 flex flex-col justify-center px-5 py-6 sm:p-10 md:p-14 lg:p-16 max-w-2xl pb-12 sm:pb-10 md:pb-14">
+                    <span className="inline-flex items-center gap-1.5 bg-[#C49A50]/20 backdrop-blur-md text-[#C49A50] border border-[#C49A50]/40 text-[10px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full w-fit mb-2.5 sm:mb-3 uppercase tracking-wider">
                       <Flame className="w-3.5 h-3.5" />
                       Limited Batch Edition
                     </span>
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-playfair font-bold text-[#F7F5F0] tracking-tight leading-[1.12] mb-4">
+                    <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-playfair font-bold text-[#F7F5F0] tracking-tight leading-[1.18] sm:leading-[1.12] mb-2 sm:mb-4">
                       Handcrafted Warmth <br/>
                       <span className="text-[#C49A50]">
                         For Your Sanctuary.
                       </span>
                     </h2>
-                    <p className="text-[#EAE1D2]/85 text-sm sm:text-base leading-relaxed mb-6 font-sans max-w-xl">
+                    <p className="text-[#EAE1D2]/85 text-xs sm:text-sm md:text-base leading-relaxed mb-4 sm:mb-6 font-sans line-clamp-2 sm:line-clamp-3 max-w-xl">
                       Each piece is hand-rubbed with natural botanical oils, preserving the golden richness and authentic tactile feel of real timber.
                     </p>
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
                       <Link 
                         href="/products" 
-                        className="bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] font-bold px-6 py-3 rounded-full flex items-center gap-2 shadow-lg transition-all text-sm cursor-pointer"
+                        className="bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] font-bold px-5 py-2.5 sm:px-6 sm:py-3 rounded-full flex items-center gap-2 shadow-lg transition-all text-xs sm:text-sm cursor-pointer"
                       >
                         Shop All Collections
-                        <ArrowRight className="w-4 h-4" />
+                        <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </Link>
                     </div>
                   </div>
@@ -350,29 +348,29 @@ export default function Home() {
                     fill 
                     className="object-cover opacity-85 hover:scale-102 transition-transform duration-1000" 
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-[#241812]/95 via-[#241812]/65 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#1C130D]/95 via-[#241812]/80 to-[#241812]/30 md:bg-gradient-to-r md:from-[#241812]/95 md:via-[#241812]/65 md:to-transparent" />
                   
-                  <div className="absolute inset-0 flex flex-col justify-end md:justify-center p-6 sm:p-10 md:p-14 lg:p-16 max-w-2xl">
-                    <span className="inline-flex items-center gap-2 bg-emerald-500/20 backdrop-blur-md text-emerald-300 border border-emerald-500/40 text-xs font-bold px-3 py-1.5 rounded-full w-fit mb-3 uppercase tracking-[0.18em]">
+                  <div className="absolute inset-0 flex flex-col justify-center px-5 py-6 sm:p-10 md:p-14 lg:p-16 max-w-2xl pb-12 sm:pb-10 md:pb-14">
+                    <span className="inline-flex items-center gap-1.5 bg-emerald-500/20 backdrop-blur-md text-emerald-300 border border-emerald-500/40 text-[10px] sm:text-xs font-bold px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full w-fit mb-2.5 sm:mb-3 uppercase tracking-wider">
                       <Leaf className="w-3.5 h-3.5 text-emerald-400" />
                       100% Food-Safe & Organic
                     </span>
-                    <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-playfair font-bold text-[#F7F5F0] tracking-tight leading-[1.12] mb-4">
+                    <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-playfair font-bold text-[#F7F5F0] tracking-tight leading-[1.18] sm:leading-[1.12] mb-2 sm:mb-4">
                       Dining Sculptures <br/>
                       <span className="text-[#C49A50]">
                         Carved To Endure.
                       </span>
                     </h2>
-                    <p className="text-[#EAE1D2]/85 text-sm sm:text-base leading-relaxed mb-6 font-sans max-w-xl">
+                    <p className="text-[#EAE1D2]/85 text-xs sm:text-sm md:text-base leading-relaxed mb-4 sm:mb-6 font-sans line-clamp-2 sm:line-clamp-3 max-w-xl">
                       Turn everyday dining and hosting into an unforgettable sensory ritual with hand-turned acacia boards and artisanal platters.
                     </p>
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
                       <Link 
                         href="/products?category=Kitchen" 
-                        className="bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] font-bold px-6 py-3 rounded-full flex items-center gap-2 shadow-lg transition-all text-sm cursor-pointer"
+                        className="bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] font-bold px-5 py-2.5 sm:px-6 sm:py-3 rounded-full flex items-center gap-2 shadow-lg transition-all text-xs sm:text-sm cursor-pointer"
                       >
                         Explore Dining Art
-                        <ArrowRight className="w-4 h-4" />
+                        <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </Link>
                     </div>
                   </div>
@@ -399,61 +397,6 @@ export default function Home() {
             </div>
 
           </div>
-        </div>
-      </section>
-
-      {/* 4. THE KAASHTA STANDARD (Trust & Value Proposition Grid) */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          
-          <div className="flex items-start gap-4 p-5 rounded-2xl bg-white/70 dark:bg-[#1E1713]/70 border border-[#EAE1D2] dark:border-[#2E241E] hover:border-[#C49A50]/60 transition-all shadow-xs hover:shadow-sm group">
-            <div className="w-11 h-11 rounded-xl bg-[#EAE1D2]/60 dark:bg-[#2E241E] flex items-center justify-center text-[#65452F] dark:text-[#C49A50] shrink-0 group-hover:scale-105 transition-transform">
-              <Award className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="font-bold text-[#241812] dark:text-[#F7F5F0] text-sm mb-1">100% Solid Seasoned Wood</h3>
-              <p className="text-xs text-[#82786E] dark:text-[#A39A90] leading-relaxed">
-                Zero MDF or synthetic ply. Genuine solid hardwood built for lifetimes of use.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-4 p-5 rounded-2xl bg-white/70 dark:bg-[#1E1713]/70 border border-[#EAE1D2] dark:border-[#2E241E] hover:border-[#C49A50]/60 transition-all shadow-xs hover:shadow-sm group">
-            <div className="w-11 h-11 rounded-xl bg-[#EAE1D2]/60 dark:bg-[#2E241E] flex items-center justify-center text-[#65452F] dark:text-[#C49A50] shrink-0 group-hover:scale-105 transition-transform">
-              <Leaf className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="font-bold text-[#241812] dark:text-[#F7F5F0] text-sm mb-1">Organic Botanical Polish</h3>
-              <p className="text-xs text-[#82786E] dark:text-[#A39A90] leading-relaxed">
-                Finished with food-safe cold pressed plant oils and raw unbleached beeswax.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-4 p-5 rounded-2xl bg-white/70 dark:bg-[#1E1713]/70 border border-[#EAE1D2] dark:border-[#2E241E] hover:border-[#C49A50]/60 transition-all shadow-xs hover:shadow-sm group">
-            <div className="w-11 h-11 rounded-xl bg-[#EAE1D2]/60 dark:bg-[#2E241E] flex items-center justify-center text-[#65452F] dark:text-[#C49A50] shrink-0 group-hover:scale-105 transition-transform">
-              <Truck className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="font-bold text-[#241812] dark:text-[#F7F5F0] text-sm mb-1">Cushioned Transit Safety</h3>
-              <p className="text-xs text-[#82786E] dark:text-[#A39A90] leading-relaxed">
-                Eco-cushioned shockproof transit packaging with 100% breakage replacement.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-4 p-5 rounded-2xl bg-white/70 dark:bg-[#1E1713]/70 border border-[#EAE1D2] dark:border-[#2E241E] hover:border-[#C49A50]/60 transition-all shadow-xs hover:shadow-sm group">
-            <div className="w-11 h-11 rounded-xl bg-[#EAE1D2]/60 dark:bg-[#2E241E] flex items-center justify-center text-[#65452F] dark:text-[#C49A50] shrink-0 group-hover:scale-105 transition-transform">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
-            <div>
-              <h3 className="font-bold text-[#241812] dark:text-[#F7F5F0] text-sm mb-1">Artisan Guild Collective</h3>
-              <p className="text-xs text-[#82786E] dark:text-[#A39A90] leading-relaxed">
-                Directly supporting traditional Indian woodworking families and rural craft.
-              </p>
-            </div>
-          </div>
-
         </div>
       </section>
 
