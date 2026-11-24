@@ -95,34 +95,41 @@ export async function DELETE(
     const { searchParams } = new URL(request.url);
     const reviewId = searchParams.get('reviewId');
 
-    if (!reviewId) {
-      return NextResponse.json({ error: "Review ID is required" }, { status: 400 });
+    // If reviewId is provided, delete only that specific review
+    if (reviewId) {
+      const product = await Product.findById(resolvedParams.id);
+      if (!product) {
+        return NextResponse.json({ error: "Product not found" }, { status: 404 });
+      }
+
+      const initialLength = product.reviews.length;
+      product.reviews = product.reviews.filter((review: any) => review._id.toString() !== reviewId);
+
+      if (product.reviews.length === initialLength) {
+        return NextResponse.json({ error: "Review not found" }, { status: 404 });
+      }
+
+      product.numReviews = product.reviews.length;
+      if (product.numReviews > 0) {
+        product.rating = product.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) / product.reviews.length;
+      } else {
+        product.rating = 0;
+      }
+
+      await product.save();
+
+      return NextResponse.json({ success: true, message: "Review deleted successfully" });
     }
 
-    const product = await Product.findById(resolvedParams.id);
-    if (!product) {
+    // Otherwise, delete the entire product from the database
+    const deletedProduct = await Product.findByIdAndDelete(resolvedParams.id);
+    if (!deletedProduct) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    const initialLength = product.reviews.length;
-    product.reviews = product.reviews.filter((review: any) => review._id.toString() !== reviewId);
-
-    if (product.reviews.length === initialLength) {
-      return NextResponse.json({ error: "Review not found" }, { status: 404 });
-    }
-
-    product.numReviews = product.reviews.length;
-    if (product.numReviews > 0) {
-      product.rating = product.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) / product.reviews.length;
-    } else {
-      product.rating = 0;
-    }
-
-    await product.save();
-
-    return NextResponse.json({ success: true, message: "Review deleted successfully" });
+    return NextResponse.json({ success: true, message: "Product deleted successfully" });
   } catch (error) {
-    console.error("Failed to delete review:", error);
-    return NextResponse.json({ error: "Failed to delete review" }, { status: 500 });
+    console.error("Failed to delete product or review:", error);
+    return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
   }
 }

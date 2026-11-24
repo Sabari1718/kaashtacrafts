@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Package, PlusCircle, LayoutDashboard, Settings, LogOut, UploadCloud, TrendingUp, ShoppingBag, Clock, ShieldAlert, MessageSquare, Trash2, Star, Lock } from "lucide-react";
+import { Package, PlusCircle, LayoutDashboard, Settings, LogOut, UploadCloud, TrendingUp, ShoppingBag, Clock, ShieldAlert, MessageSquare, Trash2, Star, Lock, Search } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
 export default function AdminPage() {
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
@@ -30,6 +30,11 @@ export default function AdminPage() {
   const [newPromoCode, setNewPromoCode] = useState("");
   const [newPromoDiscount, setNewPromoDiscount] = useState("");
   const [isCreatingPromo, setIsCreatingPromo] = useState(false);
+
+  // Product Search & Filter State
+  const [productSearchQuery, setProductSearchQuery] = useState("");
+  const [productCategoryFilter, setProductCategoryFilter] = useState("All");
+  const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
 
   useEffect(() => {
     setIsCheckingAuth(false);
@@ -167,7 +172,29 @@ export default function AdminPage() {
     }
   };
 
-
+  const handleDeleteProduct = async (productId: string, productName: string) => {
+    if (!confirm(`Are you sure you want to delete "${productName}"? This product will be removed from your store.`)) {
+      return;
+    }
+    setDeletingProductId(productId);
+    try {
+      const res = await fetch(`/api/products/${productId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setProducts((prev) => prev.filter((p) => (p._id || p.id) !== productId));
+        alert(`Product "${productName}" was deleted successfully.`);
+      } else {
+        alert(data.error || "Failed to delete product");
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      alert("Something went wrong while deleting product");
+    } finally {
+      setDeletingProductId(null);
+    }
+  };
 
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -202,6 +229,7 @@ export default function AdminPage() {
         setProductPrice("");
         setProductImage(null);
         setGalleryImages([]);
+        fetchDashboardData();
       } else {
         alert(`Error: ${data.error}`);
       }
@@ -296,6 +324,15 @@ export default function AdminPage() {
             className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${activeTab === "dashboard" ? "bg-stone-800 text-white" : "hover:bg-stone-900 hover:text-white"}`}
           >
             <LayoutDashboard className="w-5 h-5" /> Dashboard
+          </button>
+          <button 
+            onClick={() => {
+              setActiveTab("products");
+              fetchDashboardData();
+            }}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${activeTab === "products" ? "bg-stone-800 text-white" : "hover:bg-stone-900 hover:text-white"}`}
+          >
+            <Package className="w-5 h-5" /> Products
           </button>
           <button 
             onClick={() => setActiveTab("add-product")}
@@ -439,6 +476,155 @@ export default function AdminPage() {
                 </div>
               </div>
             )}
+          </div>
+        )}
+
+        {activeTab === "products" && (
+          <div>
+            <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
+              <div>
+                <h2 className="text-3xl font-bold text-stone-900">Manage Products</h2>
+                <p className="text-stone-500 text-sm mt-1">
+                  View your live products, check photos, and delete items you no longer want.
+                </p>
+              </div>
+              <button
+                onClick={() => setActiveTab("add-product")}
+                className="bg-amber-800 hover:bg-amber-700 text-white px-5 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 transition-colors shadow-sm"
+              >
+                <PlusCircle className="w-4 h-4" /> Add New Product
+              </button>
+            </div>
+
+            {/* Filter and Search Bar */}
+            <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 mb-8 flex flex-col sm:flex-row gap-4 items-center justify-between">
+              <div className="relative w-full sm:w-80">
+                <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="Search products by name..."
+                  value={productSearchQuery}
+                  onChange={(e) => setProductSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-stone-200 bg-stone-50 focus:outline-none focus:ring-2 focus:ring-amber-700/50"
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+                {["All", "Desk Accessories", "Home Decor", "Kitchen", "Stationery"].map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setProductCategoryFilter(cat)}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                      productCategoryFilter === cat
+                        ? "bg-amber-800 text-white"
+                        : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {isLoadingOrders ? (
+              <div className="text-stone-500 text-center py-12">Loading products...</div>
+            ) : (() => {
+              const filteredProducts = products.filter((p) => {
+                const matchesQuery = !productSearchQuery || p.name?.toLowerCase().includes(productSearchQuery.toLowerCase()) || p.category?.toLowerCase().includes(productSearchQuery.toLowerCase());
+                const matchesCategory = productCategoryFilter === "All" || p.category === productCategoryFilter;
+                return matchesQuery && matchesCategory;
+              });
+
+              if (filteredProducts.length === 0) {
+                return (
+                  <div className="bg-white p-12 rounded-3xl shadow-sm border border-stone-200 text-center">
+                    <Package className="w-12 h-12 text-stone-300 mx-auto mb-3" />
+                    <h3 className="text-lg font-bold text-stone-800 mb-1">No products found</h3>
+                    <p className="text-stone-500 text-sm mb-6">
+                      {productSearchQuery || productCategoryFilter !== "All"
+                        ? "Try adjusting your search or category filters."
+                        : "You haven't added any products to the store yet."}
+                    </p>
+                    <button
+                      onClick={() => setActiveTab("add-product")}
+                      className="bg-amber-800 hover:bg-amber-700 text-white px-5 py-2.5 rounded-xl font-medium text-sm inline-flex items-center gap-2 transition-colors"
+                    >
+                      <PlusCircle className="w-4 h-4" /> Add Your First Product
+                    </button>
+                  </div>
+                );
+              }
+
+              return (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {filteredProducts.map((product) => {
+                    const productId = product._id || product.id;
+                    const isDeleting = deletingProductId === productId;
+                    return (
+                      <div
+                        key={productId}
+                        className="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col justify-between group hover:shadow-md transition-shadow"
+                      >
+                        <div>
+                          {/* Product Image */}
+                          <div className="relative h-48 w-full bg-stone-100 overflow-hidden">
+                            {product.image ? (
+                              <img
+                                src={product.image}
+                                alt={product.name}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                loading="lazy"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-stone-400">
+                                <Package className="w-10 h-10" />
+                              </div>
+                            )}
+                            <span className="absolute top-3 left-3 bg-stone-900/80 backdrop-blur-sm text-white text-[11px] font-semibold px-2.5 py-1 rounded-full">
+                              {product.category || "General"}
+                            </span>
+                          </div>
+
+                          {/* Product Details */}
+                          <div className="p-5">
+                            <h3 className="font-bold text-stone-900 text-base mb-1 line-clamp-1" title={product.name}>
+                              {product.name}
+                            </h3>
+                            <div className="flex items-center justify-between mt-2">
+                              <span className="text-xl font-extrabold text-amber-800">
+                                ₹{product.price}
+                              </span>
+                              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${product.inStock ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-red-50 text-red-600 border border-red-200"}`}>
+                                {product.inStock ? "In Stock" : "Out of Stock"}
+                              </span>
+                            </div>
+                            {product.reviews && product.reviews.length > 0 && (
+                              <div className="flex items-center gap-1 mt-2 text-xs text-stone-500">
+                                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                                <span>{product.rating ? product.rating.toFixed(1) : "0"} ({product.numReviews || product.reviews.length} reviews)</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Delete Action Button */}
+                        <div className="p-5 pt-0">
+                          <button
+                            onClick={() => handleDeleteProduct(productId, product.name)}
+                            disabled={isDeleting}
+                            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl font-semibold text-xs tracking-wide transition-colors border border-red-200/60 disabled:opacity-50"
+                            title="Delete this product"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            {isDeleting ? "Deleting..." : "Delete Product"}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              );
+            })()}
           </div>
         )}
 
