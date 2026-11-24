@@ -3,31 +3,41 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --ivory: #F7F5F0;
-  --champagne: #EAE1D2;
-  --espresso: #241812;
-  --walnut: #65452F;
-  --gold: #C49A50;
-  --charcoal: #292929;
-  --warmgrey: #82786E;
-  --background: #F7F5F0;
-  --foreground: #241812;
+  --ivory: #F8F5EF;
+  --cream: #EFE7DA;
+  --beige: #E5D8C5;
+  --champagne: #E8DEC8;
+  --espresso: #241710;
+  --walnut: #38251C;
+  --gold: #C69A4B;
+  --gold-light: #DFB76C;
+  --gold-dark: #A67C2E;
+  --charcoal: #2A201B;
+  --warmgrey: #7D7368;
+  --background: #F8F5EF;
+  --foreground: #241710;
 }
 
 .dark {
-  --background: #14100E;
-  --foreground: #F7F5F0;
-  --ivory: #1E1713;
-  --champagne: #2E241E;
-  --espresso: #F7F5F0;
-  --walnut: #C49A50;
+  --background: #140F0C;
+  --foreground: #F8F5EF;
+  --ivory: #1D1510;
+  --cream: #261D17;
+  --beige: #342820;
+  --champagne: #2D221A;
+  --espresso: #F8F5EF;
+  --walnut: #C69A4B;
   --gold: #D4AF37;
-  --charcoal: #EAE1D2;
-  --warmgrey: #A39A90;
+  --gold-light: #E5C365;
+  --gold-dark: #B88E28;
+  --charcoal: #EFE7DA;
+  --warmgrey: #A3968A;
 }
 
 @theme inline {
   --color-ivory: var(--ivory);
+  --color-cream: var(--cream);
+  --color-beige: var(--beige);
   --color-champagne: var(--champagne);
   --color-espresso: var(--espresso);
   --color-walnut: var(--walnut);
@@ -59,15 +69,62 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(101, 69, 47, 0.2);
+  background: rgba(198, 154, 75, 0.25);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(101, 69, 47, 0.4);
+  background: rgba(198, 154, 75, 0.45);
 }
 
 /* Smooth Focus Rings */
 input:focus, select:focus, textarea:focus, button:focus-visible {
   outline: none;
+}
+
+/* Luxury Grain & Ambient Background Texture */
+.luxury-canvas {
+  background-color: #F8F5EF;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(239, 231, 218, 0.6) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(229, 216, 197, 0.45) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(248, 245, 239, 0.8) 0px, transparent 100%),
+    radial-gradient(at 100% 100%, rgba(232, 222, 200, 0.5) 0px, transparent 50%);
+}
+
+.dark .luxury-canvas {
+  background-color: #140F0C;
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(38, 29, 23, 0.8) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(45, 34, 26, 0.6) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(20, 15, 12, 0.9) 0px, transparent 100%),
+    radial-gradient(at 100% 100%, rgba(30, 22, 17, 0.7) 0px, transparent 50%);
+}
+
+/* Subtle luxury card treatment */
+.luxury-card-surface {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(229, 216, 197, 0.85);
+  box-shadow: 0 4px 20px -2px rgba(36, 23, 16, 0.04), 0 1px 3px rgba(36, 23, 16, 0.02);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .luxury-card-surface {
+  background: rgba(29, 21, 16, 0.85);
+  border: 1px solid rgba(52, 40, 32, 0.85);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+}
+
+.luxury-card-surface:hover {
+  border-color: rgba(198, 154, 75, 0.6);
+  box-shadow: 0 16px 36px -6px rgba(36, 23, 16, 0.09), 0 2px 6px rgba(198, 154, 75, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Gold Gradient Accents */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #DFB76C 0%, #C69A4B 50%, #9B7224 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

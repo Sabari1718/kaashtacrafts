@@ -19,8 +19,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "KaashtaCrafts | Premium Wooden Creations",
-  description: "Handcrafted wooden products designed with passion and precision.",
+  title: "KaashtaCrafts | Luxury Handcrafted Wooden Masterpieces",
+  description: "Artisanal wooden living, executive office suites, and heirloom dining sculptures handcrafted with pride in Tamil Nadu.",
 };
 
 export default function RootLayout({
@@ -34,7 +34,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${outfit.variable} ${playfair.variable} h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col font-sans text-[#241812] bg-[#F7F5F0] dark:bg-[#121212] dark:text-[#F7F5F0] selection:bg-[#C49A50] selection:text-[#241812] transition-colors duration-300">
+      <body className="min-h-full flex flex-col font-sans text-[#241710] bg-[#F8F5EF] dark:bg-[#140F0C] dark:text-[#F8F5EF] selection:bg-[#C69A4B] selection:text-[#241710] transition-colors duration-300">
         <Providers>
           <CartProvider>
             <WishlistProvider>
