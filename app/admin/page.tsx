@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Package, PlusCircle, LayoutDashboard, Settings, LogOut, UploadCloud, TrendingUp, ShoppingBag, Clock, ShieldAlert, MessageSquare, Trash2, Star, Lock, Search } from "lucide-react";
+import { Package, PlusCircle, LayoutDashboard, Settings, LogOut, UploadCloud, TrendingUp, ShoppingBag, Clock, ShieldAlert, MessageSquare, Trash2, Star, Lock, Search, Edit2, X, Check } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
 export default function AdminPage() {
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
@@ -31,10 +31,19 @@ export default function AdminPage() {
   const [newPromoDiscount, setNewPromoDiscount] = useState("");
   const [isCreatingPromo, setIsCreatingPromo] = useState(false);
 
-  // Product Search & Filter State
+  // Product Search, Filter, Edit & Delete State
   const [productSearchQuery, setProductSearchQuery] = useState("");
   const [productCategoryFilter, setProductCategoryFilter] = useState("All");
   const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
+
+  // Edit Modal State
+  const [editingProduct, setEditingProduct] = useState<any | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editPrice, setEditPrice] = useState("");
+  const [editCategory, setEditCategory] = useState("Desk Accessories");
+  const [editInStock, setEditInStock] = useState(true);
+  const [editImage, setEditImage] = useState("");
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   useEffect(() => {
     setIsCheckingAuth(false);
@@ -172,8 +181,68 @@ export default function AdminPage() {
     }
   };
 
+
+
+  const openEditModal = (product: any) => {
+    setEditingProduct(product);
+    setEditName(product.name || "");
+    setEditPrice((product.price || "").toString());
+    setEditCategory(product.category || "Desk Accessories");
+    setEditInStock(product.inStock !== false);
+    setEditImage(product.image || "");
+  };
+
+  const handleSaveEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingProduct) return;
+
+    setIsSavingEdit(true);
+    const prodId = editingProduct._id || editingProduct.id;
+
+    try {
+      const res = await fetch(`/api/products/${prodId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: editName,
+          price: Number(editPrice),
+          category: editCategory,
+          inStock: editInStock,
+          image: editImage,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setProducts((prev) =>
+          prev.map((p) =>
+            (p._id || p.id) === prodId
+              ? {
+                  ...p,
+                  name: editName,
+                  price: Number(editPrice),
+                  category: editCategory,
+                  inStock: editInStock,
+                  image: editImage,
+                }
+              : p
+          )
+        );
+        alert(`Product "${editName}" updated successfully!`);
+        setEditingProduct(null);
+      } else {
+        alert(data.error || "Failed to update product");
+      }
+    } catch (error) {
+      console.error("Error updating product:", error);
+      alert("Error saving product changes");
+    } finally {
+      setIsSavingEdit(false);
+    }
+  };
+
   const handleDeleteProduct = async (productId: string, productName: string) => {
-    if (!confirm(`Are you sure you want to delete "${productName}"? This product will be removed from your store.`)) {
+    if (!confirm(`Are you sure you want to delete "${productName}"? This action will remove it from the website.`)) {
       return;
     }
     setDeletingProductId(productId);
@@ -190,7 +259,7 @@ export default function AdminPage() {
       }
     } catch (error) {
       console.error("Error deleting product:", error);
-      alert("Something went wrong while deleting product");
+      alert("Error deleting product");
     } finally {
       setDeletingProductId(null);
     }
@@ -333,6 +402,11 @@ export default function AdminPage() {
             className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${activeTab === "products" ? "bg-stone-800 text-white" : "hover:bg-stone-900 hover:text-white"}`}
           >
             <Package className="w-5 h-5" /> Products
+            {products.length > 0 && (
+              <span className="ml-auto bg-amber-500/20 text-amber-400 text-xs px-2 py-0.5 rounded-full font-bold">
+                {products.length}
+              </span>
+            )}
           </button>
           <button 
             onClick={() => setActiveTab("add-product")}
@@ -485,7 +559,7 @@ export default function AdminPage() {
               <div>
                 <h2 className="text-3xl font-bold text-stone-900">Manage Products</h2>
                 <p className="text-stone-500 text-sm mt-1">
-                  View your live products, check photos, and delete items you no longer want.
+                  View your live products, edit details/price, or delete items you no longer want.
                 </p>
               </div>
               <button
@@ -502,7 +576,7 @@ export default function AdminPage() {
                 <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="Search products by name..."
+                  placeholder="Search products by name or category..."
                   value={productSearchQuery}
                   onChange={(e) => setProductSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-stone-200 bg-stone-50 focus:outline-none focus:ring-2 focus:ring-amber-700/50"
@@ -569,11 +643,13 @@ export default function AdminPage() {
                           {/* Product Image */}
                           <div className="relative h-48 w-full bg-stone-100 overflow-hidden">
                             {product.image ? (
-                              <img
+                              <Image
                                 src={product.image}
                                 alt={product.name}
+                                width={400}
+                                height={300}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                loading="lazy"
+                                unoptimized
                               />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center text-stone-400">
@@ -594,8 +670,8 @@ export default function AdminPage() {
                               <span className="text-xl font-extrabold text-amber-800">
                                 ₹{product.price}
                               </span>
-                              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${product.inStock ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-red-50 text-red-600 border border-red-200"}`}>
-                                {product.inStock ? "In Stock" : "Out of Stock"}
+                              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${product.inStock !== false ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-red-50 text-red-600 border border-red-200"}`}>
+                                {product.inStock !== false ? "In Stock" : "Out of Stock"}
                               </span>
                             </div>
                             {product.reviews && product.reviews.length > 0 && (
@@ -607,16 +683,24 @@ export default function AdminPage() {
                           </div>
                         </div>
 
-                        {/* Delete Action Button */}
-                        <div className="p-5 pt-0">
+                        {/* Action Buttons: Edit and Delete */}
+                        <div className="p-5 pt-0 grid grid-cols-2 gap-2">
+                          <button
+                            onClick={() => openEditModal(product)}
+                            className="flex items-center justify-center gap-1.5 py-2.5 px-3 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-xl font-semibold text-xs tracking-wide transition-colors border border-stone-200 cursor-pointer"
+                            title="Edit this product"
+                          >
+                            <Edit2 className="w-3.5 h-3.5 text-stone-600" />
+                            Edit
+                          </button>
                           <button
                             onClick={() => handleDeleteProduct(productId, product.name)}
                             disabled={isDeleting}
-                            className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl font-semibold text-xs tracking-wide transition-colors border border-red-200/60 disabled:opacity-50"
+                            className="flex items-center justify-center gap-1.5 py-2.5 px-3 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl font-semibold text-xs tracking-wide transition-colors border border-red-200/60 disabled:opacity-50 cursor-pointer"
                             title="Delete this product"
                           >
-                            <Trash2 className="w-4 h-4" />
-                            {isDeleting ? "Deleting..." : "Delete Product"}
+                            <Trash2 className="w-3.5 h-3.5" />
+                            {isDeleting ? "Deleting..." : "Delete"}
                           </button>
                         </div>
                       </div>
@@ -625,6 +709,127 @@ export default function AdminPage() {
                 </div>
               );
             })()}
+
+            {/* Edit Product Modal */}
+            {editingProduct && (
+              <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+                <div className="bg-white rounded-3xl max-w-lg w-full p-6 md:p-8 shadow-2xl border border-stone-200 relative my-8">
+                  <div className="flex justify-between items-center mb-6 pb-4 border-b border-stone-100">
+                    <div>
+                      <h3 className="text-xl font-bold text-stone-900">Edit Product</h3>
+                      <p className="text-xs text-stone-500 mt-0.5">Modify product details and save to store.</p>
+                    </div>
+                    <button
+                      onClick={() => setEditingProduct(null)}
+                      className="p-2 text-stone-400 hover:text-stone-700 hover:bg-stone-100 rounded-full transition-colors cursor-pointer"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <form onSubmit={handleSaveEdit} className="flex flex-col gap-5">
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">
+                        Product Name
+                      </label>
+                      <input
+                        type="text"
+                        value={editName}
+                        onChange={(e) => setEditName(e.target.value)}
+                        required
+                        className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-700/50 bg-stone-50 text-sm font-medium"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">
+                          Price (₹)
+                        </label>
+                        <input
+                          type="number"
+                          value={editPrice}
+                          onChange={(e) => setEditPrice(e.target.value)}
+                          required
+                          className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-700/50 bg-stone-50 text-sm font-medium"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">
+                          Category
+                        </label>
+                        <select
+                          value={editCategory}
+                          onChange={(e) => setEditCategory(e.target.value)}
+                          className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-700/50 bg-stone-50 text-sm font-medium"
+                        >
+                          <option>Desk Accessories</option>
+                          <option>Home Decor</option>
+                          <option>Kitchen</option>
+                          <option>Stationery</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-1.5">
+                        Image URL
+                      </label>
+                      <input
+                        type="text"
+                        value={editImage}
+                        onChange={(e) => setEditImage(e.target.value)}
+                        placeholder="https://res.cloudinary.com/..."
+                        required
+                        className="w-full px-4 py-2.5 rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-700/50 bg-stone-50 text-sm"
+                      />
+                      {editImage && (
+                        <div className="mt-3 h-28 w-28 rounded-xl overflow-hidden border border-stone-200 bg-stone-100">
+                          <Image
+                            src={editImage}
+                            alt="Preview"
+                            width={112}
+                            height={112}
+                            className="w-full h-full object-cover"
+                            unoptimized
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-3 p-3 bg-stone-50 rounded-xl border border-stone-200">
+                      <input
+                        type="checkbox"
+                        id="inStockCheck"
+                        checked={editInStock}
+                        onChange={(e) => setEditInStock(e.target.checked)}
+                        className="w-4 h-4 text-amber-700 rounded border-stone-300 focus:ring-amber-600 cursor-pointer"
+                      />
+                      <label htmlFor="inStockCheck" className="text-sm font-medium text-stone-800 cursor-pointer select-none">
+                        Product is In Stock & Available for Purchase
+                      </label>
+                    </div>
+
+                    <div className="flex gap-3 justify-end mt-4 pt-4 border-t border-stone-100">
+                      <button
+                        type="button"
+                        onClick={() => setEditingProduct(null)}
+                        className="px-5 py-2.5 rounded-xl border border-stone-300 hover:bg-stone-100 font-semibold text-stone-600 text-sm transition-colors cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={isSavingEdit}
+                        className="px-6 py-2.5 rounded-xl bg-amber-800 hover:bg-amber-700 disabled:bg-stone-400 text-white font-semibold text-sm transition-colors shadow-md flex items-center gap-2 cursor-pointer"
+                      >
+                        {isSavingEdit ? "Saving Changes..." : "Save Changes"}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            )}
           </div>
         )}
 

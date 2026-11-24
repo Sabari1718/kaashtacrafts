@@ -85,6 +85,57 @@ export async function POST(
   }
 }
 
+export async function PUT(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    await connectToDatabase();
+    const resolvedParams = await params;
+    const body = await request.json();
+    const { name, price, category, inStock, image, description } = body;
+
+    const updateData: any = {};
+    if (name !== undefined) updateData.name = name;
+    if (price !== undefined) updateData.price = Number(price);
+    if (category !== undefined) updateData.category = category;
+    if (inStock !== undefined) updateData.inStock = Boolean(inStock);
+    if (image !== undefined) updateData.image = image;
+    if (description !== undefined) updateData.description = description;
+
+    const updatedProduct = await Product.findByIdAndUpdate(
+      resolvedParams.id,
+      updateData,
+      { new: true }
+    );
+
+    if (!updatedProduct) {
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      product: {
+        id: updatedProduct._id.toString(),
+        _id: updatedProduct._id.toString(),
+        name: updatedProduct.name,
+        price: updatedProduct.price,
+        category: updatedProduct.category,
+        image: updatedProduct.image,
+        inStock: updatedProduct.inStock,
+        featured: updatedProduct.featured,
+        description: updatedProduct.description,
+        reviews: updatedProduct.reviews || [],
+        rating: updatedProduct.rating || 0,
+        numReviews: updatedProduct.numReviews || 0,
+      }
+    });
+  } catch (error: any) {
+    console.error("Failed to update product:", error);
+    return NextResponse.json({ error: error.message || "Failed to update product" }, { status: 500 });
+  }
+}
+
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
