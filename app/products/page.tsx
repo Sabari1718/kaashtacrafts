@@ -204,7 +204,7 @@ function ProductsContent() {
         </div>
 
         {/* Category Pills Quick Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-4 scrollbar-hide">
+        <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-4 mb-4 scrollbar-hide">
           {categories.map((category) => (
             <button
               key={category}
@@ -212,10 +212,10 @@ function ProductsContent() {
                 setSelectedCategory(category);
                 router.push(`/products?category=${encodeURIComponent(category)}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`);
               }}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+              className={`filter-chip px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap cursor-pointer ${
                 selectedCategory === category
-                  ? "bg-[#21150F] text-[#F7F3EB] dark:bg-[#C69A4B] dark:text-[#21150F] shadow-sm"
-                  : "bg-white/80 dark:bg-[#1E1510]/80 text-[#7A6E63] dark:text-[#A09285] border border-[#E0D3BE] dark:border-[#2C2018] hover:border-[#C69A4B]/60"
+                  ? "filter-chip-active"
+                  : "filter-chip-inactive bg-white/80 dark:bg-[#1E1510]/80 text-[#7A6E63] dark:text-[#A09285] border border-[#E0D3BE] dark:border-[#2C2018]"
               }`}
             >
               {category}

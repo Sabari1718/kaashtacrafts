@@ -134,14 +134,14 @@ export default function Home() {
               <Link
                 href={cat.href}
                 key={idx}
-                className="cat-pill group flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/80 dark:bg-[#1E1510]/80 border border-[#E0D3BE] dark:border-[#2C2018] hover:border-[#C69A4B]/60 hover:bg-white dark:hover:bg-[#2C2018] shadow-xs"
+                className="cat-pill group flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/85 dark:bg-[#1E1510]/85 border border-[#E0D3BE] dark:border-[#2C2018] shadow-2xs cursor-pointer"
               >
-                <div className="relative w-7 h-7 rounded-full overflow-hidden ring-1 ring-[#E0D3BE] dark:ring-[#2C2018] group-hover:ring-[#C69A4B]/50 transition-all shrink-0">
-                  <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+                <div className="relative w-7 h-7 rounded-full overflow-hidden ring-1 ring-[#E0D3BE] dark:ring-[#2C2018] group-hover:ring-[#D6A64C] group-hover:scale-105 transition-all duration-300 shrink-0">
+                  <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-115 transition-transform duration-500 ease-out" />
                 </div>
                 <div className="flex flex-col leading-none">
-                  <span className="text-[11px] font-semibold text-[#21150F] dark:text-[#F7F3EB] group-hover:text-[#38251C] dark:group-hover:text-[#DEB96A] transition-colors">{cat.name}</span>
-                  <span className="text-[8px] text-[#7A6E63] dark:text-[#A09285] tracking-wide mt-0.5">{cat.tag}</span>
+                  <span className="text-[11.5px] font-bold text-[#21150F] dark:text-[#F7F3EB] group-hover:text-[#352116] dark:group-hover:text-[#D6A64C] transition-colors">{cat.name}</span>
+                  <span className="text-[8px] text-[#7A6E63] dark:text-[#A09285] tracking-wider uppercase mt-0.5 font-medium">{cat.tag}</span>
                 </div>
               </Link>
             ))}
@@ -285,16 +285,16 @@ export default function Home() {
               </h2>
             </div>
 
-            {/* Filter Pills */}
-            <div className="flex items-center gap-2 flex-wrap">
+            {/* Filter Pills with Luxury Glow & Active State */}
+            <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
               {["All", "Desk Accessories", "Home Decor", "Kitchen", "Stationery"].map(cat => (
                 <button
                   key={cat}
                   onClick={() => setSelectedFilter(cat)}
-                  className={`px-4 py-2 rounded-full text-[11px] font-semibold tracking-wider uppercase whitespace-nowrap transition-all duration-300 cursor-pointer ${
+                  className={`filter-chip px-4 sm:px-4.5 py-2 rounded-full text-[11px] font-bold tracking-wider uppercase whitespace-nowrap cursor-pointer ${
                     selectedFilter === cat
-                      ? "bg-[#21150F] text-[#F7F3EB] dark:bg-[#C69A4B] dark:text-[#21150F] shadow-sm"
-                      : "bg-white/70 dark:bg-[#1E1510]/70 text-[#7A6E63] dark:text-[#A09285] border border-[#E0D3BE] dark:border-[#2C2018] hover:border-[#C69A4B]/50"
+                      ? "filter-chip-active"
+                      : "filter-chip-inactive bg-white/80 dark:bg-[#1E1510]/80 text-[#7A6E63] dark:text-[#A09285] border border-[#E0D3BE] dark:border-[#2C2018]"
                   }`}
                 >
                   {cat}

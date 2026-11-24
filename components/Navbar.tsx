@@ -137,15 +137,15 @@ export default function Navbar() {
             </div>
 
             {/* ── DESKTOP NAV LINKS ── */}
-            <div className="hidden lg:flex items-center bg-[#EDE5D8]/50 dark:bg-[#1E1510]/60 rounded-full px-1.5 py-1 gap-0.5 border border-[#E0D3BE]/60 dark:border-[#2C2018]/60">
+            <div className="hidden lg:flex items-center bg-[#EDE5D8]/50 dark:bg-[#1E1510]/60 rounded-full p-1 gap-1 border border-[#E0D3BE]/60 dark:border-[#2C2018]/60 shadow-2xs">
               {navLinks.map(link => (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-widest uppercase transition-all duration-300 ${
+                  className={`px-4 py-1.5 rounded-full text-[11px] font-bold tracking-widest uppercase transition-all duration-300 ${
                     link.isActive
-                      ? "bg-[#21150F] text-[#F7F3EB] dark:bg-[#C69A4B] dark:text-[#21150F] shadow-sm"
-                      : "text-[#38251C]/70 dark:text-[#F7F3EB]/60 hover:text-[#21150F] dark:hover:text-[#F7F3EB] hover:bg-white/60 dark:hover:bg-[#2C2018]"
+                      ? "nav-link-active"
+                      : "text-[#38251C]/75 dark:text-[#F7F3EB]/70 hover:text-[#21150F] dark:hover:text-[#D6A64C] hover:bg-white/70 dark:hover:bg-[#2C2018]"
                   }`}
                 >
                   {link.name}
