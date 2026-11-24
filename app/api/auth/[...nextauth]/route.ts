@@ -20,11 +20,12 @@ const handler = NextAuth({
         if (!credentials?.email || !credentials?.otp) return null;
 
         await connectToDatabase();
-        const user = await User.findOne({ email: credentials.email });
+        const cleanEmail = credentials.email.toLowerCase().trim();
+        const user = await User.findOne({ email: cleanEmail });
 
-        if (!user) throw new Error("No user found");
-        if (user.otp !== credentials.otp) throw new Error("Invalid OTP");
-        if (user.otpExpiry && new Date() > user.otpExpiry) throw new Error("OTP Expired");
+        if (!user) throw new Error("No user found with this email");
+        if (user.otp !== credentials.otp.trim()) throw new Error("Invalid verification code");
+        if (user.otpExpiry && new Date() > user.otpExpiry) throw new Error("Verification code has expired");
 
         // Clear OTP on success
         user.otp = undefined;

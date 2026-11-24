@@ -19,9 +19,10 @@ function LoginContent() {
   
   const callbackUrl = searchParams?.get("callbackUrl") || "/";
 
-  const handleSendOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !email.includes("@")) {
+  const handleSendOtp = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const cleanEmail = email.toLowerCase().trim();
+    if (!cleanEmail || !cleanEmail.includes("@")) {
       toast.error("Please enter a valid email address");
       return;
     }
@@ -31,21 +32,21 @@ function LoginContent() {
       const res = await fetch("/api/auth/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: cleanEmail }),
       });
       
       const data = await res.json();
       if (res.ok) {
-        toast.success("OTP sent to your email!");
+        toast.success(data.message || "Verification passcode sent!");
         if (data.developmentOtp) {
-          toast.info(`Development OTP: ${data.developmentOtp}`, { duration: 10000 });
+          toast.info(`Passcode: ${data.developmentOtp}`, { duration: 10000 });
         }
         setStep("otp");
       } else {
-        toast.error(data.error || "Failed to send OTP");
+        toast.error(data.error || "Failed to send verification code");
       }
     } catch (error) {
-      toast.error("An error occurred");
+      toast.error("An error occurred while sending code");
     } finally {
       setIsLoading(false);
     }
@@ -53,23 +54,24 @@ function LoginContent() {
 
   const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (otp.length < 6) {
-      toast.error("Please enter a valid 6-digit OTP");
+    const cleanOtp = otp.trim();
+    if (cleanOtp.length < 6) {
+      toast.error("Please enter a valid 6-digit code");
       return;
     }
 
     setIsLoading(true);
     try {
       const res = await signIn("OTP", {
-        email,
-        otp,
+        email: email.toLowerCase().trim(),
+        otp: cleanOtp,
         redirect: false,
       });
 
       if (res?.error) {
         toast.error(res.error);
       } else {
-        toast.success("Logged in successfully!");
+        toast.success("Signed in successfully!");
         router.push(callbackUrl);
         router.refresh();
       }
@@ -182,13 +184,23 @@ function LoginContent() {
                 {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Verify & Continue"}
               </button>
 
-              <button 
-                type="button"
-                onClick={() => setStep("email")}
-                className="text-[#82786E] hover:text-[#241812] dark:hover:text-[#F7F5F0] text-xs font-medium text-center transition-colors cursor-pointer mt-2"
-              >
-                ← Entered wrong email? Edit email
-              </button>
+              <div className="flex items-center justify-between text-xs mt-2 px-1">
+                <button 
+                  type="button"
+                  onClick={() => setStep("email")}
+                  className="text-[#82786E] hover:text-[#241812] dark:hover:text-[#F7F5F0] font-medium transition-colors cursor-pointer"
+                >
+                  ← Edit email
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => handleSendOtp()}
+                  disabled={isLoading}
+                  className="text-[#C49A50] hover:text-[#D4AF37] font-semibold transition-colors cursor-pointer"
+                >
+                  Resend Code
+                </button>
+              </div>
             </form>
           )}
 
