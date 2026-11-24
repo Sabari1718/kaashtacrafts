@@ -28,45 +28,6 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-const categories = [
-  { 
-    name: "Top Offers", 
-    tag: "Curated Drops", 
-    image: "/top-offers.jpg", 
-    href: "/products" 
-  },
-  { 
-    name: "Desk & Office", 
-    tag: "Executive Suite", 
-    image: "/desk-accessories.jpg", 
-    href: "/products?category=Desk Accessories" 
-  },
-  { 
-    name: "Home Decor", 
-    tag: "Sanctuary Pieces", 
-    image: "/home-decor.jpg", 
-    href: "/products?category=Home Decor" 
-  },
-  { 
-    name: "Kitchen & Dining", 
-    tag: "Culinary Art", 
-    image: "/kitchen.jpg", 
-    href: "/products?category=Kitchen" 
-  },
-  { 
-    name: "Stationery", 
-    tag: "Minimalist Blocks", 
-    image: "/stationery.jpg", 
-    href: "/products?category=Stationery" 
-  },
-  { 
-    name: "Gifts & Curios", 
-    tag: "Bespoke Tokens", 
-    image: "/gifts.jpg", 
-    href: "/products" 
-  },
-];
-
 export default function Home() {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
@@ -136,40 +97,8 @@ export default function Home() {
       <div className="absolute top-[850px] -right-24 w-[500px] h-[500px] bg-[#EAE1D2]/40 dark:bg-[#2E241E]/20 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-[1800px] -left-24 w-[500px] h-[500px] bg-[#EAE1D2]/30 dark:bg-[#241812]/40 rounded-full blur-3xl pointer-events-none -z-10" />
 
-      {/* 2. REFINED CATEGORIES BAR (Warm Ivory & Soft Champagne Capsule Strips) */}
-      <section className="w-full bg-[#F7F5F0]/95 dark:bg-[#14100E]/95 backdrop-blur-md border-b border-[#EAE1D2]/80 dark:border-[#2E241E]/80 sticky top-[40px] sm:top-[42px] z-30 shadow-2xs">
-        <div className="max-w-[1400px] mx-auto px-2 sm:px-4 pt-1 pb-1 overflow-x-auto scrollbar-hide">
-          <div className="flex items-center gap-1.5 sm:gap-2 min-w-max mx-auto justify-start sm:justify-center">
-            {categories.map((cat, idx) => (
-              <Link 
-                href={cat.href} 
-                key={idx} 
-                className="group flex items-center gap-1.5 p-0.5 pr-2.5 rounded-full bg-white/85 dark:bg-[#1E1713]/85 border border-[#EAE1D2] dark:border-[#2E241E] hover:border-[#C49A50] dark:hover:border-[#C49A50] hover:bg-white dark:hover:bg-[#2E241E] transition-all duration-300 shadow-2xs hover:shadow-xs"
-              >
-                <div className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full overflow-hidden ring-1 ring-[#EAE1D2] dark:ring-[#2E241E] group-hover:ring-[#C49A50] transition-all shrink-0">
-                  <Image 
-                    src={cat.image} 
-                    alt={cat.name} 
-                    fill 
-                    className="object-cover group-hover:scale-110 transition-transform duration-500" 
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[11px] sm:text-xs font-semibold tracking-tight text-[#241812] dark:text-[#F7F5F0] group-hover:text-[#65452F] dark:group-hover:text-[#C49A50] transition-colors leading-tight">
-                    {cat.name}
-                  </span>
-                  <span className="text-[8px] sm:text-[9px] text-[#82786E] dark:text-[#A39A90] font-medium leading-none">
-                    {cat.tag}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. HERO SHOWCASE (Cinematic Editorial Split Carousel - Mobile Optimized) */}
-      <section className="w-full max-w-[1400px] mx-auto px-2 sm:px-4 pt-1 pb-2 md:pb-4">
+      {/* 2. HERO SHOWCASE (Cinematic Editorial Split Carousel - Mobile Optimized) */}
+      <section className="w-full max-w-[1400px] mx-auto px-3 sm:px-4 pt-2 sm:pt-3 pb-2 md:pb-4">
         <div className="relative w-full rounded-2xl md:rounded-3xl overflow-hidden bg-[#241812] shadow-xl border border-[#38261C]">
           
           {/* Subtle Warm Spotlight */}
