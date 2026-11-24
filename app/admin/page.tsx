@@ -1006,6 +1006,25 @@ export default function AdminPage() {
                         <p className="text-stone-600 text-sm mb-1">✉️ {order.email}</p>
                         <p className="text-stone-600 text-sm mt-2">{order.address}</p>
                         <p className="text-stone-600 text-sm">{order.city} - {order.pincode}</p>
+                        
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          <a
+                            href={`https://wa.me/91${order.phone?.replace(/\D/g, '').slice(-10)}?text=${encodeURIComponent(`Hello ${order.customerName}, regarding your Kaashta Crafts Order #${order._id?.slice(-6).toUpperCase()}...`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20bd5a] text-white px-3 py-1.5 rounded-lg text-xs font-semibold shadow-xs transition-colors"
+                          >
+                            💬 WhatsApp Customer
+                          </a>
+                          <a
+                            href={`https://wa.me/918838098116?text=${encodeURIComponent(`🛍️ *KAASHTA CRAFTS ORDER #${order._id?.slice(-6).toUpperCase()}*\nCustomer: ${order.customerName}\nPhone: ${order.phone}\nTotal: ₹${order.totalAmount}\nStatus: ${order.status}`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 bg-stone-800 hover:bg-stone-900 text-stone-100 px-3 py-1.5 rounded-lg text-xs font-medium shadow-xs transition-colors"
+                          >
+                            📱 Send to 8838098116
+                          </a>
+                        </div>
                       </div>
                       <div>
                         <h4 className="font-semibold text-stone-900 mb-2">Items Ordered</h4>

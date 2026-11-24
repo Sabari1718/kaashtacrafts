@@ -174,7 +174,35 @@ export async function POST(req: Request) {
       // We don't fail the order if the emails fail
     }
 
-    return NextResponse.json({ success: true, order: newOrder });
+    // ==========================================
+    // 💬 WHATSAPP ORDER NOTIFICATION (+91 8838098116)
+    // ==========================================
+    const itemsSummary = items
+      .map((item: any, idx: number) => `${idx + 1}. *${item.name}* (Qty: ${item.quantity}) - ₹${item.price * item.quantity}`)
+      .join('\n');
+
+    const whatsappMessage = 
+`🛍️ *NEW ORDER - KAASHTA CRAFTS*
+━━━━━━━━━━━━━━━━━━━━
+🆔 *Order ID:* #${newOrder._id.toString().slice(-6).toUpperCase()}
+👤 *Customer:* ${customerName}
+📞 *Phone:* ${phone}
+✉️ *Email:* ${email || "N/A"}
+📍 *Delivery Address:*
+${address}, ${city} - ${pincode}
+
+🛒 *Items Ordered:*
+${itemsSummary}
+
+💰 *Total Price:* ₹${totalAmount}
+${promoCode ? `🏷️ *Promo Code:* ${promoCode}\n` : ''}━━━━━━━━━━━━━━━━━━━━
+🔗 *View in Admin Panel:*
+https://kaashtacrafts.vercel.app/admin`;
+
+    const targetNumber = "918838098116";
+    const whatsappUrl = `https://wa.me/${targetNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+
+    return NextResponse.json({ success: true, order: newOrder, whatsappUrl });
   } catch (error: any) {
     console.error("Error creating order:", error);
     return NextResponse.json({ error: error.message || "Failed to create order" }, { status: 500 });
