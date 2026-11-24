@@ -118,7 +118,7 @@ export default function Home() {
           2. HERO — CINEMATIC FULL-WIDTH EDITORIAL
           ══════════════════════════════════════════════ */}
       <section className="w-full">
-        <div className="relative w-full h-[88vh] min-h-[560px] max-h-[820px] bg-[#21150F] overflow-hidden">
+        <div className="relative w-full bg-[#21150F] overflow-hidden" style={{ height: "clamp(420px, 56vw, 540px)" }}>
           <Swiper
             modules={[Pagination, Autoplay, EffectFade]}
             effect="fade"
@@ -134,18 +134,16 @@ export default function Home() {
                 <Image src="/banner1.jpg" alt="Artisan Woodcraft" fill priority className="object-cover scale-105 animate-reveal-up" />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#21150F]/95 via-[#21150F]/60 to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#21150F]/80 via-transparent to-transparent" />
-                <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-24 max-w-3xl pb-10">
-                  <div className="label-luxury text-[#DEB96A] mb-5 flex items-center gap-2">
-                    <span className="w-8 h-px bg-[#C69A4B]" />
+                <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-20 max-w-[640px] pb-8">
+                  <div className="label-luxury text-[#DEB96A] mb-4 flex items-center gap-2">
+                    <span className="w-6 h-px bg-[#C69A4B]" />
                     Artisanal Heritage Collections
                   </div>
-                  <h1 className="heading-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-[#F7F3EB] mb-2 leading-[0.95]">
-                    Artistry
+                  <h1 className="heading-display text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] text-[#F7F3EB] leading-[1.08] mb-3">
+                    Artistry in Every Grain.<br />
+                    <span className="text-gold-gradient">Soul in Every Curve.</span>
                   </h1>
-                  <h1 className="heading-editorial text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-gold-gradient mb-6 leading-[0.95]">
-                    in every grain.
-                  </h1>
-                  <p className="text-[#E0D3BE]/80 text-sm sm:text-base leading-relaxed mb-8 max-w-md font-sans">
+                  <p className="text-[#E0D3BE]/80 text-[13px] sm:text-sm leading-relaxed mb-6 max-w-xs font-sans font-normal">
                     Sculpted from sustainably seasoned teak and sheesham — designed to bring organic warmth, dignity, and calm into every living space.
                   </p>
                   <div className="flex flex-wrap gap-3">
@@ -166,18 +164,16 @@ export default function Home() {
                 <Image src="/banner2.jpg" alt="Handcrafted Warmth" fill className="object-cover" />
                 <div className="absolute inset-0 bg-gradient-to-r from-[#21150F]/95 via-[#21150F]/55 to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#21150F]/75 via-transparent to-transparent" />
-                <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-24 max-w-3xl pb-10">
-                  <div className="label-luxury text-[#DEB96A] mb-5 flex items-center gap-2">
+                <div className="absolute inset-0 flex flex-col justify-center px-6 sm:px-12 md:px-16 lg:px-20 max-w-[640px] pb-8">
+                  <div className="label-luxury text-[#DEB96A] mb-4 flex items-center gap-2">
                     <Flame className="w-3 h-3" />
                     Limited Batch Edition
                   </div>
-                  <h1 className="heading-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-[#F7F3EB] mb-2 leading-[0.95]">
-                    Handcrafted
+                  <h1 className="heading-display text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] text-[#F7F3EB] leading-[1.08] mb-3">
+                    Handcrafted Warmth<br />
+                    <span className="text-gold-gradient">For Your Sanctuary.</span>
                   </h1>
-                  <h1 className="heading-editorial text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-gold-gradient mb-6 leading-[0.95]">
-                    warmth.
-                  </h1>
-                  <p className="text-[#E0D3BE]/80 text-sm sm:text-base leading-relaxed mb-8 max-w-md font-sans">
+                  <p className="text-[#E0D3BE]/80 text-[13px] sm:text-sm leading-relaxed mb-6 max-w-xs font-sans font-normal">
                     Hand-rubbed with natural botanical oils, preserving the golden richness and authentic tactile feel of real timber.
                   </p>
                   <div className="flex flex-wrap gap-3">
@@ -200,13 +196,11 @@ export default function Home() {
                     <Leaf className="w-3 h-3" />
                     100% Food-Safe & Organic
                   </div>
-                  <h1 className="heading-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-[#F7F3EB] mb-2 leading-[0.95]">
-                    Dining
+                  <h1 className="heading-display text-[40px] sm:text-[48px] md:text-[56px] lg:text-[64px] text-[#F7F3EB] leading-[1.08] mb-3">
+                    Dining Sculptures<br />
+                    <span className="text-gold-gradient">Carved To Endure.</span>
                   </h1>
-                  <h1 className="heading-editorial text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-gold-gradient mb-6 leading-[0.95]">
-                    sculptures.
-                  </h1>
-                  <p className="text-[#E0D3BE]/80 text-sm sm:text-base leading-relaxed mb-8 max-w-md font-sans">
+                  <p className="text-[#E0D3BE]/80 text-[13px] sm:text-sm leading-relaxed mb-6 max-w-xs font-sans font-normal">
                     Turn everyday hosting into ritual. Hand-turned acacia boards and artisanal platters carved to endure generations.
                   </p>
                   <div className="flex flex-wrap gap-3">
@@ -219,12 +213,12 @@ export default function Home() {
             </SwiperSlide>
           </Swiper>
 
-          {/* Floating stats */}
-          <div className="hidden lg:flex absolute bottom-8 right-10 z-20 items-center gap-5 bg-[#21150F]/75 backdrop-blur-xl border border-[#C69A4B]/20 px-6 py-4 rounded-2xl shadow-2xl">
+          {/* Floating stats — compact for smaller hero */}
+          <div className="hidden lg:flex absolute bottom-6 right-8 z-20 items-center gap-4 bg-[#21150F]/80 backdrop-blur-xl border border-[#C69A4B]/20 px-5 py-3 rounded-xl shadow-2xl">
             {[["4.9★", "2,500+ Reviews"], ["100%", "Solid Hardwood"], ["0%", "Chemical Sealants"]].map(([val, lbl], i) => (
-              <div key={i} className={`flex flex-col items-center ${i > 0 ? "pl-5 border-l border-[#38251C]" : ""}`}>
-                <span className={`font-playfair font-bold text-xl ${i === 0 ? "text-[#DEB96A]" : i === 2 ? "text-emerald-400" : "text-[#F7F3EB]"}`}>{val}</span>
-                <span className="text-[10px] text-[#7A6E63] mt-0.5 tracking-wide">{lbl}</span>
+              <div key={i} className={`flex flex-col items-center ${i > 0 ? "pl-4 border-l border-[#38251C]" : ""}`}>
+                <span className={`font-playfair font-bold text-base ${i === 0 ? "text-[#DEB96A]" : i === 2 ? "text-emerald-400" : "text-[#F7F3EB]"}`}>{val}</span>
+                <span className="text-[9px] text-[#7A6E63] mt-0.5 tracking-wide">{lbl}</span>
               </div>
             ))}
           </div>
@@ -256,9 +250,9 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
             <div>
               <p className="label-luxury text-[#C69A4B] mb-3">Handcrafted Treasures</p>
-              <h2 className="heading-display text-4xl sm:text-5xl md:text-6xl text-[#21150F] dark:text-[#F7F3EB]">
-                Best of<br />
-                <span className="heading-editorial text-[#38251C] dark:text-[#DEB96A]">Kaashta Crafts</span>
+              <h2 className="heading-display text-4xl sm:text-5xl md:text-[52px] text-[#21150F] dark:text-[#F7F3EB] leading-[1.1]">
+                Best of{" "}
+                <span className="text-gold-gradient">Kaashta Crafts</span>
               </h2>
             </div>
 

@@ -75,13 +75,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ── ANNOUNCEMENT STRIP ── */}
-      <div className="w-full bg-[#21150F] text-[#E0D3BE] py-1.5 px-4 text-center">
-        <p className="text-[10px] tracking-[0.25em] uppercase font-medium">
-          Complimentary Delivery on Orders Above ₹999 &nbsp;•&nbsp; Handcrafted in Tamil Nadu
-        </p>
-      </div>
-
       {/* ── MAIN NAVBAR ── */}
       <nav className={`sticky top-0 z-50 w-full transition-all duration-500 ${
         isScrolled
