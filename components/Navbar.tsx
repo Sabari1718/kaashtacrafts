@@ -91,7 +91,7 @@ export default function Navbar() {
 
   return (
     <nav className="sticky top-0 z-50 flex w-full flex-col bg-[#F7F5F0]/95 dark:bg-[#14100E]/95 backdrop-blur-md border-b border-[#EAE1D2]/80 dark:border-[#2E241E]/80 transition-colors duration-300">
-      <div className="flex w-full items-center justify-between px-3 sm:px-6 lg:px-8 pt-1.5 pb-0.5 gap-2 sm:gap-3 max-w-[1440px] mx-auto">
+      <div className="flex w-full items-center justify-between px-3 sm:px-6 lg:px-8 pt-1 pb-0 gap-2 sm:gap-3 max-w-[1440px] mx-auto">
         
         {/* Brand Logo & Name */}
         <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">

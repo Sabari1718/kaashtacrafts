@@ -137,8 +137,8 @@ export default function Home() {
       <div className="absolute top-[1800px] -left-24 w-[500px] h-[500px] bg-[#EAE1D2]/30 dark:bg-[#241812]/40 rounded-full blur-3xl pointer-events-none -z-10" />
 
       {/* 2. REFINED CATEGORIES BAR (Warm Ivory & Soft Champagne Capsule Strips) */}
-      <section className="w-full bg-[#F7F5F0]/95 dark:bg-[#14100E]/95 backdrop-blur-md border-b border-[#EAE1D2]/80 dark:border-[#2E241E]/80 sticky top-[40px] sm:top-[42px] z-30 shadow-2xs">
-        <div className="max-w-[1400px] mx-auto px-2 sm:px-4 pt-1 pb-1 overflow-x-auto scrollbar-hide">
+      <section className="w-full bg-[#F7F5F0]/95 dark:bg-[#14100E]/95 backdrop-blur-md border-b border-[#EAE1D2]/80 dark:border-[#2E241E]/80 sticky top-[38px] sm:top-[40px] z-30 shadow-2xs -mt-px">
+        <div className="max-w-[1400px] mx-auto px-2 sm:px-4 pt-0 pb-1 overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-1.5 sm:gap-2 min-w-max mx-auto justify-start sm:justify-center">
             {categories.map((cat, idx) => (
               <Link 
