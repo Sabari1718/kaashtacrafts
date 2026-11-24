@@ -70,30 +70,6 @@ const categories = [
   },
 ];
 
-const testimonials = [
-  {
-    name: "Vikram Rathore",
-    city: "Bangalore",
-    review: "The finish on the teak desk organizer is beyond words. You can feel the natural wood grain and subtle beeswax aroma. Truly an heirloom piece.",
-    rating: 5,
-    item: "Executive Desk Suite"
-  },
-  {
-    name: "Ananya Iyer",
-    city: "Chennai",
-    review: "Bought the wooden wall art and tea-light holders. The packaging was eco-friendly and safe, and the carving detail is unmatched in this price range.",
-    rating: 5,
-    item: "Artisan Wall Decor"
-  },
-  {
-    name: "Rajesh Sharma",
-    city: "Mumbai",
-    review: "Pure seasoned hardwood with zero cheap MDF. Super solid and premium tactile weight. Kaashta Crafts has become my standard for corporate gifting.",
-    rating: 5,
-    item: "Solid Acacia Platters"
-  }
-];
-
 export default function Home() {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
@@ -701,96 +677,6 @@ export default function Home() {
             <div className="absolute bottom-4 left-4 right-4 bg-[#241812]/80 backdrop-blur-md p-3 rounded-xl border border-white/10 flex items-center justify-between text-xs text-[#F7F5F0]">
               <span>Handcrafted in Tamil Nadu, India</span>
               <span className="text-[#C49A50] font-bold">Authentic Guild</span>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 8. SOCIAL PROOF & VERIFIED REVIEWS */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 py-12">
-        <div className="text-center max-w-xl mx-auto mb-10">
-          <div className="flex items-center justify-center gap-1 text-[#C49A50] mb-2">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 fill-[#C49A50]" />
-            ))}
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-playfair font-bold text-[#241812] dark:text-[#F7F5F0]">
-            Loved By Over 5,000+ Patrons
-          </h2>
-          <p className="text-[#82786E] dark:text-[#A39A90] text-xs sm:text-sm mt-1">
-            Real stories from homes and offices transformed by Kaashta Crafts.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((t, idx) => (
-            <div 
-              key={idx}
-              className="p-6 rounded-2xl bg-white/80 dark:bg-[#1E1713]/80 border border-[#EAE1D2] dark:border-[#2E241E] flex flex-col justify-between shadow-2xs hover:shadow-xs transition-all"
-            >
-              <div>
-                <div className="flex items-center gap-1 text-[#C49A50] mb-3">
-                  {[...Array(t.rating)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-[#C49A50]" />
-                  ))}
-                </div>
-                <p className="text-[#241812]/90 dark:text-[#F7F5F0]/90 text-sm leading-relaxed mb-4 italic font-sans">
-                  "{t.review}"
-                </p>
-              </div>
-
-              <div className="pt-4 border-t border-[#EAE1D2]/80 dark:border-[#2E241E]/80 flex items-center justify-between text-xs">
-                <div>
-                  <h4 className="font-bold text-[#241812] dark:text-[#F7F5F0]">{t.name}</h4>
-                  <span className="text-[#82786E]">{t.city}</span>
-                </div>
-                <span className="bg-[#EAE1D2]/60 dark:bg-[#2E241E] text-[#65452F] dark:text-[#C49A50] font-semibold px-2.5 py-1 rounded-md text-[10px]">
-                  {t.item}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 9. VIP PROMO CODE PRIVILEGE BANNER */}
-      <section className="w-full max-w-[1400px] mx-auto px-4 pb-14">
-        <div className="w-full bg-[#241812] rounded-3xl p-8 sm:p-12 text-center text-[#F7F5F0] border border-[#C49A50]/30 relative overflow-hidden shadow-xl">
-          
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#C49A50]/10 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
-            <span className="bg-[#C49A50]/20 text-[#C49A50] border border-[#C49A50]/40 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-[0.18em] mb-4">
-              First Time Collector?
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-playfair font-bold text-[#F7F5F0] mb-3">
-              Claim Your 10% Welcome Privilege
-            </h2>
-            <p className="text-[#EAE1D2]/80 text-sm mb-6 max-w-md">
-              Apply this privilege coupon at checkout to enjoy an instant discount on your first artisanal wooden creation.
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center gap-3 w-full justify-center">
-              <div className="flex items-center gap-2 bg-[#1A110D] border-2 border-dashed border-[#C49A50]/60 px-6 py-3 rounded-2xl">
-                <span className="font-mono text-lg font-extrabold tracking-widest text-[#C49A50]">
-                  KAASHTA10
-                </span>
-                <button
-                  onClick={() => copyPromoCode("KAASHTA10")}
-                  className="ml-3 bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] p-2 rounded-xl transition-all cursor-pointer"
-                  title="Copy Code"
-                >
-                  {copiedCode ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                </button>
-              </div>
-
-              <Link
-                href="/products"
-                className="bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] font-bold px-8 py-3.5 rounded-2xl shadow-md transition-all text-sm cursor-pointer"
-              >
-                Start Shopping Now →
-              </Link>
             </div>
           </div>
 
