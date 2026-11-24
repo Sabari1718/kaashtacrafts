@@ -90,7 +90,20 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
   const handleBuyNow = () => {
     if (product) {
-      router.push(`/checkout?buyNow=${product.id || (product as any)._id}`);
+      const currentUrl = typeof window !== "undefined" ? window.location.href : `https://kaashtacrafts.vercel.app/products/${product.id || (product as any)._id}`;
+      const message = 
+`🛍️ *ORDER INQUIRY - KAASHTA CRAFTS*
+━━━━━━━━━━━━━━━━━━━━
+Hello! I want to buy this product directly:
+📦 *Product:* ${product.name}
+💰 *Price:* ₹${product.price}
+🏷️ *Category:* ${product.category}
+🔗 *Link:* ${currentUrl}
+━━━━━━━━━━━━━━━━━━━━
+Please share payment and delivery details!`;
+
+      const whatsappUrl = `https://wa.me/918838098116?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
     }
   };
 
@@ -350,9 +363,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </button>
             <button 
               onClick={handleBuyNow}
-              className="flex-1 bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-md hover:shadow-lg cursor-pointer"
+              className="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
             >
-              Instant Purchase ₹{product.price}
+              <span>Instant Buy via WhatsApp ₹{product.price}</span>
             </button>
           </div>
         </div>
@@ -495,15 +508,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#F7F5F0]/95 dark:bg-[#14100E]/95 backdrop-blur-md border-t border-[#EAE1D2] dark:border-[#2E241E] p-3 flex gap-2.5 z-40 shadow-lg">
         <button 
           onClick={handleAddToCart}
-          className="flex-1 bg-[#241812] text-[#F7F5F0] py-3 rounded-full font-bold text-xs uppercase tracking-wider"
+          className="flex-1 bg-[#241812] text-[#F7F5F0] py-3 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5"
         >
+          <ShoppingBag className="w-3.5 h-3.5" />
           Add to Bag
         </button>
         <button 
           onClick={handleBuyNow}
-          className="flex-1 bg-[#C49A50] text-[#241812] py-3 rounded-full font-bold text-xs uppercase tracking-wider"
+          className="flex-1 bg-[#25D366] hover:bg-[#20bd5a] text-white py-3 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md"
         >
-          Buy at ₹{product.price}
+          Buy Now (WhatsApp) ₹{product.price}
         </button>
       </div>
 

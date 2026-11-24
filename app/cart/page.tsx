@@ -130,12 +130,23 @@ export default function CartPage() {
                       </div>
 
                       <div className="flex items-center gap-4">
-                        <Link 
-                          href={`/checkout?buyNow=${item.id}`}
-                          className="text-[#C49A50] hover:underline flex items-center gap-1 text-xs font-bold transition-colors"
+                        <button 
+                          onClick={() => {
+                            const waText = 
+`🛍️ *DIRECT ORDER - KAASHTA CRAFTS*
+━━━━━━━━━━━━━━━━━━━━
+Hello! I want to buy this item:
+📦 *Product:* ${item.name}
+🔢 *Quantity:* ${item.quantity}
+💰 *Total:* ₹${item.price * item.quantity}
+━━━━━━━━━━━━━━━━━━━━
+Please share payment and delivery details!`;
+                            window.open(`https://wa.me/918838098116?text=${encodeURIComponent(waText)}`, '_blank');
+                          }}
+                          className="text-[#25D366] hover:underline flex items-center gap-1 text-xs font-bold transition-colors cursor-pointer"
                         >
-                          Buy Now <ArrowRight className="w-3 h-3" />
-                        </Link>
+                          Buy on WhatsApp <ArrowRight className="w-3 h-3" />
+                        </button>
 
                         <button 
                           onClick={() => removeFromCart(item.id)}
@@ -173,6 +184,37 @@ export default function CartPage() {
                   </div>
                   <p className="text-[10px] text-[#82786E] mt-1 text-right">All taxes & cushioned delivery included</p>
                 </div>
+
+                <button
+                  onClick={() => {
+                    const selectedItems = cartItems.filter(item => selectedItemIds.includes(item.id));
+                    if (selectedItems.length === 0) {
+                      alert("Please select at least one item to order.");
+                      return;
+                    }
+                    const itemsList = selectedItems
+                      .map((item, i) => `${i + 1}. *${item.name}* (Qty: ${item.quantity}) - ₹${item.price * item.quantity}`)
+                      .join('\n');
+                    const waText = 
+`🛍️ *KAASHTA CRAFTS BAG ORDER*
+━━━━━━━━━━━━━━━━━━━━
+Hello! I want to order these items from my bag:
+
+${itemsList}
+
+💰 *Total Amount:* ₹${total}
+━━━━━━━━━━━━━━━━━━━━
+Please share payment and delivery details!`;
+                    window.open(`https://wa.me/918838098116?text=${encodeURIComponent(waText)}`, '_blank');
+                  }}
+                  disabled={selectedItemIds.length === 0}
+                  className={`w-full py-3 rounded-full font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 mb-2 cursor-pointer shadow-sm hover:shadow-md
+                    ${selectedItemIds.length > 0 
+                      ? "bg-[#25D366] hover:bg-[#20bd5a] text-white" 
+                      : "bg-[#EAE1D2] text-[#82786E] cursor-not-allowed"}`}
+                >
+                  Order via WhatsApp (+91 88380 98116)
+                </button>
 
                 <Link 
                   href={selectedItemIds.length > 0 ? `/checkout?selectedIds=${selectedItemIds.join(",")}` : "#"} 
