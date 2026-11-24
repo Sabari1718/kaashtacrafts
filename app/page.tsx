@@ -10,14 +10,11 @@ import {
   Heart, 
   Star, 
   Sparkles, 
-  Truck, 
   Leaf, 
-  Check, 
-  Copy, 
   Flame, 
-  ArrowRight,
-  TrendingUp,
-  Package
+  ArrowRight, 
+  TrendingUp, 
+  Package 
 } from "lucide-react";
 import { toast } from "sonner";
 import { useCart } from "./context/CartContext";
@@ -76,7 +73,6 @@ export default function Home() {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedFilter, setSelectedFilter] = useState("All");
-  const [copiedCode, setCopiedCode] = useState(false);
 
   useEffect(() => {
     async function fetchProducts() {
@@ -94,13 +90,6 @@ export default function Home() {
     }
     fetchProducts();
   }, []);
-
-  const copyPromoCode = (code: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCode(true);
-    toast.success(`Privilege voucher ${code} copied!`);
-    setTimeout(() => setCopiedCode(false), 3000);
-  };
 
   const handleAddToCart = (e: React.MouseEvent, product: Product) => {
     e.preventDefault();
@@ -146,34 +135,6 @@ export default function Home() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1100px] h-[550px] bg-gradient-to-b from-[#EAE1D2]/60 via-[#F7F5F0]/20 to-transparent dark:from-[#2E241E]/40 dark:via-transparent rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-[850px] -right-24 w-[500px] h-[500px] bg-[#EAE1D2]/40 dark:bg-[#2E241E]/20 rounded-full blur-3xl pointer-events-none -z-10" />
       <div className="absolute top-[1800px] -left-24 w-[500px] h-[500px] bg-[#EAE1D2]/30 dark:bg-[#241812]/40 rounded-full blur-3xl pointer-events-none -z-10" />
-
-      {/* 1. TOP ANNOUNCEMENT TICKER (Deep Espresso & Antique Gold) */}
-      <div className="w-full bg-[#241812] text-[#F7F5F0] text-xs py-2.5 px-4 overflow-hidden border-b border-[#38261C] select-none shadow-xs">
-        <div className="max-w-[1400px] mx-auto flex items-center justify-between gap-4 font-sans tracking-wide">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-1.5 w-1.5 rounded-full bg-[#C49A50] animate-pulse" />
-            <span className="font-bold text-[#C49A50] uppercase tracking-[0.15em] text-[11px]">HANDCRAFTED IN INDIA</span>
-            <span className="hidden md:inline text-[#82786E]">• 100% Solid Seasoned Hardwood</span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="text-[#82786E] hidden sm:inline">Complimentary Welcome Privilege:</span>
-            <button 
-              onClick={() => copyPromoCode("KAASHTA10")}
-              className="bg-[#38261C] hover:bg-[#4D3528] border border-[#C49A50]/50 text-[#C49A50] px-2.5 py-0.5 rounded-full font-mono text-[11px] font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs"
-            >
-              KAASHTA10
-              {copiedCode ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-            </button>
-            <span className="text-[#C49A50] font-semibold">10% OFF</span>
-          </div>
-
-          <div className="hidden lg:flex items-center gap-2 text-[#82786E]">
-            <Truck className="w-3.5 h-3.5 text-[#C49A50]" />
-            <span>Free Express Shipping Across India</span>
-          </div>
-        </div>
-      </div>
 
       {/* 2. REFINED CATEGORIES BAR (Warm Ivory & Soft Champagne Capsule Strips) */}
       <section className="w-full bg-[#F7F5F0]/85 dark:bg-[#14100E]/85 backdrop-blur-md border-b border-[#EAE1D2] dark:border-[#2E241E] sticky top-[69px] z-30 shadow-2xs">
