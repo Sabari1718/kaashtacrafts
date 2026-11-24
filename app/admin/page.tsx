@@ -395,20 +395,6 @@ export default function AdminPage() {
             <LayoutDashboard className="w-5 h-5" /> Dashboard
           </button>
           <button 
-            onClick={() => {
-              setActiveTab("products");
-              fetchDashboardData();
-            }}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${activeTab === "products" ? "bg-stone-800 text-white" : "hover:bg-stone-900 hover:text-white"}`}
-          >
-            <Package className="w-5 h-5" /> Products
-            {products.length > 0 && (
-              <span className="ml-auto bg-amber-500/20 text-amber-400 text-xs px-2 py-0.5 rounded-full font-bold">
-                {products.length}
-              </span>
-            )}
-          </button>
-          <button 
             onClick={() => setActiveTab("add-product")}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${activeTab === "add-product" ? "bg-stone-800 text-white" : "hover:bg-stone-900 hover:text-white"}`}
           >
@@ -440,6 +426,20 @@ export default function AdminPage() {
             className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${activeTab === "promos" ? "bg-stone-800 text-white" : "hover:bg-stone-900 hover:text-white"}`}
           >
             <Settings className="w-5 h-5" /> Promo Codes
+          </button>
+          <button 
+            onClick={() => {
+              setActiveTab("products");
+              fetchDashboardData();
+            }}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-colors ${activeTab === "products" ? "bg-stone-800 text-white" : "hover:bg-stone-900 hover:text-white"}`}
+          >
+            <Package className="w-5 h-5" /> Products
+            {products.length > 0 && (
+              <span className="ml-auto bg-amber-500/20 text-amber-400 text-xs px-2 py-0.5 rounded-full font-bold">
+                {products.length}
+              </span>
+            )}
           </button>
         </nav>
 
