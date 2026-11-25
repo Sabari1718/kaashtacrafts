@@ -206,7 +206,7 @@ export default function Home() {
             {promoBanners.map((banner, index) => (
               <SwiperSlide key={index}>
                 <div
-                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-[#E0D3BE]/60 dark:border-[#2C2018]/80 bg-gradient-to-r ${banner.bgGradient} flex flex-col md:flex-row items-center justify-between`}
+                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-[#E0D3BE]/60 dark:border-[#2C2018]/80 bg-gradient-to-r ${banner.bgGradient} flex flex-col md:flex-row items-center justify-between min-h-[360px] md:min-h-[390px]`}
                 >
                   {/* Subtle decorative glow circles */}
                   <div
@@ -247,13 +247,14 @@ export default function Home() {
                     </Link>
                   </div>
 
-                  {/* RIGHT PHOTO AREA (Card with clean perspective) */}
-                  <div className="relative z-10 w-full md:w-[46%] lg:w-[48%] h-[190px] sm:h-[260px] md:h-full md:min-h-[370px] p-3 sm:p-6 md:p-8 flex items-center justify-center">
-                    <div className="relative w-full h-full max-h-[320px] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 ring-1 ring-black/40 group/photo">
+                  {/* RIGHT PHOTO AREA (Card with explicit height and clean shadow) */}
+                  <div className="relative z-10 w-full md:w-[46%] lg:w-[48%] p-4 sm:p-6 md:p-8 flex items-center justify-center shrink-0">
+                    <div className="relative w-full h-[220px] sm:h-[280px] md:h-[320px] lg:h-[340px] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 ring-1 ring-black/40 group/photo">
                       <Image
                         src={banner.image}
                         alt={banner.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         priority={index === 0}
                         className="object-cover object-center group-hover/photo:scale-108 transition-transform duration-700 ease-out"
                       />
