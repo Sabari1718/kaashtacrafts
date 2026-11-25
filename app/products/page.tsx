@@ -204,7 +204,7 @@ function ProductsContent() {
         </div>
 
         {/* Category Pills Quick Bar */}
-        <div className="flex items-center gap-2.5 sm:gap-3 overflow-x-auto pb-4 mb-4 scrollbar-hide">
+        <div className="flex items-center gap-2.5 sm:gap-3 overflow-x-auto pt-3 pb-4 mb-2 scrollbar-hide">
           {categories.map((category) => (
             <button
               key={category}
@@ -212,21 +212,24 @@ function ProductsContent() {
                 setSelectedCategory(category);
                 router.push(`/products?category=${encodeURIComponent(category)}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`);
               }}
-              className={`px-4.5 py-2 rounded-full text-xs font-black uppercase tracking-wider whitespace-nowrap cursor-pointer transition-all duration-200 font-sans ${
+              className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider whitespace-nowrap cursor-pointer transition-all duration-200 font-sans shrink-0 flex items-center gap-2 ${
                 selectedCategory === category
-                  ? "bg-[#21130E] text-white dark:text-[#E6C477] border-2 border-[#C99A45] shadow-[0_4px_16px_rgba(33,19,14,0.35),0_0_12px_rgba(201,154,69,0.4)] -translate-y-0.5"
-                  : "bg-white dark:bg-[#1E130E] text-[#21130E] dark:text-[#EDE4D6] border-2 border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#21130E] dark:hover:text-[#E6C477] hover:-translate-y-0.5 hover:shadow-md"
+                  ? "bg-[#21130E] text-white dark:text-[#E6C477] border-2 border-[#C99A45] shadow-[0_6px_20px_rgba(33,19,14,0.35),0_0_12px_rgba(201,154,69,0.4)]"
+                  : "bg-white dark:bg-[#1E130E] text-[#21130E] dark:text-[#EDE4D6] border-2 border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#21130E] dark:hover:text-[#E6C477] hover:shadow-md"
               }`}
             >
-              {category}
+              {selectedCategory === category && (
+                <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#E6C477] to-[#C99A45] shadow-[0_0_8px_#C99A45] animate-pulse" />
+              )}
+              <span>{category}</span>
             </button>
           ))}
           {activeFiltersCount > 0 && (
             <button
               onClick={clearFilters}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer shrink-0"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-black text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer shrink-0 border border-red-200 dark:border-red-900/50"
             >
-              <RotateCcw className="w-3 h-3" />
+              <RotateCcw className="w-3.5 h-3.5" />
               Reset All
             </button>
           )}
