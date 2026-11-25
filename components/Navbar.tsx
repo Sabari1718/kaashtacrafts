@@ -85,15 +85,15 @@ export default function Navbar() {
           <div className="flex items-center justify-between h-16 gap-4">
 
             {/* ── BRAND ── */}
-            <Link href="/" className="flex items-center gap-3 group shrink-0">
-              <div className="relative w-9 h-9 rounded-xl overflow-hidden ring-1 ring-[#C69A4B]/30 group-hover:ring-[#C69A4B]/60 transition-all duration-300">
-                <Image src="/logo.jpeg" alt="Kaashta Crafts" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+            <Link href="/" className="flex items-center gap-3.5 group shrink-0">
+              <div className="relative w-10 h-10 rounded-xl overflow-hidden ring-2 ring-[#C99A45]/40 group-hover:ring-[#C99A45] shadow-md group-hover:shadow-[0_0_12px_rgba(201,154,69,0.4)] transition-all duration-300">
+                <Image src="/logo.jpeg" alt="Kaashta Crafts" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <div className="flex flex-col leading-none">
-                <span className="text-[15px] sm:text-base font-playfair font-bold tracking-tight text-[#21150F] dark:text-[#F7F3EB] group-hover:text-[#38251C] dark:group-hover:text-[#DEB96A] transition-colors">
+                <span className="text-[17px] sm:text-[19px] font-playfair font-black tracking-wider text-[#21130E] dark:text-[#F7F3EB] group-hover:text-[#C99A45] dark:group-hover:text-[#E6C477] transition-colors drop-shadow-xs uppercase">
                   Kaashta Crafts
                 </span>
-                <span className="hidden sm:block text-[8.5px] tracking-[0.28em] uppercase text-[#7A6E63] dark:text-[#A09285] font-medium mt-0.5">
+                <span className="hidden sm:block text-[9px] tracking-[0.32em] uppercase text-[#C99A45] dark:text-[#E6C477] font-extrabold mt-1">
                   Artisanal Woodcraft
                 </span>
               </div>

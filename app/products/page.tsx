@@ -320,15 +320,17 @@ function ProductsContent() {
                       {/* Price & Add to Cart */}
                       <div className="mt-auto flex items-center justify-between pt-2.5 border-t border-[#E0D3BE]/60 dark:border-[#2C2018]/60">
                         <div>
-                          <span className="font-playfair font-bold text-sm sm:text-base text-[#21150F] dark:text-[#F7F3EB]">
-                            ₹{product.price}
-                          </span>
-                          {origPrice && (
-                            <span className="ml-1.5 text-[10px] sm:text-[11px] text-[#7A6E63] line-through">
-                              ₹{origPrice}
+                          <div className="flex items-baseline gap-1.5">
+                            <span className="font-sans font-black text-base sm:text-lg text-[#21130E] dark:text-[#F7F3EB] tracking-tight">
+                              ₹{product.price}
                             </span>
-                          )}
-                          <p className="text-[8.5px] text-emerald-600 dark:text-emerald-400 font-semibold">Free Delivery</p>
+                            {origPrice && (
+                              <span className="text-[10px] sm:text-[11px] font-sans font-semibold text-[#7A6E63] line-through">
+                                ₹{origPrice}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-[9px] text-emerald-600 dark:text-emerald-400 font-extrabold mt-0.5">Free Delivery</p>
                         </div>
 
                         <button 
@@ -339,7 +341,7 @@ function ProductsContent() {
                           }}
                           disabled={!product.inStock}
                           aria-label="Add to cart"
-                          className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#21150F] hover:bg-[#38251C] dark:bg-[#C69A4B] dark:hover:bg-[#DEB96A] disabled:bg-stone-200 dark:disabled:bg-stone-800 disabled:text-stone-400 text-[#F7F3EB] dark:text-[#21150F] flex items-center justify-center transition-all shadow-xs hover:shadow-md hover:scale-105 active:scale-95 cursor-pointer"
+                          className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#21130E] hover:bg-[#38251A] dark:bg-[#C99A45] dark:hover:bg-[#E6C477] disabled:bg-stone-200 dark:disabled:bg-stone-800 disabled:text-stone-400 text-[#F7F3EB] dark:text-[#21130E] flex items-center justify-center transition-all shadow-xs hover:shadow-md hover:scale-105 active:scale-95 cursor-pointer"
                         >
                           <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         </button>

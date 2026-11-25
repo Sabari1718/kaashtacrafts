@@ -29,37 +29,43 @@ const categories = [
   { name: "Gifts & Curios",   tag: "Bespoke Tokens",   image: "/gifts.jpg",             href: "/products" },
 ];
 
-/* ─── PROMOTIONAL BANNERS DATA (3 REFINED LUXURY SLIDES) ─── */
+/* ─── PROMOTIONAL BANNERS DATA (3 VIBRANT LUXURY SPLIT BANNERS) ─── */
 const promoBanners = [
   {
-    tag: "Artisanal Executive Suite",
-    title: "Crafted for Everyday Luxury",
-    subtitle: "Explore handcrafted wooden desk organizers, trays and executive suites.",
+    tag: "✨ ARTISANAL HERITAGE • UP TO 40% OFF",
+    title: "Sculpted for Everyday Luxury.",
+    subtitle: "Handcrafted executive teak desk suites, organizers, and heritage docking pieces carved by master woodturners.",
     btnText: "Explore Desk Suite",
     href: "/products?category=Desk Accessories",
     image: "/desk-accessories.jpg",
-    accent: "from-[#21150F]/90 via-[#21150F]/65 to-transparent",
-    badge: "Handcrafted Teak",
+    bgGradient: "from-[#2A150C] via-[#3D1E10] to-[#1A0B06]",
+    badgeBg: "bg-[#C99A45]/20 text-[#E6C477] border-[#C99A45]/40",
+    btnGradient: "from-[#E6C477] via-[#C99A45] to-[#B88528]",
+    glowColor: "rgba(201,154,69,0.35)",
   },
   {
-    tag: "Sanctuary Living",
-    title: "Bring Nature Into Your Home",
-    subtitle: "Discover timeless wooden wall art, candle holders and heirloom accents.",
+    tag: "🌿 SANCTUARY COLLECTION • NATURE'S TOUCH",
+    title: "Bring Nature Into Your Living Space.",
+    subtitle: "Warm botanical candle pillars, sculptural wooden clocks, and hand-chiseled teak sanctuary decor made to last generations.",
     btnText: "Shop Home Decor",
     href: "/products?category=Home Decor",
     image: "/home-decor.jpg",
-    accent: "from-[#21150F]/90 via-[#21150F]/65 to-transparent",
-    badge: "100% Organic",
+    bgGradient: "from-[#1B281E] via-[#2A3D2D] to-[#121B14]",
+    badgeBg: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
+    btnGradient: "from-[#52B788] via-[#2D6A4F] to-[#1B4332] text-white",
+    glowColor: "rgba(82,183,136,0.35)",
   },
   {
-    tag: "Culinary Woodcraft",
-    title: "Timeless Wooden Creations",
-    subtitle: "Turn dining into ritual with hand-turned acacia boards and platters.",
-    btnText: "Explore Dining Art",
+    tag: "🔥 LIMITED EDITION • 100% FOOD-SAFE TEAK",
+    title: "Timeless Dining Sculptures & Platters.",
+    subtitle: "Turn everyday dining into ritual with hand-turned organic acacia bowls, spice jars, and artisan serving platters.",
+    btnText: "Explore Culinary Art",
     href: "/products?category=Kitchen",
     image: "/kitchen.jpg",
-    accent: "from-[#21150F]/90 via-[#21150F]/65 to-transparent",
-    badge: "Food Safe",
+    bgGradient: "from-[#3B1713] via-[#521C16] to-[#240A07]",
+    badgeBg: "bg-amber-500/20 text-amber-300 border-amber-500/40",
+    btnGradient: "from-[#F4A261] via-[#E76F51] to-[#C84B31] text-white",
+    glowColor: "rgba(231,111,81,0.35)",
   },
 ];
 
@@ -158,7 +164,8 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════
-          2. PROMOTIONAL BANNER CAROUSEL (MAJOR LUXURY REDESIGN)
+          2. PROMOTIONAL BANNER CAROUSEL (SPLIT LAYOUT: LEFT TEXT, RIGHT PHOTO)
+             Single full-width rich banner with smooth transitions
           ══════════════════════════════════════════════ */}
       <section className="w-full py-4 sm:py-6 bg-[#F7F3EB] dark:bg-[#12100E] border-b border-[#E0D3BE]/40 dark:border-[#2C2018]/40">
         <div className="max-w-[1440px] mx-auto px-3 sm:px-6 relative group">
@@ -171,67 +178,72 @@ export default function Home() {
             onSwiper={(swiper) => setSwiperInstance(swiper)}
             onSlideChange={(swiper) => setActiveSlideIndex(swiper.realIndex)}
             autoplay={{
-              delay: 4500,
+              delay: 5000,
               disableOnInteraction: false,
               pauseOnMouseEnter: true,
             }}
             loop={true}
-            spaceBetween={14}
+            spaceBetween={20}
             slidesPerView={1}
-            breakpoints={{
-              640: {
-                slidesPerView: 1.25,
-                spaceBetween: 16,
-              },
-              1024: {
-                slidesPerView: 2.15,
-                spaceBetween: 20,
-              },
-            }}
             className="w-full"
           >
             {promoBanners.map((banner, index) => (
               <SwiperSlide key={index}>
-                <div className="relative w-full h-[240px] sm:h-[280px] lg:h-[310px] rounded-2xl overflow-hidden shadow-md group/banner border border-[#E0D3BE]/60 dark:border-[#2C2018]/80 bg-[#21150F]">
-                  {/* Banner Image */}
-                  <Image
-                    src={banner.image}
-                    alt={banner.title}
-                    fill
-                    priority={index < 2}
-                    className="object-cover object-center group-hover/banner:scale-105 transition-transform duration-700 ease-out"
+                <div
+                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-[#E0D3BE]/60 dark:border-[#2C2018]/80 bg-gradient-to-r ${banner.bgGradient} min-h-[300px] sm:min-h-[340px] md:min-h-[370px] lg:h-[390px] flex flex-col md:flex-row items-center justify-between`}
+                >
+                  {/* Subtle decorative glow circles */}
+                  <div
+                    className="absolute -top-20 -left-20 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-40"
+                    style={{ background: banner.glowColor }}
+                  />
+                  <div
+                    className="absolute -bottom-20 right-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-30"
+                    style={{ background: banner.glowColor }}
                   />
 
-                  {/* Gradient Overlay for Text Readability */}
-                  <div className={`absolute inset-0 bg-gradient-to-r ${banner.accent}`} />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#21150F]/70 via-transparent to-transparent" />
+                  {/* LEFT CONTENT AREA */}
+                  <div className="relative z-10 w-full md:w-[54%] lg:w-[52%] p-6 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-center items-start text-left">
+                    {/* Badge */}
+                    <div className="mb-3 sm:mb-4">
+                      <span className={`inline-flex items-center gap-1.5 backdrop-blur-md text-[10px] sm:text-[11px] font-extrabold tracking-widest uppercase px-3.5 py-1.5 rounded-full border shadow-sm ${banner.badgeBg}`}>
+                        {banner.tag}
+                      </span>
+                    </div>
 
-                  {/* Top Badge */}
-                  <div className="absolute top-3.5 left-4 sm:left-6 z-10 flex items-center gap-2">
-                    <span className="bg-[#21150F]/85 backdrop-blur-md text-[#E6C477] text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full border border-[#C99A45]/40 shadow-xs">
-                      {banner.badge}
-                    </span>
-                  </div>
-
-                  {/* Banner Content */}
-                  <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 z-10 max-w-[80%] sm:max-w-[70%]">
-                    <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#E6C477] mb-1.5 line-clamp-1">
-                      {banner.tag}
-                    </p>
-                    <h3 className="heading-display text-xl sm:text-2xl lg:text-[26px] text-[#F7F3EB] font-bold leading-tight mb-1.5 drop-shadow-sm">
+                    {/* Headline */}
+                    <h2 className="heading-display text-2xl sm:text-3xl md:text-[34px] lg:text-[40px] text-white font-extrabold leading-[1.12] mb-3 drop-shadow-sm tracking-tight">
                       {banner.title}
-                    </h3>
-                    <p className="text-[12px] sm:text-[13px] text-[#E0D3BE]/85 line-clamp-1 sm:line-clamp-2 leading-relaxed mb-3.5 font-sans font-normal">
+                    </h2>
+
+                    {/* Subtitle / Description */}
+                    <p className="text-[12.5px] sm:text-[14px] text-stone-200/90 leading-relaxed mb-6 font-sans font-normal max-w-lg">
                       {banner.subtitle}
                     </p>
-                    <div>
-                      <Link
-                        href={banner.href}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#C99A45] to-[#E6C477] text-[#21130E] text-[11px] font-extrabold tracking-wider uppercase transition-all shadow-[0_4px_12px_rgba(201,154,69,0.35)] hover:shadow-[0_6px_18px_rgba(201,154,69,0.5)] hover:scale-[1.03] active:scale-[0.98]"
-                      >
-                        {banner.btnText}
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </Link>
+
+                    {/* CTA Button */}
+                    <Link
+                      href={banner.href}
+                      className={`inline-flex items-center gap-2.5 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full bg-gradient-to-r ${banner.btnGradient} text-stone-900 font-extrabold text-xs sm:text-[13px] tracking-wider uppercase transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 hover:shadow-2xl`}
+                    >
+                      <span>{banner.btnText}</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+
+                  {/* RIGHT PHOTO AREA (Card with clean perspective) */}
+                  <div className="relative z-10 w-full md:w-[46%] lg:w-[48%] h-[220px] sm:h-[260px] md:h-full min-h-[260px] md:min-h-[370px] p-4 sm:p-6 md:p-8 flex items-center justify-center">
+                    <div className="relative w-full h-full max-h-[320px] rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 ring-1 ring-black/40 group/photo">
+                      <Image
+                        src={banner.image}
+                        alt={banner.title}
+                        fill
+                        priority={index === 0}
+                        className="object-cover object-center group-hover/photo:scale-108 transition-transform duration-700 ease-out"
+                      />
+                      {/* Soft vignette to blend inside banner */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent hidden md:block" />
                     </div>
                   </div>
                 </div>
@@ -242,13 +254,13 @@ export default function Home() {
           {/* Navigation Arrows (Desktop) */}
           <button
             aria-label="Previous Banner"
-            className="promo-swiper-prev absolute left-1 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#F7F3EB]/90 dark:bg-[#21150F]/90 text-[#21150F] dark:text-[#F7F3EB] border border-[#E0D3BE] dark:border-[#38251C] shadow-lg flex items-center justify-center hover:bg-[#C69A4B] hover:text-[#21150F] transition-all cursor-pointer opacity-0 group-hover:opacity-100 disabled:opacity-0"
+            className="promo-swiper-prev absolute left-1 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/90 dark:bg-[#21150F]/90 text-[#21150F] dark:text-[#F7F3EB] border border-[#E0D3BE] dark:border-[#38251C] shadow-xl flex items-center justify-center hover:bg-[#C99A45] hover:text-white transition-all cursor-pointer opacity-0 group-hover:opacity-100 disabled:opacity-0"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             aria-label="Next Banner"
-            className="promo-swiper-next absolute right-1 top-1/2 -translate-y-1/2 z-20 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#F7F3EB]/90 dark:bg-[#21150F]/90 text-[#21150F] dark:text-[#F7F3EB] border border-[#E0D3BE] dark:border-[#38251C] shadow-lg flex items-center justify-center hover:bg-[#C69A4B] hover:text-[#21150F] transition-all cursor-pointer opacity-0 group-hover:opacity-100 disabled:opacity-0"
+            className="promo-swiper-next absolute right-1 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/90 dark:bg-[#21150F]/90 text-[#21150F] dark:text-[#F7F3EB] border border-[#E0D3BE] dark:border-[#38251C] shadow-xl flex items-center justify-center hover:bg-[#C99A45] hover:text-white transition-all cursor-pointer opacity-0 group-hover:opacity-100 disabled:opacity-0"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
@@ -394,14 +406,20 @@ export default function Home() {
                     {/* Price + Cart */}
                     <div className="mt-auto flex items-center justify-between pt-3 border-t border-[#E0D3BE]/60 dark:border-[#2C2018]/60">
                       <div>
-                        <span className="font-playfair font-bold text-base sm:text-lg text-[#21150F] dark:text-[#F7F3EB]">₹{product.price}</span>
-                        <span className="ml-1.5 text-[11px] text-[#7A6E63] line-through">₹{origPrice}</span>
-                        <p className="text-[9px] text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">Free Delivery</p>
+                        <div className="flex items-baseline gap-1.5">
+                          <span className="font-sans font-black text-lg sm:text-xl text-[#21130E] dark:text-[#F7F3EB] tracking-tight">
+                            ₹{product.price}
+                          </span>
+                          <span className="text-[11px] font-sans font-semibold text-[#7A6E63] line-through">
+                            ₹{origPrice}
+                          </span>
+                        </div>
+                        <p className="text-[9.5px] text-emerald-600 dark:text-emerald-400 font-extrabold mt-0.5">Free Delivery</p>
                       </div>
                       <button
                         onClick={e => handleAddToCart(e, product)}
                         aria-label="Add to cart"
-                        className="w-9 h-9 rounded-xl bg-[#21150F] hover:bg-[#38251C] dark:bg-[#C69A4B] dark:hover:bg-[#DEB96A] text-[#F7F3EB] dark:text-[#21150F] flex items-center justify-center transition-all shadow-sm hover:shadow-md hover:scale-105 active:scale-95 cursor-pointer"
+                        className="w-9 h-9 rounded-xl bg-[#21130E] hover:bg-[#38251A] dark:bg-[#C99A45] dark:hover:bg-[#E6C477] text-[#F7F3EB] dark:text-[#21130E] flex items-center justify-center transition-all shadow-sm hover:shadow-md hover:scale-105 active:scale-95 cursor-pointer"
                       >
                         <ShoppingCart className="w-4 h-4" />
                       </button>
