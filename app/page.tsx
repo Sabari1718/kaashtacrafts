@@ -91,11 +91,23 @@ export default function Home() {
   const [swiperInstance, setSwiperInstance] = useState<any>(null);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      window.scrollTo(0, 0);
+    }
+
     fetch("/api/products")
       .then(r => r.json())
       .then(data => { if (Array.isArray(data)) setAllProducts(data); })
       .catch(console.error)
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+        if (typeof window !== "undefined") {
+          window.scrollTo(0, 0);
+        }
+      });
   }, []);
 
   const handleAddToCart = (e: React.MouseEvent, product: Product) => {
@@ -311,10 +323,10 @@ export default function Home() {
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
             <div>
-              <p className="label-luxury text-[#C69A4B] mb-2 sm:mb-2.5">Handcrafted Treasures</p>
+              <p className="label-luxury text-[#7A4513] dark:text-[#DEB96A] font-extrabold mb-2 sm:mb-2.5">Handcrafted Treasures</p>
               <h2 className="heading-display text-3xl sm:text-4xl md:text-[46px] text-[#21150F] dark:text-[#F7F3EB] leading-[1.15]">
                 Best of{" "}
-                <span className="text-gold-gradient">Kaashta Crafts</span>
+                <span className="text-gold-gradient font-black">Kaashta Crafts</span>
               </h2>
             </div>
 
@@ -393,7 +405,7 @@ export default function Home() {
 
                   {/* DETAILS */}
                   <div className="p-4 flex flex-col flex-grow">
-                    <p className="label-luxury text-[#C69A4B] text-[9px] mb-1.5">{product.category}</p>
+                    <p className="label-luxury text-[#7A4513] dark:text-[#DEB96A] font-extrabold text-[9px] mb-1.5">{product.category}</p>
                     <Link href={`/products/${pid}`}>
                       <h3 className="font-playfair font-bold text-sm sm:text-[15px] text-[#21150F] dark:text-[#F7F3EB] line-clamp-1 mb-1.5 leading-tight group-hover:text-[#38251C] dark:group-hover:text-[#DEB96A] transition-colors">
                         {product.name}
@@ -454,11 +466,11 @@ export default function Home() {
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8">
 
           <div className="text-center mb-14">
-            <p className="label-luxury text-[#C69A4B] mb-3">Curated Living Concept</p>
+            <p className="label-luxury text-[#7A4513] dark:text-[#DEB96A] font-extrabold mb-3">Curated Living Concept</p>
             <h2 className="heading-display text-4xl sm:text-5xl text-[#21150F] dark:text-[#F7F3EB]">
               Elevate Every Corner
             </h2>
-            <p className="text-[#7A6E63] dark:text-[#A09285] text-sm mt-3 max-w-md mx-auto">
+            <p className="text-[#5C4D42] dark:text-[#A09285] text-sm mt-3 max-w-md mx-auto font-medium">
               Signature artisan series tailored for the contemporary home and executive workspace.
             </p>
           </div>
@@ -562,15 +574,15 @@ export default function Home() {
 
             {/* Text */}
             <div className="flex flex-col">
-              <p className="label-luxury text-[#C69A4B] mb-5">Behind the Chisel</p>
+              <p className="label-luxury text-[#7A4513] dark:text-[#DEB96A] font-extrabold mb-5">Behind the Chisel</p>
               <h2 className="heading-display text-4xl sm:text-5xl text-[#21150F] dark:text-[#F7F3EB] mb-6 leading-tight">
                 Where Craft Meets <br />
                 <span className="heading-editorial text-[#38251C] dark:text-[#DEB96A]">Heirloom</span>
               </h2>
-              <p className="text-[#7A6E63] dark:text-[#A09285] text-sm sm:text-base leading-relaxed mb-6">
+              <p className="text-[#4A3C33] dark:text-[#A09285] text-sm sm:text-base leading-relaxed mb-6 font-medium">
                 Every Kaashta Crafts piece passes through dozens of meticulous hands. From selecting sustainably harvested timber to the final hand-rubbed beeswax finish, we maintain a standard of craft that is increasingly rare in a world of mass production.
               </p>
-              <p className="text-[#7A6E63] dark:text-[#A09285] text-sm leading-relaxed mb-10">
+              <p className="text-[#4A3C33] dark:text-[#A09285] text-sm leading-relaxed mb-10 font-medium">
                 Our artisans are hereditary masters from Tamil Nadu — families who have shaped wood for generations, whose hands hold the memory of a living craft tradition.
               </p>
 

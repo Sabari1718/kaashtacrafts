@@ -34,8 +34,22 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${manrope.variable} ${playfair.variable} h-full antialiased scroll-smooth`}
+      className={`${manrope.variable} ${playfair.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if ('scrollRestoration' in history) {
+                  history.scrollRestoration = 'manual';
+                }
+                window.scrollTo(0, 0);
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col font-sans text-[#2B1B14] bg-white dark:bg-[#12100E] dark:text-[#F7F3EB] selection:bg-[#C69A4B] selection:text-[#21150F] transition-colors duration-300">
         <Providers>
           <CartProvider>
