@@ -448,38 +448,6 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════
-          5. FULL-BLEED EDITORIAL — PHILOSOPHY QUOTE
-          ══════════════════════════════════════════════ */}
-      <section className="w-full bg-espresso-grain relative overflow-hidden py-24 md:py-36">
-        {/* Gold ambient glow */}
-        <div className="absolute top-0 left-1/4 w-[700px] h-56 bg-[#C69A4B]/8 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-40 bg-[#38251C]/30 rounded-full blur-3xl pointer-events-none" />
-
-        {/* Decorative rule */}
-        <div className="absolute top-0 left-0 right-0 divider-gold" />
-        <div className="absolute bottom-0 left-0 right-0 divider-gold" />
-
-        <div className="max-w-[900px] mx-auto px-6 sm:px-10 text-center relative z-10">
-          <p className="label-luxury text-[#DEB96A] mb-8">Our Philosophy</p>
-          <blockquote className="heading-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[#F7F3EB] leading-[1.1] mb-8">
-            "Wood carries the memory <br className="hidden sm:block" />
-            <span className="heading-editorial text-gold-gradient">of ancient forests."</span>
-          </blockquote>
-          <p className="text-[#E0D3BE]/75 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed mb-10">
-            In an age of disposable plastics, we stand for enduring heirloom quality, tactile warmth, and soul. Every piece passes through dozens of meticulous hands — shaping, smoothing, seasoning, and polishing with natural beeswax.
-          </p>
-          <div className="flex flex-wrap justify-center gap-10 sm:gap-16 pt-8 border-t border-[#38251C]">
-            {[["40+", "Master Woodcarvers"], ["100%", "Ethical Foresting"], ["10k+", "Homes Enriched"], ["25+", "Years Heritage"]].map(([val, lbl]) => (
-              <div key={lbl} className="flex flex-col items-center">
-                <span className="font-playfair font-bold text-3xl sm:text-4xl text-[#DEB96A]">{val}</span>
-                <span className="text-[10px] tracking-widest uppercase text-[#7A6E63] mt-1">{lbl}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════
           6. CURATED LIVING — ASYMMETRIC BENTO GRID
           ══════════════════════════════════════════════ */}
       <section className="w-full bg-natural dark:bg-[#1A1410] py-20 md:py-28">
