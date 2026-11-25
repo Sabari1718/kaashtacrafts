@@ -130,12 +130,12 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-col w-full overflow-x-hidden bg-paper dark:bg-[#12100E]">
+    <main className="flex flex-col w-full overflow-x-hidden bg-white dark:bg-[#12100E]">
 
       {/* ══════════════════════════════════════════════
           1. CATEGORY NAVIGATION BAR (MAJOR LUXURY REDESIGN)
           ══════════════════════════════════════════════ */}
-      <section className="w-full bg-[#F7F3EB]/95 dark:bg-[#1A1410]/95 backdrop-blur-md border-b border-[#C99A45]/30 dark:border-[#C99A45]/20 shadow-2xs">
+      <section className="w-full bg-white dark:bg-[#1A1410]/95 backdrop-blur-md border-b border-stone-200/80 dark:border-[#C99A45]/20 shadow-2xs">
         <div className="max-w-[1440px] mx-auto px-3 sm:px-6 py-2.5 overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-max mx-auto justify-start sm:justify-center">
             {categories.map((cat, idx) => (
@@ -171,7 +171,7 @@ export default function Home() {
           2. PROMOTIONAL BANNER CAROUSEL (SPLIT LAYOUT: LEFT TEXT, RIGHT PHOTO)
              Single full-width rich banner with smooth transitions
           ══════════════════════════════════════════════ */}
-      <section className="w-full py-4 sm:py-6 bg-[#F7F3EB] dark:bg-[#12100E] border-b border-[#E0D3BE]/40 dark:border-[#2C2018]/40">
+      <section className="w-full py-4 sm:py-6 bg-white dark:bg-[#12100E] border-b border-stone-200/70 dark:border-[#2C2018]/40">
         <div className="max-w-[1440px] mx-auto px-3 sm:px-6 relative group">
           <Swiper
             modules={[Autoplay, Navigation]}
@@ -305,7 +305,7 @@ export default function Home() {
           4. PRODUCT SHOWCASE — "BEST OF KAASHTA CRAFTS"
              Editorial Asymmetric Luxury Grid
           ══════════════════════════════════════════════ */}
-      <section className="w-full bg-paper dark:bg-[#12100E] py-10 sm:py-14 md:py-16">
+      <section className="w-full bg-white dark:bg-[#12100E] py-10 sm:py-14 md:py-16">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-8">
 
           {/* Section Header */}
@@ -450,7 +450,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════
           6. CURATED LIVING — ASYMMETRIC BENTO GRID
           ══════════════════════════════════════════════ */}
-      <section className="w-full bg-natural dark:bg-[#1A1410] py-20 md:py-28">
+      <section className="w-full bg-white dark:bg-[#1A1410] py-20 md:py-28 border-t border-stone-100 dark:border-[#2C2018]">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8">
 
           <div className="text-center mb-14">
@@ -542,7 +542,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════
           8. ARTISAN STORY — SPLIT EDITORIAL SECTION
           ══════════════════════════════════════════════ */}
-      <section className="w-full bg-paper dark:bg-[#12100E] py-20 md:py-28">
+      <section className="w-full bg-white dark:bg-[#12100E] py-20 md:py-28 border-t border-stone-100 dark:border-[#2C2018]">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 

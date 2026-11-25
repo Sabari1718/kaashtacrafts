@@ -36,7 +36,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${manrope.variable} ${playfair.variable} h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col font-sans text-[#2B1B14] bg-[#F7F3EB] dark:bg-[#12100E] dark:text-[#F7F3EB] selection:bg-[#C69A4B] selection:text-[#21150F] transition-colors duration-300">
+      <body className="min-h-full flex flex-col font-sans text-[#2B1B14] bg-white dark:bg-[#12100E] dark:text-[#F7F3EB] selection:bg-[#C69A4B] selection:text-[#21150F] transition-colors duration-300">
         <Providers>
           <CartProvider>
             <WishlistProvider>

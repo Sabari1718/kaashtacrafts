@@ -78,8 +78,8 @@ export default function Navbar() {
       {/* ── MAIN NAVBAR ── */}
       <nav className={`sticky top-0 z-50 w-full transition-all duration-500 ${
         isScrolled
-          ? "bg-[#F7F3EB]/96 dark:bg-[#12100E]/96 backdrop-blur-2xl shadow-[0_1px_0_rgba(198,154,75,0.15)] border-b border-[#E0D3BE]/60 dark:border-[#2C2018]/60"
-          : "bg-[#F7F3EB]/98 dark:bg-[#12100E]/98 backdrop-blur-md border-b border-[#E0D3BE]/40 dark:border-[#2C2018]/40"
+          ? "bg-white/95 dark:bg-[#12100E]/96 backdrop-blur-2xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border-b border-stone-200/80 dark:border-[#2C2018]/60"
+          : "bg-white/98 dark:bg-[#12100E]/98 backdrop-blur-md border-b border-stone-200/60 dark:border-[#2C2018]/40"
       }`}>
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
           <div className="flex items-center justify-between h-16 gap-4">
@@ -120,15 +120,15 @@ export default function Navbar() {
               </form>
 
               {showSuggestions && searchQuery.trim() && suggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-[#F7F3EB] dark:bg-[#1E1510] rounded-2xl shadow-2xl border border-[#E0D3BE] dark:border-[#2C2018] z-50 overflow-hidden">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#1E1510] rounded-2xl shadow-2xl border border-stone-200 dark:border-[#2C2018] z-50 overflow-hidden">
                   {suggestions.map(p => (
                     <Link
                       href={`/products/${p.id || p._id}`}
                       key={p.id || p._id}
                       onClick={() => { setShowSuggestions(false); setSearchQuery(""); }}
-                      className="flex items-center gap-3 p-3 hover:bg-[#EDE5D8]/60 dark:hover:bg-[#2C2018]/60 border-b border-[#E0D3BE]/40 dark:border-[#2C2018]/40 last:border-0 transition-colors"
+                      className="flex items-center gap-3 p-3 hover:bg-stone-50 dark:hover:bg-[#2C2018]/60 border-b border-stone-100 dark:border-[#2C2018]/40 last:border-0 transition-colors"
                     >
-                      <div className="w-9 h-9 relative shrink-0 rounded-lg overflow-hidden bg-[#EDE5D8]">
+                      <div className="w-9 h-9 relative shrink-0 rounded-lg overflow-hidden bg-stone-100">
                         <Image src={p.image} alt={p.name} fill className="object-cover" />
                       </div>
                       <div className="flex flex-col flex-1 min-w-0">
@@ -214,7 +214,7 @@ export default function Navbar() {
                     <Image src={session.user?.image || `https://ui-avatars.com/api/?name=${session.user?.name}`} alt="Profile" width={36} height={36} className="object-cover w-full h-full" />
                   </button>
                   {isProfileOpen && (
-                    <div className="absolute right-0 top-full mt-3 w-52 bg-[#F7F3EB] dark:bg-[#1E1510] rounded-2xl shadow-2xl border border-[#E0D3BE] dark:border-[#2C2018] py-2 z-50">
+                    <div className="absolute right-0 top-full mt-3 w-52 bg-white dark:bg-[#1E1510] rounded-2xl shadow-2xl border border-stone-200 dark:border-[#2C2018] py-2 z-50">
                       <div className="px-4 py-2.5 border-b border-[#E0D3BE]/60 dark:border-[#2C2018]/60 mb-1">
                         <p className="text-[9px] text-[#7A6E63] font-semibold uppercase tracking-wider">Signed in as</p>
                         <p className="text-xs font-bold text-[#21150F] dark:text-[#F7F3EB] truncate">{session.user?.name}</p>

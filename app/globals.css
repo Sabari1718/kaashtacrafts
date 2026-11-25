@@ -10,15 +10,15 @@
   --espresso:    #21150F;
   --walnut:      #38251C;
   --walnut-mid:  #4A3025;
-  --ivory:       #F7F3EB;
-  --cream:       #EDE5D8;
-  --parchment:   #E0D3BE;
+  --ivory:       #FFFFFF;
+  --cream:       #FAFAF8;
+  --parchment:   #F3F0EB;
   --gold:        #C69A4B;
   --gold-light:  #DEB96A;
   --gold-pale:   #F0D9A8;
   --warmgrey:    #7A6E63;
   --charcoal:    #2C2018;
-  --background:  #F7F3EB;
+  --background:  #FFFFFF;
   --foreground:  #21150F;
 }
 
@@ -115,17 +115,13 @@ input:focus, select:focus, textarea:focus, button:focus-visible { outline: none;
    ORGANIC PAPER TEXTURE BACKGROUNDS
    ══════════════════════════════════════════ */
 
-/* Warm ivory with paper grain */
+/* Clean plain white surface */
 .bg-paper {
-  background-color: #F7F3EB;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-color: #FFFFFF;
 }
 
 .dark .bg-paper {
   background-color: #12100E;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
 }
 
 /* Deep espresso with grain */
@@ -135,11 +131,9 @@ input:focus, select:focus, textarea:focus, button:focus-visible { outline: none;
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
 }
 
-/* Warm beige / natural */
+/* Plain white / minimal surface */
 .bg-natural {
-  background-color: #EDE5D8;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+  background-color: #FAFAF8;
 }
 
 .dark .bg-natural {
