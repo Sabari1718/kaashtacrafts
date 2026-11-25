@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
   ShoppingBag, Search, Filter, Loader2, Heart, Star,
-  Check, Sparkles, X, SlidersHorizontal, RotateCcw, ArrowRight
+  Check, Sparkles, X, SlidersHorizontal, RotateCcw, ArrowRight,
+  ChevronDown
 } from "lucide-react";
 import { toast } from "sonner";
 import { useCart } from "../context/CartContext";
@@ -56,9 +57,30 @@ function ProductsContent() {
   const [priceRange, setPriceRange] = useState("All");
   const [minRating, setMinRating] = useState(0);
   const [sortBy, setSortBy] = useState("Newest");
+  const [isSortOpen, setIsSortOpen] = useState(false);
+  const sortRef = useRef<HTMLDivElement>(null);
   
   // Slide-in Filter Drawer State (Replaces permanent sidebar)
   const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
+        setIsSortOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const sortOptions = [
+    { value: "Newest", label: "Newest Arrivals" },
+    { value: "PriceLowToHigh", label: "Price: Low to High" },
+    { value: "PriceHighToLow", label: "Price: High to Low" },
+    { value: "RatingHighToLow", label: "Top Customer Rated" },
+  ];
+
+  const currentSortLabel = sortOptions.find(o => o.value === sortBy)?.label || "Newest Arrivals";
 
   useEffect(() => {
     setSearchQuery(searchParams.get("search") || "");
@@ -167,38 +189,64 @@ function ProductsContent() {
                     router.push(`/products?search=${encodeURIComponent(searchQuery)}${selectedCategory !== 'All' ? `&category=${selectedCategory}` : ''}`);
                   }
                 }}
-                className="w-full pl-10 pr-4 py-2 rounded-full border border-[#E0D3BE] dark:border-[#2C2018] bg-[#F7F3EB]/60 dark:bg-[#140F0C] focus:outline-none focus:border-[#C69A4B] focus:ring-2 focus:ring-[#C69A4B]/20 text-[#21150F] dark:text-[#F7F3EB] placeholder:text-[#7A6E63]/70 text-xs sm:text-sm transition-all shadow-2xs"
+                className="w-full pl-10 pr-4 py-2 rounded-full border-2 border-stone-200 dark:border-[#38251A] bg-white dark:bg-[#1E130E] focus:outline-none focus:border-[#C99A45] focus:ring-2 focus:ring-[#C99A45]/20 text-[#21150F] dark:text-[#F7F3EB] placeholder:text-[#7A6E63]/70 text-xs sm:text-sm transition-all shadow-xs"
               />
             </div>
 
             {/* Filter & Sort Trigger Button */}
             <button 
               onClick={() => setIsFilterDrawerOpen(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#21150F] hover:bg-[#38251C] dark:bg-[#C69A4B] dark:hover:bg-[#DEB96A] text-[#F7F3EB] dark:text-[#21150F] text-xs font-bold uppercase tracking-wider transition-all shadow-sm cursor-pointer"
+              className="inline-flex items-center gap-2 px-4.5 py-2 rounded-full bg-[#21130E] hover:bg-[#38251A] dark:bg-[#C99A45] dark:hover:bg-[#DEB96A] text-[#F7F3EB] dark:text-[#21130E] text-xs font-black uppercase tracking-wider transition-all shadow-sm hover:shadow-md cursor-pointer border border-[#C99A45]/30 hover:scale-102 active:scale-95"
             >
               <SlidersHorizontal className="w-3.5 h-3.5" />
               <span>Filters</span>
               {activeFiltersCount > 0 && (
-                <span className="w-4.5 h-4.5 rounded-full bg-[#C69A4B] dark:bg-[#21150F] text-[#21150F] dark:text-[#F7F3EB] text-[10px] font-black flex items-center justify-center">
+                <span className="w-4.5 h-4.5 rounded-full bg-gradient-to-r from-[#E6C477] to-[#C99A45] text-[#21130E] text-[10px] font-black flex items-center justify-center shadow-xs">
                   {activeFiltersCount}
                 </span>
               )}
             </button>
 
-            {/* Quick Sort Dropdown */}
-            <div className="flex items-center gap-1.5 bg-[#F7F3EB]/80 dark:bg-[#140F0C] px-3.5 py-2 rounded-full border border-[#E0D3BE] dark:border-[#2C2018] shadow-2xs text-xs sm:text-sm">
-              <span className="text-[#7A6E63] text-xs hidden sm:inline font-medium">Sort:</span>
-              <select 
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                aria-label="Sort products"
-                className="bg-transparent font-bold text-[#21150F] dark:text-[#F7F3EB] focus:outline-none cursor-pointer text-xs dark:[&>option]:bg-[#1E1510]"
+            {/* Custom Luxury Sort Dropdown */}
+            <div className="relative" ref={sortRef}>
+              <button
+                type="button"
+                onClick={() => setIsSortOpen(!isSortOpen)}
+                className="flex items-center gap-2 bg-white dark:bg-[#1E130E] hover:bg-[#FBF9F6] dark:hover:bg-[#261710] px-4 py-2 rounded-full border-2 border-stone-200 dark:border-[#38251A] hover:border-[#C99A45] shadow-xs hover:shadow-md transition-all text-xs sm:text-sm font-sans cursor-pointer group"
               >
-                <option value="Newest">Newest Arrivals</option>
-                <option value="PriceLowToHigh">Price: Low to High</option>
-                <option value="PriceHighToLow">Price: High to Low</option>
-                <option value="RatingHighToLow">Top Customer Rated</option>
-              </select>
+                <span className="text-[#7A6E63] text-xs font-semibold">Sort:</span>
+                <span className="font-extrabold text-[#21130E] dark:text-[#F7F3EB] tracking-tight">{currentSortLabel}</span>
+                <ChevronDown className={`w-3.5 h-3.5 text-[#C99A45] transition-transform duration-200 ${isSortOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {isSortOpen && (
+                <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-[#1C140F] rounded-2xl shadow-[0_12px_36px_rgba(33,19,14,0.18)] border-2 border-[#C99A45]/40 p-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <div className="px-3 py-1.5 border-b border-stone-100 dark:border-[#2C2018] mb-1">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-[#8C5819] dark:text-[#DEB96A]">Sort Masterpieces</p>
+                  </div>
+                  {sortOptions.map((opt) => {
+                    const isSelected = sortBy === opt.value;
+                    return (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => {
+                          setSortBy(opt.value);
+                          setIsSortOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
+                          isSelected
+                            ? "bg-[#21130E] text-[#F7F3EB] dark:bg-[#261710] dark:text-[#E6C477] shadow-xs"
+                            : "text-[#21130E] dark:text-[#EAE5DD] hover:bg-stone-100 dark:hover:bg-[#2C2018] hover:text-[#8C5819]"
+                        }`}
+                      >
+                        <span>{opt.label}</span>
+                        {isSelected && <Check className="w-4 h-4 text-[#C99A45]" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </div>
