@@ -84,19 +84,25 @@ export default function Navbar() {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
           <div className="flex items-center justify-between h-16 gap-4">
 
-            {/* ── BRAND ── */}
-            <Link href="/" className="flex items-center gap-3.5 group shrink-0">
-              <div className="relative w-11 h-11 rounded-2xl overflow-hidden ring-2 ring-[#C99A45] shadow-[0_2px_10px_rgba(201,154,69,0.35)] group-hover:scale-105 group-hover:shadow-[0_0_16px_rgba(201,154,69,0.5)] transition-all duration-300">
-                <Image src="/logo.jpeg" alt="Kaashta Crafts" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
+            {/* ── BRAND (FLIPKART-STYLE LUXURY GOLD PILL BADGE) ── */}
+            <Link
+              href="/"
+              className="group flex items-center gap-2.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-2xl bg-gradient-to-r from-[#FFD269] via-[#E8B038] to-[#C99220] shadow-[0_3px_12px_rgba(201,146,32,0.35),inset_0_1px_1px_rgba(255,255,255,0.7)] hover:shadow-[0_6px_22px_rgba(201,146,32,0.6),inset_0_1px_1px_rgba(255,255,255,0.85)] border border-[#F3C555] hover:scale-105 active:scale-95 transition-all duration-300 shrink-0 cursor-pointer"
+            >
+              {/* Circular Logo Avatar */}
+              <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-xl overflow-hidden ring-2 ring-white/90 shadow-sm shrink-0 bg-[#21130E]">
+                <Image
+                  src="/logo.jpeg"
+                  alt="Kaashta Crafts"
+                  fill
+                  className="object-cover group-hover:scale-115 transition-transform duration-500 ease-out"
+                />
               </div>
-              <div className="flex flex-col leading-none">
-                <span className="text-[19px] sm:text-[22px] font-sans font-black tracking-tight text-[#21130E] dark:text-[#F7F3EB] group-hover:text-[#C99A45] dark:group-hover:text-[#E6C477] transition-colors uppercase">
-                  Kaashta Crafts
-                </span>
-                <span className="hidden sm:block text-[9.5px] tracking-[0.32em] uppercase text-[#C99A45] dark:text-[#E6C477] font-black mt-1">
-                  Artisanal Woodcraft
-                </span>
-              </div>
+
+              {/* Brand Name - Bold, Fancy Italic Luxury Serif */}
+              <span className="font-playfair font-black italic tracking-wide text-[#21130E] text-[18px] sm:text-[21px] leading-none drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
+                Kaashta<span className="text-[#3D1E0B] font-bold not-italic ml-1">Crafts</span>
+              </span>
             </Link>
 
             {/* ── DESKTOP SEARCH ── */}
