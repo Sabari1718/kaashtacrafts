@@ -142,20 +142,24 @@ export default function Home() {
               <Link
                 href={cat.href}
                 key={idx}
-                className="group relative flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/90 dark:bg-[#1E130E]/90 border border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-gradient-to-r hover:from-white hover:to-[#F5EAD4] dark:hover:from-[#21130E] dark:hover:to-[#38251A] shadow-[0_2px_8px_rgba(33,19,14,0.04)] hover:shadow-[0_8px_20px_-2px_rgba(201,154,69,0.3),0_2px_6px_rgba(33,19,14,0.08)] hover:-translate-y-1 active:translate-y-0 transition-all duration-300 ease-out cursor-pointer overflow-hidden"
+                className="group relative flex items-center gap-3 px-4 py-2 rounded-2xl bg-white dark:bg-[#1E130E] border-2 border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-[#21130E] dark:hover:bg-[#21130E] shadow-sm hover:shadow-[0_10px_25px_-3px_rgba(33,19,14,0.4),0_0_15px_rgba(201,154,69,0.4)] hover:-translate-y-1.5 active:translate-y-0 transition-all duration-250 ease-out cursor-pointer overflow-hidden"
               >
                 {/* Active/Hover Gold Accent Bar on Bottom */}
-                <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-transparent via-[#C99A45] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#E6C477] via-[#C99A45] to-[#E6C477] opacity-0 group-hover:opacity-100 transition-opacity duration-250 shadow-[0_0_8px_#C99A45]" />
 
                 {/* Scaled Icon Image */}
-                <div className="relative w-8 h-8 rounded-xl overflow-hidden ring-1 ring-[#C99A45]/30 group-hover:ring-[#C99A45] group-hover:scale-110 transition-all duration-300 shrink-0 shadow-2xs">
-                  <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-120 transition-transform duration-500 ease-out" />
+                <div className="relative w-8 h-8 rounded-xl overflow-hidden ring-2 ring-[#E0D3BE] dark:ring-[#38251A] group-hover:ring-[#E6C477] group-hover:scale-115 transition-all duration-250 shrink-0 shadow-xs">
+                  <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-125 transition-transform duration-500 ease-out" />
                 </div>
 
-                {/* Text Content */}
+                {/* Text Content: When hovered, turns to crisp White / Golden Champagne with heavy font weight */}
                 <div className="flex flex-col leading-none">
-                  <span className="text-[12px] font-bold text-[#21130E] dark:text-[#F7F3EB] group-hover:text-[#38251A] dark:group-hover:text-[#E6C477] transition-colors tracking-tight">{cat.name}</span>
-                  <span className="text-[8.5px] text-[#7A6E63] dark:text-[#A09285] group-hover:text-[#C99A45] tracking-wider uppercase mt-1 font-semibold transition-colors">{cat.tag}</span>
+                  <span className="text-[12.5px] font-black text-[#21130E] dark:text-[#F7F3EB] group-hover:text-[#F7F3EB] dark:group-hover:text-[#E6C477] transition-colors tracking-tight font-sans">
+                    {cat.name}
+                  </span>
+                  <span className="text-[8.5px] text-[#7A6E63] dark:text-[#A09285] group-hover:text-[#E6C477] dark:group-hover:text-[#E6C477] tracking-wider uppercase mt-1 font-extrabold transition-colors font-sans">
+                    {cat.tag}
+                  </span>
                 </div>
               </Link>
             ))}
@@ -314,22 +318,22 @@ export default function Home() {
               </h2>
             </div>
 
-            {/* Filter Pills with Luxury Glow & Active State (Major Redesign) */}
-            <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+            {/* Filter Pills with Luxury Glow & Active State (High-Contrast Bold Hover) */}
+            <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
               {["All", "Desk Accessories", "Home Decor", "Kitchen", "Stationery"].map(cat => {
                 const isActive = selectedFilter === cat;
                 return (
                   <button
                     key={cat}
                     onClick={() => setSelectedFilter(cat)}
-                    className={`relative px-4 sm:px-5 py-2.5 rounded-full text-[11px] font-extrabold tracking-wider uppercase whitespace-nowrap cursor-pointer transition-all duration-300 flex items-center gap-2 ${
+                    className={`relative px-5 py-2.5 rounded-full text-[12px] font-black tracking-wider uppercase whitespace-nowrap cursor-pointer transition-all duration-200 flex items-center gap-2 font-sans ${
                       isActive
-                        ? "bg-gradient-to-r from-[#21130E] to-[#38251A] text-[#F7F3EB] dark:text-[#E6C477] border-2 border-[#C99A45] shadow-[0_6px_20px_rgba(33,19,14,0.35),0_0_16px_rgba(201,154,69,0.45)] -translate-y-0.5"
-                        : "bg-[#F7F3EB] dark:bg-[#1E130E] text-[#38251A] dark:text-[#EDE4D6] border border-[#C99A45]/30 hover:border-[#C99A45] hover:bg-[#E6C477]/20 hover:text-[#21130E] dark:hover:text-[#E6C477] hover:-translate-y-0.5 hover:shadow-sm"
+                        ? "bg-[#21130E] text-white dark:text-[#E6C477] border-2 border-[#C99A45] shadow-[0_6px_22px_rgba(33,19,14,0.4),0_0_16px_rgba(201,154,69,0.5)] -translate-y-1"
+                        : "bg-white dark:bg-[#1E130E] text-[#21130E] dark:text-[#EDE4D6] border-2 border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#21130E] dark:hover:text-[#E6C477] hover:-translate-y-1 hover:shadow-[0_8px_20px_-3px_rgba(33,19,14,0.35),0_0_12px_rgba(201,154,69,0.35)]"
                     }`}
                   >
                     {isActive && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#E6C477] to-[#C99A45] shadow-[0_0_6px_#C99A45] animate-pulse" />
+                      <span className="w-2 h-2 rounded-full bg-gradient-to-r from-[#E6C477] to-[#C99A45] shadow-[0_0_8px_#C99A45] animate-pulse" />
                     )}
                     <span>{cat}</span>
                   </button>

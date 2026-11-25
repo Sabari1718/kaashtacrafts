@@ -86,14 +86,14 @@ export default function Navbar() {
 
             {/* ── BRAND ── */}
             <Link href="/" className="flex items-center gap-3.5 group shrink-0">
-              <div className="relative w-10 h-10 rounded-xl overflow-hidden ring-2 ring-[#C99A45]/40 group-hover:ring-[#C99A45] shadow-md group-hover:shadow-[0_0_12px_rgba(201,154,69,0.4)] transition-all duration-300">
+              <div className="relative w-11 h-11 rounded-2xl overflow-hidden ring-2 ring-[#C99A45] shadow-[0_2px_10px_rgba(201,154,69,0.35)] group-hover:scale-105 group-hover:shadow-[0_0_16px_rgba(201,154,69,0.5)] transition-all duration-300">
                 <Image src="/logo.jpeg" alt="Kaashta Crafts" fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
               </div>
               <div className="flex flex-col leading-none">
-                <span className="text-[17px] sm:text-[19px] font-playfair font-black tracking-wider text-[#21130E] dark:text-[#F7F3EB] group-hover:text-[#C99A45] dark:group-hover:text-[#E6C477] transition-colors drop-shadow-xs uppercase">
+                <span className="text-[19px] sm:text-[22px] font-sans font-black tracking-tight text-[#21130E] dark:text-[#F7F3EB] group-hover:text-[#C99A45] dark:group-hover:text-[#E6C477] transition-colors uppercase">
                   Kaashta Crafts
                 </span>
-                <span className="hidden sm:block text-[9px] tracking-[0.32em] uppercase text-[#C99A45] dark:text-[#E6C477] font-extrabold mt-1">
+                <span className="hidden sm:block text-[9.5px] tracking-[0.32em] uppercase text-[#C99A45] dark:text-[#E6C477] font-black mt-1">
                   Artisanal Woodcraft
                 </span>
               </div>
@@ -136,16 +136,16 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* ── DESKTOP NAV LINKS (MAJOR LUXURY REDESIGN) ── */}
+            {/* ── DESKTOP NAV LINKS (HIGH CONTRAST BOLD HOVER) ── */}
             <div className="hidden lg:flex items-center bg-[#EDE4D6]/70 dark:bg-[#1E130E]/80 rounded-full p-1.5 gap-1.5 border border-[#C99A45]/30 dark:border-[#C99A45]/20 shadow-xs">
               {navLinks.map(link => (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`relative px-5 py-2 rounded-full text-[11.5px] font-extrabold tracking-[0.14em] uppercase transition-all duration-300 flex items-center justify-center ${
+                  className={`relative px-5 py-2 rounded-full text-[12px] font-black tracking-[0.14em] uppercase transition-all duration-200 flex items-center justify-center font-sans ${
                     link.isActive
                       ? "bg-[#21130E] text-[#F7F3EB] dark:bg-[#21130E] dark:text-[#E6C477] border border-[#C99A45] shadow-[0_4px_14px_rgba(33,19,14,0.35),0_0_12px_rgba(201,154,69,0.35)]"
-                      : "text-[#38251A] dark:text-[#EDE4D6]/75 hover:text-[#21130E] dark:hover:text-[#E6C477] hover:bg-[#E6C477]/25 dark:hover:bg-[#38251A]/60"
+                      : "text-[#38251A] dark:text-[#EDE4D6] hover:text-white dark:hover:text-[#E6C477] hover:bg-[#21130E] dark:hover:bg-[#21130E] hover:shadow-[0_4px_14px_rgba(33,19,14,0.3),0_0_8px_rgba(201,154,69,0.25)] hover:scale-105 active:scale-95"
                   }`}
                 >
                   <span>{link.name}</span>
@@ -156,35 +156,43 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* ── ACTION ICONS ── */}
-            <div className="flex items-center gap-1 sm:gap-1.5">
+            {/* ── ACTION ICONS (HIGH CONTRAST BOLD HOVER) ── */}
+            <div className="flex items-center gap-1.5 sm:gap-2">
 
               {/* Theme */}
               {mounted && (
                 <button
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-[#38251C] dark:text-[#F7F3EB] hover:bg-[#EDE5D8] dark:hover:bg-[#2C2018] transition-all cursor-pointer"
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-[#21130E] dark:text-[#F7F3EB] border border-transparent hover:border-[#C99A45] hover:bg-[#21130E] hover:text-[#E6C477] dark:hover:bg-[#21130E] dark:hover:text-[#E6C477] hover:shadow-md hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer"
                   aria-label="Toggle Theme"
                 >
-                  {theme === "dark" ? <Sun className="w-4 h-4 text-[#DEB96A]" /> : <Moon className="w-4 h-4 text-[#38251C]" />}
+                  {theme === "dark" ? <Sun className="w-4.5 h-4.5 text-[#E6C477]" /> : <Moon className="w-4.5 h-4.5 stroke-[2.2]" />}
                 </button>
               )}
 
               {/* Wishlist */}
-              <Link href="/wishlist" className="relative w-9 h-9 rounded-full flex items-center justify-center text-[#38251C] dark:text-[#F7F3EB] hover:bg-[#EDE5D8] dark:hover:bg-[#2C2018] transition-all group" aria-label="Wishlist">
-                <Heart className="w-4.5 h-4.5 stroke-[1.8] group-hover:text-red-500 transition-colors" />
+              <Link
+                href="/wishlist"
+                className="relative w-9 h-9 rounded-full flex items-center justify-center text-[#21130E] dark:text-[#F7F3EB] border border-transparent hover:border-[#C99A45] hover:bg-[#21130E] hover:text-red-400 dark:hover:bg-[#21130E] hover:shadow-md hover:scale-110 active:scale-95 transition-all duration-200 group"
+                aria-label="Wishlist"
+              >
+                <Heart className="w-4.5 h-4.5 stroke-[2.2] group-hover:text-red-400 transition-colors" />
                 {wishlistCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#C69A4B] text-[#21150F] text-[9px] font-black flex items-center justify-center rounded-full">
+                  <span className="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 bg-[#C99A45] text-[#21130E] text-[10px] font-black flex items-center justify-center rounded-full shadow-xs">
                     {wishlistCount}
                   </span>
                 )}
               </Link>
 
               {/* Cart */}
-              <Link href="/cart" className="relative w-9 h-9 rounded-full flex items-center justify-center text-[#38251C] dark:text-[#F7F3EB] hover:bg-[#EDE5D8] dark:hover:bg-[#2C2018] transition-all group" aria-label="Cart">
-                <ShoppingBag className="w-4.5 h-4.5 stroke-[1.8] group-hover:text-[#C69A4B] transition-colors" />
+              <Link
+                href="/cart"
+                className="relative w-9 h-9 rounded-full flex items-center justify-center text-[#21130E] dark:text-[#F7F3EB] border border-transparent hover:border-[#C99A45] hover:bg-[#21130E] hover:text-[#E6C477] dark:hover:bg-[#21130E] hover:shadow-md hover:scale-110 active:scale-95 transition-all duration-200 group"
+                aria-label="Cart"
+              >
+                <ShoppingBag className="w-4.5 h-4.5 stroke-[2.2] group-hover:text-[#E6C477] transition-colors" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#21150F] dark:bg-[#C69A4B] text-[#F7F3EB] dark:text-[#21150F] text-[9px] font-black flex items-center justify-center rounded-full">
+                  <span className="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 bg-[#21130E] dark:bg-[#C99A45] text-[#F7F3EB] dark:text-[#21130E] text-[10px] font-black flex items-center justify-center rounded-full shadow-xs ring-1 ring-[#C99A45]">
                     {cartCount}
                   </span>
                 )}
@@ -195,9 +203,9 @@ export default function Navbar() {
                 <div className="relative ml-1" ref={profileRef}>
                   <button
                     onClick={() => setIsProfileOpen(!isProfileOpen)}
-                    className="w-8 h-8 rounded-full ring-2 ring-[#E0D3BE] dark:ring-[#2C2018] hover:ring-[#C69A4B] overflow-hidden transition-all cursor-pointer"
+                    className="w-9 h-9 rounded-full ring-2 ring-[#C99A45] hover:scale-110 overflow-hidden shadow-xs transition-all duration-200 cursor-pointer"
                   >
-                    <Image src={session.user?.image || `https://ui-avatars.com/api/?name=${session.user?.name}`} alt="Profile" width={32} height={32} className="object-cover w-full h-full" />
+                    <Image src={session.user?.image || `https://ui-avatars.com/api/?name=${session.user?.name}`} alt="Profile" width={36} height={36} className="object-cover w-full h-full" />
                   </button>
                   {isProfileOpen && (
                     <div className="absolute right-0 top-full mt-3 w-52 bg-[#F7F3EB] dark:bg-[#1E1510] rounded-2xl shadow-2xl border border-[#E0D3BE] dark:border-[#2C2018] py-2 z-50">
@@ -215,7 +223,7 @@ export default function Navbar() {
               ) : (
                 <button
                   onClick={() => signIn("google")}
-                  className="ml-1 px-4 py-2 bg-[#21150F] hover:bg-[#38251C] dark:bg-[#C69A4B] dark:hover:bg-[#DEB96A] text-[#F7F3EB] dark:text-[#21150F] text-[11px] font-bold tracking-widest uppercase rounded-full shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
+                  className="ml-1 px-5 py-2 bg-[#21130E] hover:bg-[#C99A45] hover:text-[#21130E] dark:bg-[#C99A45] dark:hover:bg-[#E6C477] text-[#F7F3EB] dark:text-[#21130E] text-[11.5px] font-black tracking-widest uppercase rounded-full shadow-sm hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer border border-[#C99A45]/40"
                 >
                   Login
                 </button>

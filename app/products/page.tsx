@@ -204,7 +204,7 @@ function ProductsContent() {
         </div>
 
         {/* Category Pills Quick Bar */}
-        <div className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-4 mb-4 scrollbar-hide">
+        <div className="flex items-center gap-2.5 sm:gap-3 overflow-x-auto pb-4 mb-4 scrollbar-hide">
           {categories.map((category) => (
             <button
               key={category}
@@ -212,10 +212,10 @@ function ProductsContent() {
                 setSelectedCategory(category);
                 router.push(`/products?category=${encodeURIComponent(category)}${searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : ''}`);
               }}
-              className={`filter-chip px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap cursor-pointer ${
+              className={`px-4.5 py-2 rounded-full text-xs font-black uppercase tracking-wider whitespace-nowrap cursor-pointer transition-all duration-200 font-sans ${
                 selectedCategory === category
-                  ? "filter-chip-active"
-                  : "filter-chip-inactive bg-white/80 dark:bg-[#1E1510]/80 text-[#7A6E63] dark:text-[#A09285] border border-[#E0D3BE] dark:border-[#2C2018]"
+                  ? "bg-[#21130E] text-white dark:text-[#E6C477] border-2 border-[#C99A45] shadow-[0_4px_16px_rgba(33,19,14,0.35),0_0_12px_rgba(201,154,69,0.4)] -translate-y-0.5"
+                  : "bg-white dark:bg-[#1E130E] text-[#21130E] dark:text-[#EDE4D6] border-2 border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#21130E] dark:hover:text-[#E6C477] hover:-translate-y-0.5 hover:shadow-md"
               }`}
             >
               {category}
