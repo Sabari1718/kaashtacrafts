@@ -160,7 +160,7 @@ function ProductsContent() {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* Top Header & Action Bar */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 bg-white/80 dark:bg-[#1E1510]/80 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-xs border border-[#E0D3BE] dark:border-[#2C2018]">
+        <div className="relative z-30 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 bg-white/80 dark:bg-[#1E1510]/80 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-xs border border-stone-200 dark:border-[#2C2018]">
           <div>
             <div className="flex items-center gap-2 text-[#C69A4B] text-[11px] font-bold uppercase tracking-[0.2em] mb-1">
               <Sparkles className="w-3.5 h-3.5 text-[#C69A4B]" />
@@ -208,7 +208,7 @@ function ProductsContent() {
             </button>
 
             {/* Custom Luxury Sort Dropdown */}
-            <div className="relative" ref={sortRef}>
+            <div className="relative z-50" ref={sortRef}>
               <button
                 type="button"
                 onClick={() => setIsSortOpen(!isSortOpen)}
@@ -220,7 +220,7 @@ function ProductsContent() {
               </button>
 
               {isSortOpen && (
-                <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-[#1C140F] rounded-2xl shadow-[0_12px_36px_rgba(33,19,14,0.18)] border-2 border-[#C99A45]/40 p-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-[#1C140F] rounded-2xl shadow-[0_16px_40px_rgba(33,19,14,0.25)] border-2 border-[#C99A45]/40 p-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <div className="px-3 py-1.5 border-b border-stone-100 dark:border-[#2C2018] mb-1">
                     <p className="text-[9px] font-black uppercase tracking-widest text-[#8C5819] dark:text-[#DEB96A]">Sort Masterpieces</p>
                   </div>
@@ -252,7 +252,7 @@ function ProductsContent() {
         </div>
 
         {/* Category Pills Quick Bar */}
-        <div className="flex items-center gap-2.5 sm:gap-3 overflow-x-auto pt-3 pb-4 mb-2 scrollbar-hide">
+        <div className="relative z-10 flex items-center gap-2.5 sm:gap-3 overflow-x-auto pt-3 pb-4 mb-2 scrollbar-hide">
           {categories.map((category) => (
             <button
               key={category}
