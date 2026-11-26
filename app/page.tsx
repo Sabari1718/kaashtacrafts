@@ -260,18 +260,16 @@ export default function Home() {
                     </Link>
                   </div>
 
-                  {/* RIGHT: Product Cutout (48% on mobile, 52% on desktop) — always visible, never hidden */}
-                  <div className="relative z-10 flex-1 h-full flex items-center justify-center pr-2 sm:pr-4 md:pr-8 lg:pr-12 overflow-hidden pointer-events-none">
-                    <div className="relative w-full h-full">
-                      <Image
-                        src={banner.cutoutImage}
-                        alt={banner.title}
-                        fill
-                        sizes="(max-width: 640px) 48vw, (max-width: 768px) 50vw, 45vw"
-                        priority={index === 0}
-                        className="object-contain object-center sm:object-right filter drop-shadow-[0_8px_20px_rgba(0,0,0,0.5)] sm:drop-shadow-[0_16px_32px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-700 ease-out"
-                      />
-                    </div>
+                  {/* RIGHT: Product Cutout — using img tag directly for reliable PNG rendering */}
+                  <div className="z-10 flex-1 h-full flex items-center justify-center pr-2 sm:pr-4 md:pr-8 lg:pr-12 overflow-hidden pointer-events-none shrink-0">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={banner.cutoutImage}
+                      alt={banner.title}
+                      className="max-h-full w-auto max-w-full object-contain filter drop-shadow-[0_8px_24px_rgba(0,0,0,0.55)] group-hover:scale-105 transition-transform duration-700 ease-out"
+                      loading={index === 0 ? "eager" : "lazy"}
+                      style={{ maxHeight: "90%" }}
+                    />
                   </div>
                 </div>
               </SwiperSlide>
