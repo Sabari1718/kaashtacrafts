@@ -332,17 +332,17 @@ export default function Home() {
             </div>
 
             {/* Filter Pills with Horizontal Scroll on Mobile & Wrap on Desktop */}
-            <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto scrollbar-hide py-1 -mx-3 px-3 sm:mx-0 sm:px-0 sm:flex-wrap">
+            <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto scrollbar-hide py-1.5 -mx-3 px-3 sm:mx-0 sm:px-0 sm:flex-wrap">
               {["All", "Desk Accessories", "Home Decor", "Kitchen", "Stationery"].map(cat => {
                 const isActive = selectedFilter === cat;
                 return (
                   <button
                     key={cat}
                     onClick={() => setSelectedFilter(cat)}
-                    className={`relative px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-[12px] font-black tracking-wider uppercase whitespace-nowrap cursor-pointer transition-all duration-200 flex items-center gap-1.5 sm:gap-2 font-sans shrink-0 ${
+                    className={`relative px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-[12px] font-black tracking-wider uppercase whitespace-nowrap cursor-pointer transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 font-sans shrink-0 ${
                       isActive
-                        ? "bg-[#21130E] text-white dark:text-[#E6C477] border-2 border-[#C99A45] shadow-[0_6px_22px_rgba(33,19,14,0.4),0_0_16px_rgba(201,154,69,0.5)] -translate-y-0.5 sm:-translate-y-1"
-                        : "bg-white dark:bg-[#1E130E] text-[#21130E] dark:text-[#EDE4D6] border-2 border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#21130E] dark:hover:text-[#E6C477] hover:-translate-y-0.5 sm:hover:-translate-y-1 hover:shadow-[0_8px_20px_-3px_rgba(33,19,14,0.35),0_0_12px_rgba(201,154,69,0.35)]"
+                        ? "bg-[#21130E] text-white dark:text-[#E6C477] border-2 border-[#C99A45] shadow-sm ring-2 ring-[#C99A45]/30"
+                        : "bg-white dark:bg-[#1E130E] text-[#21130E] dark:text-[#EDE4D6] border-2 border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#21130E] dark:hover:text-[#E6C477] hover:shadow-sm"
                     }`}
                   >
                     {isActive && (

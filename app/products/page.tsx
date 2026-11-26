@@ -262,8 +262,8 @@ function ProductsContent() {
               }}
               className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider whitespace-nowrap cursor-pointer transition-all duration-200 font-sans shrink-0 flex items-center gap-2 ${
                 selectedCategory === category
-                  ? "bg-[#21130E] text-white dark:text-[#E6C477] border-2 border-[#C99A45] shadow-[0_6px_20px_rgba(33,19,14,0.35),0_0_12px_rgba(201,154,69,0.4)]"
-                  : "bg-white dark:bg-[#1E130E] text-[#21130E] dark:text-[#EDE4D6] border-2 border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#21130E] dark:hover:text-[#E6C477] hover:shadow-md"
+                  ? "bg-[#21130E] text-white dark:text-[#E6C477] border-2 border-[#C99A45] shadow-sm ring-2 ring-[#C99A45]/30"
+                  : "bg-white dark:bg-[#1E130E] text-[#21130E] dark:text-[#EDE4D6] border-2 border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#21130E] dark:hover:text-[#E6C477] hover:shadow-sm"
               }`}
             >
               {selectedCategory === category && (
