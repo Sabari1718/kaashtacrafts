@@ -29,7 +29,7 @@ const categories = [
   { name: "Gifts & Curios",   tag: "Bespoke Tokens",   image: "/gifts.jpg",             href: "/products" },
 ];
 
-/* ─── PROMOTIONAL BANNERS DATA (CIRCUIT POINTCARE DESIGN PATTERN) ─── */
+/* ─── PROMOTIONAL BANNERS DATA (RICH ARTISANAL PALETTE: VIBRANT LEFT TO DEEP LUXURY DARK RIGHT) ─── */
 const promoBanners = [
   {
     tag: "Artisanal Heritage • Up to 40% Off",
@@ -38,13 +38,14 @@ const promoBanners = [
     btnText: "Explore Desk Suite",
     href: "/products?category=Desk Accessories",
     cutoutImage: "/desk-cutout.png",
-    bgGradient: "from-[#FDF8EE] via-[#F8E7D0] to-[#E6C38E] dark:from-[#25150C] dark:via-[#361E12] dark:to-[#4A2B1B]",
-    borderClass: "border-[#E8C590]/50 dark:border-[#4A2B1B]/60",
-    badgeBg: "bg-white/85 dark:bg-black/35 border-[#D4A259]/40 text-[#8B5614] dark:text-[#E8C488]",
-    titleClass: "text-[#26150B] dark:text-[#FDFBF7]",
-    subtitleClass: "text-[#5C3B24] dark:text-[#D4C0B2]",
-    btnClass: "bg-[#26150B] hover:bg-[#3D2214] text-[#FAF5ED] dark:bg-[#C99A45] dark:hover:bg-[#B88528] dark:text-stone-950",
-    lineColor: "#C99A45",
+    bgGradient: "from-[#A46328] via-[#5D2F15] to-[#1F0E06]",
+    borderClass: "border-[#C99A45]/40 dark:border-[#C99A45]/20",
+    badgeBg: "bg-black/25 backdrop-blur-md border border-amber-300/40 text-amber-100",
+    badgeIconColor: "text-[#E6C477]",
+    titleClass: "text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]",
+    subtitleClass: "text-amber-100/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]",
+    btnClass: "bg-gradient-to-r from-[#E6C477] via-[#C99A45] to-[#B88528] text-stone-950 font-black shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95",
+    glowColor: "rgba(201,154,69,0.3)",
   },
   {
     tag: "Sanctuary Collection • Nature's Touch",
@@ -53,13 +54,14 @@ const promoBanners = [
     btnText: "Shop Home Decor",
     href: "/products?category=Home Decor",
     cutoutImage: "/home-decor-cutout.png",
-    bgGradient: "from-[#EDF8F2] via-[#C8EFD9] to-[#82D6A9] dark:from-[#0E1A14] dark:via-[#162B20] dark:to-[#224030]",
-    borderClass: "border-emerald-300/50 dark:border-emerald-700/50",
-    badgeBg: "bg-white/85 dark:bg-black/35 border-emerald-300/50 text-[#154E2E] dark:text-[#8CE4B6]",
-    titleClass: "text-[#0E2E1C] dark:text-[#F2FAF5]",
-    subtitleClass: "text-[#28573D] dark:text-[#B6DAC5]",
-    btnClass: "bg-[#124529] hover:bg-[#1A5C38] text-white dark:bg-[#2EB872] dark:hover:bg-[#259B5F] dark:text-stone-950",
-    lineColor: "#228C56",
+    bgGradient: "from-[#226343] via-[#16432C] to-[#091D13]",
+    borderClass: "border-emerald-500/40 dark:border-emerald-600/20",
+    badgeBg: "bg-black/25 backdrop-blur-md border border-emerald-300/40 text-emerald-100",
+    badgeIconColor: "text-[#52B788]",
+    titleClass: "text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]",
+    subtitleClass: "text-emerald-100/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]",
+    btnClass: "bg-gradient-to-r from-[#52B788] via-[#2D6A4F] to-[#1B4332] text-white font-black shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95",
+    glowColor: "rgba(82,183,136,0.3)",
   },
   {
     tag: "Limited Edition • 100% Food-Safe Teak",
@@ -68,13 +70,14 @@ const promoBanners = [
     btnText: "Explore Culinary Art",
     href: "/products?category=Kitchen",
     cutoutImage: "/kitchen-cutout.png",
-    bgGradient: "from-[#FFF2ED] via-[#FDDCCD] to-[#F8AF98] dark:from-[#24110E] dark:via-[#351915] dark:to-[#4A231E]",
-    borderClass: "border-rose-300/50 dark:border-rose-700/50",
-    badgeBg: "bg-white/85 dark:bg-black/35 border-rose-300/50 text-[#9E2A2B] dark:text-[#FCA5A5]",
-    titleClass: "text-[#3B150F] dark:text-[#FFF5F2]",
-    subtitleClass: "text-[#6E2E23] dark:text-[#DEC1BB]",
-    btnClass: "bg-[#9E2A2B] hover:bg-[#B73233] text-white dark:bg-[#E76F51] dark:hover:bg-[#D65B3D] dark:text-stone-950",
-    lineColor: "#E76F51",
+    bgGradient: "from-[#9E3E26] via-[#5C1F11] to-[#210905]",
+    borderClass: "border-amber-500/40 dark:border-amber-600/20",
+    badgeBg: "bg-black/25 backdrop-blur-md border border-amber-300/40 text-amber-100",
+    badgeIconColor: "text-[#F4A261]",
+    titleClass: "text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.65)]",
+    subtitleClass: "text-amber-100/90 drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]",
+    btnClass: "bg-gradient-to-r from-[#F4A261] via-[#E76F51] to-[#C84B31] text-white font-black shadow-xl hover:shadow-2xl hover:scale-105 active:scale-95",
+    glowColor: "rgba(231,111,81,0.3)",
   },
 ];
 
@@ -215,47 +218,20 @@ export default function Home() {
             {promoBanners.map((banner, index) => (
               <SwiperSlide key={index}>
                 <div
-                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border ${banner.borderClass} min-h-[360px] sm:min-h-[390px] md:h-[410px] flex flex-col md:flex-row items-center bg-gradient-to-r ${banner.bgGradient} group transition-all`}
+                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border ${banner.borderClass} min-h-[360px] sm:min-h-[390px] md:h-[410px] flex flex-col md:flex-row items-center bg-gradient-to-r ${banner.bgGradient} group transition-all`}
                 >
-                  {/* BACKGROUND DECORATIVE CONNECTING CRAFT LINES & NODES (Circuit PointCare Design Motif) */}
-                  <svg
-                    className="absolute inset-0 w-full h-full pointer-events-none opacity-35 dark:opacity-25"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <defs>
-                      <pattern id={`grid-dots-${index}`} width="24" height="24" patternUnits="userSpaceOnUse">
-                        <circle cx="2" cy="2" r="1" fill={banner.lineColor} />
-                      </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill={`url(#grid-dots-${index})`} opacity="0.35" />
-                    {/* Connecting dashed trace lines */}
-                    <path
-                      d="M 40 70 H 260 L 310 110 H 750 L 800 60 H 1200"
-                      stroke={banner.lineColor}
-                      strokeWidth="1.5"
-                      strokeDasharray="4 4"
-                      fill="none"
-                    />
-                    <circle cx="260" cy="70" r="3" fill={banner.lineColor} />
-                    <circle cx="310" cy="110" r="3" fill={banner.lineColor} />
-                    <circle cx="750" cy="110" r="3" fill={banner.lineColor} />
-                    <path
-                      d="M 60 300 H 380 L 440 260 H 900"
-                      stroke={banner.lineColor}
-                      strokeWidth="1.5"
-                      strokeDasharray="4 4"
-                      fill="none"
-                    />
-                    <circle cx="380" cy="300" r="3" fill={banner.lineColor} />
-                    <circle cx="440" cy="260" r="3" fill={banner.lineColor} />
-                  </svg>
+                  {/* Subtle right-side ambient radial glow for product depth */}
+                  <div
+                    className="absolute -right-10 top-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full pointer-events-none blur-3xl"
+                    style={{ background: banner.glowColor }}
+                  />
 
                   {/* LEFT CONTENT AREA */}
                   <div className="relative z-10 w-full md:w-[50%] lg:w-[48%] p-6 sm:p-10 md:p-12 lg:p-14 flex flex-col justify-center items-start text-left">
                     {/* Badge */}
                     <div className="mb-2.5 sm:mb-3.5">
-                      <span className={`inline-flex items-center gap-1.5 backdrop-blur-md text-[10px] sm:text-[11px] font-extrabold tracking-wider uppercase px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border shadow-2xs ${banner.badgeBg}`}>
-                        <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                      <span className={`inline-flex items-center gap-1.5 backdrop-blur-md text-[10px] sm:text-[11px] font-extrabold tracking-wider uppercase px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border shadow-sm ${banner.badgeBg}`}>
+                        <Sparkles className={`w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 ${banner.badgeIconColor}`} />
                         <span>{banner.tag}</span>
                       </span>
                     </div>
@@ -273,14 +249,14 @@ export default function Home() {
                     {/* CTA Button */}
                     <Link
                       href={banner.href}
-                      className={`inline-flex items-center gap-2 sm:gap-2.5 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-bold text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 active:scale-95 ${banner.btnClass}`}
+                      className={`inline-flex items-center gap-2 sm:gap-2.5 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-black text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 ${banner.btnClass}`}
                     >
                       <span>{banner.btnText}</span>
                       <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </Link>
                   </div>
 
-                  {/* RIGHT PRODUCT SHOWCASE (Clean Cutout with soft natural 3D drop shadow, 100% visible) */}
+                  {/* RIGHT PRODUCT SHOWCASE (Solid, vibrant 3D product, completely visible) */}
                   <div className="relative z-10 w-full md:w-[50%] lg:w-[52%] h-[240px] sm:h-[280px] md:h-full flex items-center justify-center md:justify-end p-4 sm:p-6 md:p-8 lg:pr-12 pointer-events-none">
                     <div className="relative w-full max-w-[500px] h-full flex items-center justify-center md:justify-end">
                       <Image
@@ -289,7 +265,7 @@ export default function Home() {
                         fill
                         sizes="(max-width: 768px) 100vw, 50vw"
                         priority={index === 0}
-                        className="object-contain object-center md:object-right filter drop-shadow-[0_16px_28px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_16px_28px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform duration-700 ease-out"
+                        className="object-contain object-center md:object-right filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform duration-700 ease-out"
                       />
                     </div>
                   </div>
