@@ -29,7 +29,7 @@ const categories = [
   { name: "Gifts & Curios",   tag: "Bespoke Tokens",   image: "/gifts.jpg",             href: "/products" },
 ];
 
-/* ─── PROMOTIONAL BANNERS DATA (4K HIGH RESOLUTION PHOTOGRAPHY & ARTISANAL GRADIENT) ─── */
+/* ─── PROMOTIONAL BANNERS DATA (CIRCUIT POINTCARE SPLIT PATTERN) ─── */
 const promoBanners = [
   {
     tag: "Artisanal Heritage • Up to 40% Off",
@@ -37,10 +37,8 @@ const promoBanners = [
     subtitle: "Handcrafted executive teak desk suites, organizers, and heritage docking pieces carved by master woodturners.",
     btnText: "Explore Desk Suite",
     href: "/products?category=Desk Accessories",
-    image: "/desk-accessories.jpg",
-    bgGradient: "from-[#A46328] via-[#5D2F15] to-[#1F0E06]",
-    photoOverlay: "from-[#5D2F15] from-0% via-[#5D2F15]/40 via-20% to-transparent to-55%",
-    mobileOverlay: "from-[#1F0E06] via-[#1F0E06]/80 via-55% to-[#1F0E06]/35",
+    cutoutImage: "/desk-cutout.png",
+    bgGradient: "from-[#9E5F24] via-[#5A2D13] to-[#1F0E06]",
     borderClass: "border-[#C99A45]/40 dark:border-[#C99A45]/20",
     badgeBg: "bg-black/25 backdrop-blur-md border border-amber-300/40 text-amber-100",
     badgeIconColor: "text-[#E6C477]",
@@ -54,10 +52,8 @@ const promoBanners = [
     subtitle: "Warm botanical candle pillars, sculptural wooden clocks, and hand-chiseled teak sanctuary decor made to last generations.",
     btnText: "Shop Home Decor",
     href: "/products?category=Home Decor",
-    image: "/home-decor.jpg",
+    cutoutImage: "/home-decor-cutout.png",
     bgGradient: "from-[#226343] via-[#16432C] to-[#091D13]",
-    photoOverlay: "from-[#16432C] from-0% via-[#16432C]/40 via-20% to-transparent to-55%",
-    mobileOverlay: "from-[#091D13] via-[#091D13]/80 via-55% to-[#091D13]/35",
     borderClass: "border-emerald-500/40 dark:border-emerald-600/20",
     badgeBg: "bg-black/25 backdrop-blur-md border border-emerald-300/40 text-emerald-100",
     badgeIconColor: "text-[#52B788]",
@@ -71,10 +67,8 @@ const promoBanners = [
     subtitle: "Turn everyday dining into ritual with hand-turned organic acacia bowls, spice jars, and artisan serving platters.",
     btnText: "Explore Culinary Art",
     href: "/products?category=Kitchen",
-    image: "/kitchen.jpg",
+    cutoutImage: "/kitchen-cutout.png",
     bgGradient: "from-[#9E3E26] via-[#5C1F11] to-[#210905]",
-    photoOverlay: "from-[#5C1F11] from-0% via-[#5C1F11]/40 via-20% to-transparent to-55%",
-    mobileOverlay: "from-[#210905] via-[#210905]/80 via-55% to-[#210905]/35",
     borderClass: "border-amber-500/40 dark:border-amber-600/20",
     badgeBg: "bg-black/25 backdrop-blur-md border border-amber-300/40 text-amber-100",
     badgeIconColor: "text-[#F4A261]",
@@ -221,55 +215,61 @@ export default function Home() {
             {promoBanners.map((banner, index) => (
               <SwiperSlide key={index}>
                 {/*
-                  CIRCUIT POINTCARE SPLIT LAYOUT:
-                  - Solid gradient background (left rich color → right dark)
-                  - LEFT half: Text content (badge, title, subtitle, CTA)
-                  - RIGHT half: Product cutout floating with shadow — visible on BOTH mobile & desktop
-                  - Fixed height so all 3 banners are identical size on mobile
+                  CIRCUIT POINTCARE EXACT PATTERN:
+                  - Mobile: Top text (centered) + Bottom product floating (centered) -> Exactly like Photo 2
+                  - Desktop: Left text (left-aligned) + Right product floating -> Exactly like Photo 4
+                  - Fixed uniform height across all 3 banners: h-[460px] sm:h-[480px] md:h-[420px]
                 */}
                 <div
-                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border ${banner.borderClass} h-[320px] xs:h-[340px] sm:h-[380px] md:h-[420px] flex flex-row items-center bg-gradient-to-r ${banner.bgGradient} group transition-all`}
+                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border ${banner.borderClass} h-[460px] sm:h-[480px] md:h-[420px] flex flex-col md:flex-row items-center justify-between bg-gradient-to-r ${banner.bgGradient} group transition-all`}
                 >
-                  {/* LEFT: Text Content (40% on mobile, 48% on desktop) */}
-                  <div className="relative z-10 w-[52%] sm:w-[48%] md:w-[50%] lg:w-[48%] h-full px-4 sm:px-8 md:px-12 lg:px-14 py-5 sm:py-8 md:py-0 flex flex-col justify-center items-start text-left shrink-0">
+                  {/* Subtle right-side radial glow */}
+                  <div
+                    className="absolute -right-10 top-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full pointer-events-none blur-3xl opacity-30"
+                    style={{ background: banner.badgeIconColor }}
+                  />
+
+                  {/* TEXT CONTENT: Centered on Mobile, Left-aligned on Desktop */}
+                  <div className="relative z-10 w-full md:w-[50%] lg:w-[48%] pt-6 sm:pt-8 md:pt-0 px-5 sm:px-8 md:px-12 lg:px-14 flex flex-col items-center md:items-start text-center md:text-left shrink-0">
                     {/* Badge */}
                     <div className="mb-2 sm:mb-3">
-                      <span className={`inline-flex items-center gap-1 sm:gap-1.5 backdrop-blur-md text-[8px] sm:text-[10px] md:text-[11px] font-extrabold tracking-wider uppercase px-2 py-0.5 sm:px-3 sm:py-1 rounded-full border shadow-sm ${banner.badgeBg}`}>
-                        <Sparkles className={`w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 ${banner.badgeIconColor}`} />
-                        <span className="line-clamp-1">{banner.tag}</span>
+                      <span className={`inline-flex items-center gap-1.5 backdrop-blur-md text-[9px] sm:text-[10px] md:text-[11px] font-extrabold tracking-wider uppercase px-2.5 py-1 sm:px-3.5 sm:py-1 rounded-full border shadow-sm ${banner.badgeBg}`}>
+                        <Sparkles className={`w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 ${banner.badgeIconColor}`} />
+                        <span>{banner.tag}</span>
                       </span>
                     </div>
 
                     {/* Headline */}
-                    <h2 className={`heading-display text-base sm:text-2xl md:text-3xl lg:text-[38px] font-black leading-[1.15] mb-1.5 sm:mb-2.5 tracking-tight ${banner.titleClass}`}>
+                    <h2 className={`heading-display text-xl sm:text-2xl md:text-3xl lg:text-[40px] font-black leading-[1.14] mb-2 sm:mb-3 tracking-tight ${banner.titleClass}`}>
                       {banner.title}
                     </h2>
 
                     {/* Subtitle */}
-                    <p className={`hidden sm:block text-[11px] sm:text-sm md:text-[14px] leading-relaxed mb-3 sm:mb-5 font-sans font-medium max-w-xs md:max-w-sm ${banner.subtitleClass}`}>
+                    <p className={`text-xs sm:text-sm md:text-[14px] leading-relaxed mb-3.5 sm:mb-5 font-sans font-medium max-w-sm sm:max-w-md ${banner.subtitleClass} line-clamp-2 sm:line-clamp-none`}>
                       {banner.subtitle}
                     </p>
 
                     {/* CTA Button */}
                     <Link
                       href={banner.href}
-                      className={`inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 md:px-7 py-2 sm:py-2.5 md:py-3 rounded-full font-black text-[9px] sm:text-xs md:text-sm tracking-wider uppercase transition-all duration-300 ${banner.btnClass}`}
+                      className={`inline-flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full font-black text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 ${banner.btnClass}`}
                     >
                       <span>{banner.btnText}</span>
-                      <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                      <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </Link>
                   </div>
 
-                  {/* RIGHT: Product Cutout — using img tag directly for reliable PNG rendering */}
-                  <div className="z-10 flex-1 h-full flex items-center justify-center pr-2 sm:pr-4 md:pr-8 lg:pr-12 overflow-hidden pointer-events-none shrink-0">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={banner.cutoutImage}
-                      alt={banner.title}
-                      className="max-h-full w-auto max-w-full object-contain filter drop-shadow-[0_8px_24px_rgba(0,0,0,0.55)] group-hover:scale-105 transition-transform duration-700 ease-out"
-                      loading={index === 0 ? "eager" : "lazy"}
-                      style={{ maxHeight: "90%" }}
-                    />
+                  {/* PRODUCT SHOWCASE: Bottom on Mobile, Right on Desktop — 100% VISIBLE */}
+                  <div className="relative z-10 w-full md:w-[50%] lg:w-[52%] flex-1 md:h-full flex items-center justify-center px-4 pb-5 sm:pb-6 md:p-8 lg:pr-12 pointer-events-none">
+                    <div className="relative w-full max-w-[340px] sm:max-w-[400px] md:max-w-[500px] h-[190px] sm:h-[220px] md:h-[340px] flex items-center justify-center">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={banner.cutoutImage}
+                        alt={banner.title}
+                        className="max-h-full max-w-full w-auto h-auto object-contain filter drop-shadow-[0_12px_28px_rgba(0,0,0,0.55)] group-hover:scale-105 transition-transform duration-700 ease-out"
+                        loading={index === 0 ? "eager" : "lazy"}
+                      />
+                    </div>
                   </div>
                 </div>
               </SwiperSlide>
