@@ -23,6 +23,7 @@ export interface Product {
   image: string;
   images?: string[];
   usageImages?: string[];
+  order?: number;
   description?: string;
   inStock: boolean;
   featured?: boolean;
@@ -106,6 +107,23 @@ function ProductsContent() {
     fetchProducts();
   }, []);
 
+  const [dbCategories, setDbCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await fetch("/api/categories");
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          setDbCategories(data.map((c: any) => c.name));
+        }
+      } catch (err) {
+        console.error("Failed to fetch categories:", err);
+      }
+    }
+    fetchCategories();
+  }, []);
+
   // Prevent body scrolling when filter drawer is open
   useEffect(() => {
     if (isFilterDrawerOpen) {
@@ -118,7 +136,15 @@ function ProductsContent() {
     };
   }, [isFilterDrawerOpen]);
 
-  const categories = ["All", ...Array.from(new Set(products.map(p => p.category)))];
+  const uniqueCats = Array.from(new Set(products.map(p => p.category).filter(Boolean)));
+  const orderedCats = dbCategories.length > 0
+    ? [
+        ...dbCategories.filter(c => uniqueCats.includes(c)),
+        ...uniqueCats.filter(c => !dbCategories.includes(c))
+      ]
+    : uniqueCats;
+
+  const categories = ["All", ...(orderedCats.length > 0 ? orderedCats : ["Desk Accessories", "Home Decor", "Kitchen", "Stationery"])];
 
   // Filtering Logic
   let filteredProducts = products.filter((product) => {

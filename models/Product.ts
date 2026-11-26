@@ -17,6 +17,7 @@ export interface IProduct extends Document {
   image: string;
   images?: string[];
   usageImages?: string[];
+  order?: number;
   inStock: boolean;
   featured: boolean;
   reviews: IReview[];
@@ -40,6 +41,7 @@ const ProductSchema: Schema = new Schema({
   image: { type: String, required: true },
   images: [{ type: String }],
   usageImages: [{ type: String }],
+  order: { type: Number, default: 0 },
   inStock: { type: Boolean, default: true },
   featured: { type: Boolean, default: false },
   reviews: [ReviewSchema],

@@ -95,7 +95,7 @@ export async function PUT(
     await connectToDatabase();
     const resolvedParams = await params;
     const body = await request.json();
-    const { name, price, category, inStock, image, description, images, usageImages } = body;
+    const { name, price, category, inStock, image, description, images, usageImages, order } = body;
 
     const updateData: any = {};
     if (name !== undefined) updateData.name = name;
@@ -106,6 +106,7 @@ export async function PUT(
     if (description !== undefined) updateData.description = description;
     if (images !== undefined) updateData.images = images;
     if (usageImages !== undefined) updateData.usageImages = usageImages;
+    if (order !== undefined) updateData.order = Number(order);
 
     const updatedProduct = await Product.findByIdAndUpdate(
       resolvedParams.id,

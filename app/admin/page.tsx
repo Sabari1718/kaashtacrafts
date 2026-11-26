@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Package, PlusCircle, LayoutDashboard, Settings, LogOut, UploadCloud, TrendingUp, ShoppingBag, Clock, ShieldAlert, MessageSquare, Trash2, Star, Lock, Search, Edit2, X, Check, RefreshCw, ExternalLink } from "lucide-react";
+import { Package, PlusCircle, LayoutDashboard, Settings, LogOut, UploadCloud, TrendingUp, ShoppingBag, Clock, ShieldAlert, MessageSquare, Trash2, Star, Lock, Search, Edit2, X, Check, RefreshCw, ExternalLink, ArrowUp, ArrowDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
 export default function AdminPage() {
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
@@ -37,6 +37,14 @@ export default function AdminPage() {
   const [productSearchQuery, setProductSearchQuery] = useState("");
   const [productCategoryFilter, setProductCategoryFilter] = useState("All");
   const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
+
+  // Dynamic Category Order & Management State
+  const [categoriesList, setCategoriesList] = useState<string[]>([
+    "Desk Accessories", "Home Decor", "Kitchen", "Stationery"
+  ]);
+  const [isAddingCategory, setIsAddingCategory] = useState(false);
+  const [newCategoryInput, setNewCategoryInput] = useState("");
+  const [categoryFeedback, setCategoryFeedback] = useState("");
 
   // Edit Modal State
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
@@ -88,19 +96,105 @@ export default function AdminPage() {
   const fetchDashboardData = async () => {
     setIsLoadingOrders(true);
     try {
-      const [ordersRes, productsRes] = await Promise.all([
+      const [ordersRes, productsRes, categoriesRes] = await Promise.all([
         fetch("/api/orders"),
-        fetch("/api/products")
+        fetch("/api/products"),
+        fetch("/api/categories")
       ]);
       const ordersData = await ordersRes.json();
       const productsData = await productsRes.json();
+      const categoriesData = await categoriesRes.json();
       
       if (Array.isArray(ordersData)) setOrders(ordersData);
       if (Array.isArray(productsData)) setProducts(productsData);
+      if (Array.isArray(categoriesData) && categoriesData.length > 0) {
+        setCategoriesList(categoriesData.map((c: any) => c.name));
+      }
     } catch (error) {
-      console.error("Failed to fetch orders:", error);
+      console.error("Failed to fetch dashboard data:", error);
     } finally {
       setIsLoadingOrders(false);
+    }
+  };
+
+  const moveCategory = async (index: number, direction: 'left' | 'right') => {
+    const targetIndex = direction === 'left' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= categoriesList.length) return;
+    const updated = [...categoriesList];
+    const temp = updated[index];
+    updated[index] = updated[targetIndex];
+    updated[targetIndex] = temp;
+    setCategoriesList(updated);
+    setCategoryFeedback("Saving order...");
+
+    try {
+      const res = await fetch("/api/categories", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ categories: updated })
+      });
+      if (res.ok) {
+        setCategoryFeedback("Order saved!");
+        setTimeout(() => setCategoryFeedback(""), 2500);
+      } else {
+        setCategoryFeedback("Failed to save");
+      }
+    } catch (err) {
+      console.error("Failed to reorder categories", err);
+      setCategoryFeedback("Error saving");
+    }
+  };
+
+  const handleAddCategorySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = newCategoryInput.trim();
+    if (!trimmed) return;
+    if (categoriesList.some(c => c.toLowerCase() === trimmed.toLowerCase()) || trimmed.toLowerCase() === "all") {
+      alert("Category already exists!");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: trimmed })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setCategoriesList(prev => [...prev, data.category.name]);
+        setNewCategoryInput("");
+        setIsAddingCategory(false);
+        setCategoryFeedback("Category added!");
+        setTimeout(() => setCategoryFeedback(""), 2500);
+      } else {
+        alert(data.error || "Failed to add category");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error adding category");
+    }
+  };
+
+  const moveProduct = async (productId: string, direction: 'up' | 'down') => {
+    const index = products.findIndex(p => (p._id || p.id) === productId);
+    if (index === -1) return;
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= products.length) return;
+    const updated = [...products];
+    const temp = updated[index];
+    updated[index] = updated[targetIndex];
+    updated[targetIndex] = temp;
+    setProducts(updated);
+
+    try {
+      await fetch("/api/products/reorder", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productIds: updated.map(p => p._id || p.id) })
+      });
+    } catch (err) {
+      console.error("Failed to reorder products", err);
     }
   };
 
@@ -599,32 +693,138 @@ export default function AdminPage() {
             </div>
 
             {/* Filter and Search Bar */}
-            <div className="bg-white p-4 rounded-2xl shadow-sm border border-stone-200 mb-8 flex flex-col sm:flex-row gap-4 items-center justify-between">
-              <div className="relative w-full sm:w-80">
-                <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  placeholder="Search products by name or category..."
-                  value={productSearchQuery}
-                  onChange={(e) => setProductSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-stone-200 bg-stone-50 focus:outline-none focus:ring-2 focus:ring-amber-700/50"
-                />
+            <div className="bg-white p-5 rounded-2xl shadow-sm border border-stone-200 mb-8 space-y-4">
+              <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+                <div className="relative w-full sm:w-80">
+                  <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    placeholder="Search products by name or category..."
+                    value={productSearchQuery}
+                    onChange={(e) => setProductSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-stone-200 bg-stone-50 focus:outline-none focus:ring-2 focus:ring-amber-700/50"
+                  />
+                </div>
+
+                {categoryFeedback && (
+                  <span className="text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full animate-pulse">
+                    ✓ {categoryFeedback}
+                  </span>
+                )}
               </div>
 
-              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-                {["All", "Desk Accessories", "Home Decor", "Kitchen", "Stationery"].map((cat) => (
+              {/* Category Pills with Reorder Controls */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500">
+                    Category Display Order (Order on website updates instantly):
+                  </span>
+                  {!isAddingCategory ? (
+                    <button
+                      onClick={() => setIsAddingCategory(true)}
+                      className="text-xs font-bold text-amber-800 hover:text-amber-900 inline-flex items-center gap-1 cursor-pointer hover:underline"
+                    >
+                      <PlusCircle className="w-3.5 h-3.5" /> Add Category
+                    </button>
+                  ) : (
+                    <form onSubmit={handleAddCategorySubmit} className="flex items-center gap-1.5">
+                      <input
+                        type="text"
+                        placeholder="New category..."
+                        value={newCategoryInput}
+                        onChange={(e) => setNewCategoryInput(e.target.value)}
+                        className="px-2.5 py-1 text-xs rounded-lg border border-stone-300 focus:outline-none focus:ring-1 focus:ring-amber-700"
+                        autoFocus
+                      />
+                      <button
+                        type="submit"
+                        className="px-2.5 py-1 text-xs bg-amber-800 text-white font-bold rounded-lg hover:bg-amber-700 cursor-pointer"
+                      >
+                        Add
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { setIsAddingCategory(false); setNewCategoryInput(""); }}
+                        className="p-1 text-stone-400 hover:text-stone-600 rounded-lg cursor-pointer"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </form>
+                  )}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2">
+                  {/* Fixed "All" Pill */}
                   <button
-                    key={cat}
-                    onClick={() => setProductCategoryFilter(cat)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
-                      productCategoryFilter === cat
-                        ? "bg-amber-800 text-white"
-                        : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                    onClick={() => setProductCategoryFilter("All")}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer ${
+                      productCategoryFilter === "All"
+                        ? "bg-stone-900 text-white"
+                        : "bg-stone-100 text-stone-700 hover:bg-stone-200"
                     }`}
                   >
-                    {cat}
+                    All Products
                   </button>
-                ))}
+
+                  {/* Reorderable Category Pills */}
+                  {categoriesList.map((cat, idx) => {
+                    const isSelected = productCategoryFilter === cat;
+                    return (
+                      <div
+                        key={cat}
+                        className={`inline-flex items-center rounded-xl text-xs font-bold transition-all shadow-xs border ${
+                          isSelected
+                            ? "bg-amber-800 text-white border-amber-900 ring-2 ring-amber-800/20"
+                            : "bg-stone-50 text-stone-700 border-stone-200 hover:bg-stone-100"
+                        }`}
+                      >
+                        {/* Move Left Button */}
+                        <button
+                          type="button"
+                          onClick={() => moveCategory(idx, "left")}
+                          disabled={idx === 0}
+                          title={idx === 0 ? "First category after All" : "Move left"}
+                          className={`p-1.5 rounded-l-xl transition-colors cursor-pointer ${
+                            idx === 0
+                              ? "opacity-30 cursor-not-allowed"
+                              : isSelected
+                              ? "hover:bg-amber-900 text-amber-200"
+                              : "hover:bg-stone-200 text-stone-500"
+                          }`}
+                        >
+                          <ChevronLeft className="w-3.5 h-3.5" />
+                        </button>
+
+                        {/* Category Name (Filter Trigger) */}
+                        <button
+                          type="button"
+                          onClick={() => setProductCategoryFilter(cat)}
+                          className="px-2.5 py-1.5 cursor-pointer select-none"
+                          title={`Click to filter by ${cat}`}
+                        >
+                          {cat}
+                        </button>
+
+                        {/* Move Right Button */}
+                        <button
+                          type="button"
+                          onClick={() => moveCategory(idx, "right")}
+                          disabled={idx === categoriesList.length - 1}
+                          title={idx === categoriesList.length - 1 ? "Last category" : "Move right"}
+                          className={`p-1.5 rounded-r-xl transition-colors cursor-pointer ${
+                            idx === categoriesList.length - 1
+                              ? "opacity-30 cursor-not-allowed"
+                              : isSelected
+                              ? "hover:bg-amber-900 text-amber-200"
+                              : "hover:bg-stone-200 text-stone-500"
+                          }`}
+                        >
+                          <ChevronRight className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
 
@@ -687,6 +887,25 @@ export default function AdminPage() {
                             <span className="absolute top-3 left-3 bg-stone-900/80 backdrop-blur-sm text-white text-[11px] font-semibold px-2.5 py-1 rounded-full">
                               {product.category || "General"}
                             </span>
+                            <div className="absolute top-3 right-3 flex items-center gap-1 bg-stone-900/85 backdrop-blur-sm text-white px-2 py-0.5 rounded-full text-[11px] font-bold shadow-xs">
+                              <span className="text-amber-300">#{products.findIndex(p => (p._id || p.id) === productId) + 1}</span>
+                              <button
+                                type="button"
+                                onClick={() => moveProduct(productId, "up")}
+                                title="Move product earlier in catalog"
+                                className="hover:text-amber-300 p-0.5 transition-colors cursor-pointer"
+                              >
+                                <ArrowUp className="w-3 h-3" />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => moveProduct(productId, "down")}
+                                title="Move product later in catalog"
+                                className="hover:text-amber-300 p-0.5 transition-colors cursor-pointer"
+                              >
+                                <ArrowDown className="w-3 h-3" />
+                              </button>
+                            </div>
                           </div>
 
                           {/* Product Details */}

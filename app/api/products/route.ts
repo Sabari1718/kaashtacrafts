@@ -12,7 +12,7 @@ cloudinary.config({
 export async function GET() {
   try {
     await connectToDatabase();
-    const products = await Product.find({}).sort({ createdAt: -1 });
+    const products = await Product.find({}).sort({ order: 1, createdAt: -1 });
     
     const mappedProducts = products.map(p => ({
       id: p._id.toString(),
@@ -23,6 +23,7 @@ export async function GET() {
       image: p.image,
       images: p.images && p.images.length > 0 ? p.images : [p.image],
       usageImages: p.usageImages || [],
+      order: p.order ?? 0,
       inStock: p.inStock,
       featured: p.featured,
       reviews: p.reviews || [],

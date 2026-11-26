@@ -89,6 +89,9 @@ export default function Home() {
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
   const [swiperInstance, setSwiperInstance] = useState<any>(null);
+  const [customCategories, setCustomCategories] = useState<string[]>([
+    "Desk Accessories", "Home Decor", "Kitchen", "Stationery"
+  ]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -97,6 +100,15 @@ export default function Home() {
       }
       window.scrollTo(0, 0);
     }
+
+    fetch("/api/categories")
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setCustomCategories(data.map((c: any) => c.name));
+        }
+      })
+      .catch(console.error);
 
     fetch("/api/products")
       .then(r => r.json())
@@ -333,7 +345,7 @@ export default function Home() {
 
             {/* Filter Pills with Horizontal Scroll on Mobile & Wrap on Desktop */}
             <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto scrollbar-hide py-1.5 -mx-3 px-3 sm:mx-0 sm:px-0 sm:flex-wrap">
-              {["All", "Desk Accessories", "Home Decor", "Kitchen", "Stationery"].map(cat => {
+              {["All", ...customCategories].map(cat => {
                 const isActive = selectedFilter === cat;
                 return (
                   <button
