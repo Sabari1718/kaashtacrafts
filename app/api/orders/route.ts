@@ -91,7 +91,7 @@ export async function POST(req: Request) {
           <td style="padding: 10px; border-bottom: 1px solid #ddd;">
             <strong>${item.name}</strong><br/>
             Qty: ${item.quantity}
-            ${(item.customization?.text || item.customization?.secondaryText) ? `<br/><span style="color: #8b5a2b; font-size: 0.9em; font-weight: bold; background: #faf5ee; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 4px;">✒️ Laser Engraving: ${item.customization.text ? `Line 1: "${item.customization.text}"` : ''}${item.customization.secondaryText ? ` | Line 2: "${item.customization.secondaryText}"` : ''} (${[item.customization.font, item.customization.size, item.customization.position].filter(Boolean).join(' • ') || 'Royal Calligraphy'})</span>` : ''}
+            ${(item.customization?.text || item.customization?.secondaryText) ? `<br/><span style="color: #8b5a2b; font-size: 0.9em; font-weight: bold; background: #faf5ee; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 4px;">✒️ Laser Engraving: ${item.customization.text ? `Line 1: "${item.customization.text}" (${[item.customization.font, item.customization.size, item.customization.color].filter(Boolean).join(' • ')})` : ''}${item.customization.secondaryText ? ` | Line 2: "${item.customization.secondaryText}" (${[item.customization.secondaryFont, item.customization.secondarySize, item.customization.secondaryColor].filter(Boolean).join(' • ')})` : ''}</span>` : ''}
           </td>
           <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right;">
             ₹${item.price * item.quantity}
@@ -182,11 +182,15 @@ export async function POST(req: Request) {
       .map((item: any, idx: number) => {
         let line = `${idx + 1}. *${item.name}* (Qty: ${item.quantity}) - ₹${item.price * item.quantity}`;
         if (item.customization?.text || item.customization?.secondaryText) {
-          const customMeta = [item.customization.font, item.customization.size, item.customization.position].filter(Boolean).join(" • ") || "Royal Calligraphy";
           line += `\n   ✒️ *Custom Laser Engraving:*`;
-          if (item.customization.text) line += ` Line 1: "${item.customization.text}"`;
-          if (item.customization.secondaryText) line += ` | Line 2: "${item.customization.secondaryText}"`;
-          line += ` (${customMeta})`;
+          if (item.customization.text) {
+            const meta1 = [item.customization.font, item.customization.size, item.customization.color].filter(Boolean).join(" • ");
+            line += ` Line 1: "${item.customization.text}" (${meta1 || 'Standard'})`;
+          }
+          if (item.customization.secondaryText) {
+            const meta2 = [item.customization.secondaryFont, item.customization.secondarySize, item.customization.secondaryColor].filter(Boolean).join(" • ");
+            line += ` | Line 2: "${item.customization.secondaryText}" (${meta2 || 'Small'})`;
+          }
         }
         return line;
       })

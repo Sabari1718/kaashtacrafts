@@ -128,13 +128,14 @@ export default function CartPage() {
                               <div className="flex items-center gap-1">
                                 <span>✒️ Line 1:</span>
                                 <span className="font-bold">"{item.customization.text}"</span>
-                                <span className="opacity-75 text-[10px]">({[item.customization.font, item.customization.size].filter(Boolean).join(" • ")})</span>
+                                <span className="opacity-75 text-[10px]">({[item.customization.font, item.customization.size, item.customization.color].filter(Boolean).join(" • ")})</span>
                               </div>
                             )}
                             {item.customization.secondaryText && (
                               <div className="flex items-center gap-1 text-[10px]">
                                 <span>✒️ Line 2:</span>
                                 <span className="font-bold">"{item.customization.secondaryText}"</span>
+                                <span className="opacity-75 text-[9px]">({[item.customization.secondaryFont, item.customization.secondarySize, item.customization.secondaryColor].filter(Boolean).join(" • ")})</span>
                               </div>
                             )}
                           </div>
@@ -177,7 +178,7 @@ export default function CartPage() {
                         <span className="text-[#EAE1D2] dark:text-[#2E241E]">•</span>
 
                         <Link 
-                          href={`/checkout?buyNow=${item.id}${item.customization?.text ? `&customText=${encodeURIComponent(item.customization.text)}&customFont=${encodeURIComponent(item.customization.font || '')}&customSize=${encodeURIComponent(item.customization.size || '')}&customPos=${encodeURIComponent(item.customization.position || '')}` : ''}${item.customization?.secondaryText ? `&customSecondaryText=${encodeURIComponent(item.customization.secondaryText)}` : ''}`}
+                          href={`/checkout?buyNow=${item.id}${item.customization?.text ? `&customText=${encodeURIComponent(item.customization.text)}&customFont=${encodeURIComponent(item.customization.font || '')}&customSize=${encodeURIComponent(item.customization.size || '')}&customColor=${encodeURIComponent(item.customization.color || '')}&customPos=${encodeURIComponent(item.customization.position || '')}` : ''}${item.customization?.secondaryText ? `&customSecondaryText=${encodeURIComponent(item.customization.secondaryText)}&customSecondaryFont=${encodeURIComponent(item.customization.secondaryFont || '')}&customSecondarySize=${encodeURIComponent(item.customization.secondarySize || '')}&customSecondaryColor=${encodeURIComponent(item.customization.secondaryColor || '')}` : ''}`}
                           className="text-[#C49A50] hover:underline flex items-center gap-1 text-xs font-bold transition-colors"
                         >
                           Buy Now <ArrowRight className="w-3 h-3" />

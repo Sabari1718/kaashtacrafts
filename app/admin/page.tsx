@@ -1481,13 +1481,14 @@ export default function AdminPage() {
                                     <div className="flex items-center gap-1.5">
                                       <span>✒️ Line 1:</span>
                                       <span className="font-bold text-amber-900">"{item.customization.text}"</span>
-                                      <span className="text-[10px] text-amber-700 font-medium">({[item.customization.font, item.customization.size, item.customization.position].filter(Boolean).join(" • ")})</span>
+                                      <span className="text-[10px] text-amber-700 font-medium">({[item.customization.font, item.customization.size, (item as any).customization.color].filter(Boolean).join(" • ")})</span>
                                     </div>
                                   )}
                                   {item.customization.secondaryText && (
-                                    <div className="flex items-center gap-1 text-[11px]">
+                                    <div className="flex items-center gap-1.5 text-[11px]">
                                       <span>✒️ Line 2:</span>
                                       <span className="font-bold text-amber-900">"{item.customization.secondaryText}"</span>
+                                      <span className="text-[10px] text-amber-700 font-medium">({[(item as any).customization.secondaryFont, (item as any).customization.secondarySize, (item as any).customization.secondaryColor].filter(Boolean).join(" • ")})</span>
                                     </div>
                                   )}
                                 </div>

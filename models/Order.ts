@@ -11,6 +11,10 @@ export interface IOrderItem {
     secondaryText?: string;
     font?: string;
     size?: string;
+    color?: string;
+    secondaryFont?: string;
+    secondarySize?: string;
+    secondaryColor?: string;
     position?: string;
     notes?: string;
   };
@@ -41,6 +45,10 @@ const OrderItemSchema = new mongoose.Schema({
     secondaryText: { type: String },
     font: { type: String },
     size: { type: String },
+    color: { type: String },
+    secondaryFont: { type: String },
+    secondarySize: { type: String },
+    secondaryColor: { type: String },
     position: { type: String },
     notes: { type: String },
   },

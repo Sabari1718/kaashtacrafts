@@ -15,6 +15,10 @@ function CheckoutContent() {
   const customSecondaryTextParam = searchParams.get("customSecondaryText");
   const customFontParam = searchParams.get("customFont");
   const customSizeParam = searchParams.get("customSize");
+  const customColorParam = searchParams.get("customColor");
+  const customSecondaryFontParam = searchParams.get("customSecondaryFont");
+  const customSecondarySizeParam = searchParams.get("customSecondarySize");
+  const customSecondaryColorParam = searchParams.get("customSecondaryColor");
   const customPosParam = searchParams.get("customPos");
   const selectedIdsParam = searchParams.get("selectedIds");
   const selectedIds = selectedIdsParam ? selectedIdsParam.split(",") : [];
@@ -114,6 +118,10 @@ function CheckoutContent() {
                 secondaryText: customSecondaryTextParam || undefined,
                 font: customFontParam || undefined,
                 size: customSizeParam || undefined,
+                color: customColorParam || undefined,
+                secondaryFont: customSecondaryFontParam || undefined,
+                secondarySize: customSecondarySizeParam || undefined,
+                secondaryColor: customSecondaryColorParam || undefined,
                 position: customPosParam || undefined
               } : undefined
             }]);
@@ -530,10 +538,10 @@ function CheckoutContent() {
                   {(item.customization?.text || item.customization?.secondaryText) && (
                     <div className="text-[10px] text-[#8B5A2B] dark:text-[#E6C477] font-semibold mt-0.5 flex flex-col gap-0.5">
                       {item.customization.text && (
-                        <span>✒️ Line 1: "{item.customization.text}" ({[item.customization.font, item.customization.size].filter(Boolean).join(" • ") || 'Royal Calligraphy'})</span>
+                        <span>✒️ Line 1: "{item.customization.text}" ({[item.customization.font, item.customization.size, item.customization.color].filter(Boolean).join(" • ") || 'Royal Calligraphy'})</span>
                       )}
                       {item.customization.secondaryText && (
-                        <span>✒️ Line 2: "{item.customization.secondaryText}"</span>
+                        <span>✒️ Line 2: "{item.customization.secondaryText}" ({[item.customization.secondaryFont, item.customization.secondarySize, item.customization.secondaryColor].filter(Boolean).join(" • ") || 'Small'})</span>
                       )}
                       {item.customization.position && (
                         <span className="text-[9px] text-[#82786E] font-medium">Position: {item.customization.position}</span>

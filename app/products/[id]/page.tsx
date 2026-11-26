@@ -46,6 +46,15 @@ const ENGRAVING_POSITIONS = [
   { id: "bottom", label: "Lower Area", topPercent: "68%", icon: "⬇️" },
 ];
 
+const ENGRAVING_COLORS = [
+  { id: "charred", name: "Deep Charcoal", hex: "#1c0d06", bgClass: "bg-[#1c0d06]", borderClass: "border-[#1c0d06]", shadow: "0 1px 1px rgba(255,255,255,0.45), 0 -1px 1px rgba(0,0,0,0.9), 0 0 2px rgba(45,22,12,0.8)", desc: "Classic Laser Burn" },
+  { id: "walnut", name: "Warm Walnut", hex: "#422006", bgClass: "bg-[#422006]", borderClass: "border-[#422006]", shadow: "0 1px 1px rgba(255,255,255,0.4), 0 -1px 1px rgba(0,0,0,0.85), 0 0 2px rgba(66,32,6,0.7)", desc: "Rich Timber Grain" },
+  { id: "gold", name: "Artisan Gold", hex: "#C49A50", bgClass: "bg-gradient-to-r from-[#D4AF37] to-[#C49A50]", borderClass: "border-[#C49A50]", shadow: "0 1px 2px rgba(0,0,0,0.85), 0 0 4px rgba(196,154,80,0.7), 0 -1px 1px rgba(255,255,255,0.5)", desc: "Metallic Gold Inlay" },
+  { id: "white", name: "Frost White", hex: "#F7F5F0", bgClass: "bg-[#F7F5F0]", borderClass: "border-stone-400", shadow: "0 1px 2px rgba(0,0,0,0.95), 0 -1px 1px rgba(0,0,0,0.8), 0 0 3px rgba(0,0,0,0.7)", desc: "White Chalk Inlay" },
+  { id: "ebony", name: "Ebony Black", hex: "#080605", bgClass: "bg-[#080605]", borderClass: "border-black", shadow: "0 1px 1px rgba(255,255,255,0.3), 0 -1px 2px rgba(0,0,0,0.95)", desc: "Jet Black Etch" },
+  { id: "crimson", name: "Royal Rust", hex: "#7a2217", bgClass: "bg-[#7a2217]", borderClass: "border-[#7a2217]", shadow: "0 1px 1px rgba(255,255,255,0.35), 0 -1px 1px rgba(0,0,0,0.85)", desc: "Redwood Pigment" },
+];
+
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const { addToCart } = useCart();
@@ -64,11 +73,19 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [customText, setCustomText] = useState("");
   const [secondaryText, setSecondaryText] = useState("");
   const [showSecondaryLine, setShowSecondaryLine] = useState(false);
-  const [selectedFont, setSelectedFont] = useState("calligraphy");
-  const [selectedSize, setSelectedSize] = useState("md");
-  const [engravingPosition, setEngravingPosition] = useState("center");
+
+  // Line 1 styles (independent)
+  const [selectedFont1, setSelectedFont1] = useState("calligraphy");
+  const [selectedSize1, setSelectedSize1] = useState("md");
+  const [selectedColor1, setSelectedColor1] = useState("charred");
   const [textPos1, setTextPos1] = useState<{ x: number; y: number }>({ x: 50, y: 38 });
+
+  // Line 2 styles (independent)
+  const [selectedFont2, setSelectedFont2] = useState("calligraphy");
+  const [selectedSize2, setSelectedSize2] = useState("sm");
+  const [selectedColor2, setSelectedColor2] = useState("charred");
   const [textPos2, setTextPos2] = useState<{ x: number; y: number }>({ x: 50, y: 64 });
+
   const [activeElement, setActiveElement] = useState<"line1" | "line2" | null>("line1");
   const [draggingTarget, setDraggingTarget] = useState<"line1" | "line2" | null>(null);
   const [modalImageIndex, setModalImageIndex] = useState<number>(0);
@@ -205,15 +222,25 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       return;
     }
     const pid = product.id || (product as any)._id;
-    const fontObj = ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0];
-    const sizeObj = ENGRAVING_SIZES.find(s => s.id === selectedSize) || ENGRAVING_SIZES[1];
+    const fontObj1 = ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0];
+    const sizeObj1 = ENGRAVING_SIZES.find(s => s.id === selectedSize1) || ENGRAVING_SIZES[1];
+    const colorObj1 = ENGRAVING_COLORS.find(c => c.id === selectedColor1) || ENGRAVING_COLORS[0];
+
+    const fontObj2 = ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0];
+    const sizeObj2 = ENGRAVING_SIZES.find(s => s.id === selectedSize2) || ENGRAVING_SIZES[0];
+    const colorObj2 = ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0];
+
     const textParam = `&customText=${encodeURIComponent(trimmed || trimmedSecondary)}`;
     const secondaryParam = trimmedSecondary && trimmed ? `&customSecondaryText=${encodeURIComponent(trimmedSecondary)}` : '';
-    const fontParam = `&customFont=${encodeURIComponent(fontObj.name)}`;
-    const sizeParam = `&customSize=${encodeURIComponent(sizeObj.label)}`;
+    const fontParam = `&customFont=${encodeURIComponent(fontObj1.name)}`;
+    const sizeParam = `&customSize=${encodeURIComponent(sizeObj1.label)}`;
+    const colorParam = `&customColor=${encodeURIComponent(colorObj1.name)}`;
+    const secFontParam = trimmedSecondary ? `&customSecondaryFont=${encodeURIComponent(fontObj2.name)}` : '';
+    const secSizeParam = trimmedSecondary ? `&customSecondarySize=${encodeURIComponent(sizeObj2.label)}` : '';
+    const secColorParam = trimmedSecondary ? `&customSecondaryColor=${encodeURIComponent(colorObj2.name)}` : '';
     const posParam = `&customPos=${encodeURIComponent(`L1:x:${textPos1.x}%,y:${textPos1.y}%${trimmedSecondary ? `|L2:x:${textPos2.x}%,y:${textPos2.y}%` : ''}`)}`;
     setIsCustomizeModalOpen(false);
-    router.push(`/checkout?buyNow=${pid}${textParam}${secondaryParam}${fontParam}${sizeParam}${posParam}`);
+    router.push(`/checkout?buyNow=${pid}${textParam}${secondaryParam}${fontParam}${sizeParam}${colorParam}${secFontParam}${secSizeParam}${secColorParam}${posParam}`);
   };
 
   const handleAddCustomizedToCart = () => {
@@ -228,13 +255,23 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       setTimeout(() => customInputRef.current?.focus(), 150);
       return;
     }
-    const fontObj = ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0];
-    const sizeObj = ENGRAVING_SIZES.find(s => s.id === selectedSize) || ENGRAVING_SIZES[1];
+    const fontObj1 = ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0];
+    const sizeObj1 = ENGRAVING_SIZES.find(s => s.id === selectedSize1) || ENGRAVING_SIZES[1];
+    const colorObj1 = ENGRAVING_COLORS.find(c => c.id === selectedColor1) || ENGRAVING_COLORS[0];
+
+    const fontObj2 = ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0];
+    const sizeObj2 = ENGRAVING_SIZES.find(s => s.id === selectedSize2) || ENGRAVING_SIZES[0];
+    const colorObj2 = ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0];
+
     addToCart(product, {
       text: trimmed || trimmedSecondary,
       secondaryText: trimmedSecondary && trimmed ? trimmedSecondary : undefined,
-      font: fontObj.name,
-      size: sizeObj.label,
+      font: fontObj1.name,
+      size: sizeObj1.label,
+      color: colorObj1.name,
+      secondaryFont: trimmedSecondary ? fontObj2.name : undefined,
+      secondarySize: trimmedSecondary ? sizeObj2.label : undefined,
+      secondaryColor: trimmedSecondary ? colorObj2.name : undefined,
       position: `L1:x:${textPos1.x}%,y:${textPos1.y}%${trimmedSecondary ? ` | L2:x:${textPos2.x}%,y:${textPos2.y}%` : ''}`
     });
     setIsCustomizeModalOpen(false);
@@ -547,25 +584,40 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   {/* Real-time carved text on the wood */}
                   <p
                     className={`leading-tight break-words select-none transition-all duration-150 ${
-                      (ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).fontClass
+                      (ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0]).fontClass
                     }`}
                     style={{
-                      fontSize: `clamp(${Math.max(14, (ENGRAVING_SIZES.find(s => s.id === selectedSize)?.sizePx || 26) - 8)}px, 4.2vw, ${(ENGRAVING_SIZES.find(s => s.id === selectedSize)?.sizePx || 26)}px)`,
-                      color: "#221109",
-                      textShadow: "0 1px 1px rgba(255,255,255,0.45), 0 -1px 1px rgba(0,0,0,0.85), 0 0 2px rgba(45,22,12,0.7)",
-                      filter: "drop-shadow(0 1px 2px rgba(15,7,3,0.7))",
-                      letterSpacing: (ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).letterSpacing || "normal",
+                      fontSize: `clamp(14px, 4.2vw, ${(ENGRAVING_SIZES.find(s => s.id === selectedSize1)?.sizePx || 26)}px)`,
+                      color: (ENGRAVING_COLORS.find(c => c.id === selectedColor1) || ENGRAVING_COLORS[0]).hex,
+                      textShadow: (ENGRAVING_COLORS.find(c => c.id === selectedColor1) || ENGRAVING_COLORS[0]).shadow,
+                      letterSpacing: (ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0]).letterSpacing || "normal",
                     }}
                   >
-                    {customText.trim() || "Your Name Here"}
+                    {customText.trim() || (secondaryText.trim() ? "" : "Your Name Here")}
                   </p>
 
+                  {secondaryText.trim() && (
+                    <p
+                      className={`leading-tight break-words select-none transition-all duration-150 mt-0.5 ${
+                        (ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0]).fontClass
+                      }`}
+                      style={{
+                        fontSize: `clamp(12px, 3.6vw, ${(ENGRAVING_SIZES.find(s => s.id === selectedSize2)?.sizePx || 18)}px)`,
+                        color: (ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0]).hex,
+                        textShadow: (ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0]).shadow,
+                        letterSpacing: (ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0]).letterSpacing || "normal",
+                      }}
+                    >
+                      {secondaryText.trim()}
+                    </p>
+                  )}
+
                   <div className="flex items-center justify-center gap-2 mt-1 pt-1 border-t border-[#8B5A2B]/20 text-[8px] sm:text-[9px] font-bold text-[#3D2214] dark:text-[#E0D3BE]/90">
-                    <span>{(ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).name}</span>
+                    <span>{(ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0]).name}</span>
                     <span>•</span>
-                    <span>{(ENGRAVING_SIZES.find(s => s.id === selectedSize) || ENGRAVING_SIZES[1]).label}</span>
+                    <span>{(ENGRAVING_SIZES.find(s => s.id === selectedSize1) || ENGRAVING_SIZES[1]).label}</span>
                     <span>•</span>
-                    <span>{(ENGRAVING_POSITIONS.find(p => p.id === engravingPosition) || ENGRAVING_POSITIONS[1]).label}</span>
+                    <span>{(ENGRAVING_COLORS.find(c => c.id === selectedColor1) || ENGRAVING_COLORS[0]).name}</span>
                   </div>
                 </div>
               </div>
@@ -773,10 +825,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               {(customText.trim() || secondaryText.trim()) ? (
                 <span className="font-semibold text-[#8B5A2B] dark:text-[#E6C477] flex items-center gap-1.5 flex-wrap">
                   <span>✒️ Selected Engraving: "{[customText.trim(), secondaryText.trim()].filter(Boolean).join(" • ")}"</span>
-                  <span>({(ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).name} • {(ENGRAVING_SIZES.find(s => s.id === selectedSize) || ENGRAVING_SIZES[1]).label})</span>
+                  <span>
+                    ({[
+                      customText.trim() ? `${(ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0]).name} • ${(ENGRAVING_SIZES.find(s => s.id === selectedSize1) || ENGRAVING_SIZES[1]).label} • ${(ENGRAVING_COLORS.find(c => c.id === selectedColor1) || ENGRAVING_COLORS[0]).name}` : null,
+                      secondaryText.trim() ? `L2: ${(ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0]).name} • ${(ENGRAVING_SIZES.find(s => s.id === selectedSize2) || ENGRAVING_SIZES[0]).label} • ${(ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0]).name}` : null,
+                    ].filter(Boolean).join(" | ")})
+                  </span>
                 </span>
               ) : (
-                "Add your custom name, couple names, or gift message. Choose font styles and sizes with real-time live preview on the piece before ordering!"
+                "Add your custom name, couple names, or gift message. Choose font styles, sizes, and colors with real-time live preview on the piece before ordering!"
               )}
             </p>
 
@@ -1192,13 +1249,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
                       {/* Primary Laser Engraving Text */}
                       <p
-                        className={`leading-tight whitespace-nowrap select-none transition-all duration-150 ${(ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).fontClass}`}
+                        className={`leading-tight whitespace-nowrap select-none transition-all duration-150 ${(ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0]).fontClass}`}
                         style={{
-                          fontSize: `clamp(14px, 4.2vw, ${(ENGRAVING_SIZES.find(s => s.id === selectedSize)?.sizePx || 26)}px)`,
-                          color: "#1c0d06",
-                          textShadow: "0 1px 1px rgba(255,255,255,0.45), 0 -1px 1px rgba(0,0,0,0.9), 0 0 2px rgba(45,22,12,0.8)",
-                          filter: "drop-shadow(0 1px 2px rgba(15,7,3,0.8))",
-                          letterSpacing: (ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).letterSpacing || "normal",
+                          fontSize: `clamp(14px, 4.2vw, ${(ENGRAVING_SIZES.find(s => s.id === selectedSize1)?.sizePx || 26)}px)`,
+                          color: (ENGRAVING_COLORS.find(c => c.id === selectedColor1) || ENGRAVING_COLORS[0]).hex,
+                          textShadow: (ENGRAVING_COLORS.find(c => c.id === selectedColor1) || ENGRAVING_COLORS[0]).shadow,
+                          letterSpacing: (ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0]).letterSpacing || "normal",
                         }}
                       >
                         {customText.trim() || (activeElement === "line1" ? "Type Name Here" : "Your Name Here")}
@@ -1206,7 +1262,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
                       {activeElement === "line1" && (
                         <span className="text-[7.5px] font-bold text-[#3D2214] dark:text-[#E0D3BE]/90 block mt-0.5 whitespace-nowrap pointer-events-none">
-                          {(ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).name} • Double-tap to edit
+                          {(ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0]).name} • {(ENGRAVING_SIZES.find(s => s.id === selectedSize1) || ENGRAVING_SIZES[1]).label} • {(ENGRAVING_COLORS.find(c => c.id === selectedColor1) || ENGRAVING_COLORS[0]).name}
                         </span>
                       )}
                     </div>
@@ -1246,13 +1302,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
                         {/* Secondary Laser Engraving Text */}
                         <p
-                          className={`leading-tight whitespace-nowrap select-none transition-all duration-150 ${(ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).fontClass}`}
+                          className={`leading-tight whitespace-nowrap select-none transition-all duration-150 ${(ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0]).fontClass}`}
                           style={{
-                            fontSize: `clamp(12px, 3.4vw, ${Math.round((ENGRAVING_SIZES.find(s => s.id === selectedSize)?.sizePx || 26) * 0.85)}px)`,
-                            color: "#221007",
-                            textShadow: "0 1px 1px rgba(255,255,255,0.4), 0 -1px 1px rgba(0,0,0,0.85), 0 0 2px rgba(45,22,12,0.75)",
-                            filter: "drop-shadow(0 1px 2px rgba(15,7,3,0.75))",
-                            letterSpacing: (ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).letterSpacing || "normal",
+                            fontSize: `clamp(12px, 3.6vw, ${(ENGRAVING_SIZES.find(s => s.id === selectedSize2)?.sizePx || 18)}px)`,
+                            color: (ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0]).hex,
+                            textShadow: (ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0]).shadow,
+                            letterSpacing: (ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0]).letterSpacing || "normal",
                           }}
                         >
                           {secondaryText.trim() || (activeElement === "line2" ? "2nd Name / Date" : "Additional Name")}
@@ -1260,7 +1315,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
                         {activeElement === "line2" && (
                           <span className="text-[7.5px] font-bold text-[#3D2214] dark:text-[#E0D3BE]/90 block mt-0.5 whitespace-nowrap pointer-events-none">
-                            Line 2 • Double-tap to edit
+                            Line 2: {(ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0]).name} • {(ENGRAVING_SIZES.find(s => s.id === selectedSize2) || ENGRAVING_SIZES[0]).label} • {(ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0]).name}
                           </span>
                         )}
                       </div>
@@ -1414,20 +1469,63 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   )}
                 </div>
 
-                {/* Step 2: Font Style */}
+                {/* Active Target Banner */}
+                <div className="flex items-center justify-between p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#8B5A2B] dark:text-[#E6C477]">
+                    <Sparkles className="w-3.5 h-3.5 text-[#C49A50]" />
+                    <span>Styling:</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setActiveElement("line1")}
+                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                        (activeElement === "line2" ? "line2" : "line1") === "line1"
+                          ? "bg-[#241812] text-white dark:bg-[#C49A50] dark:text-[#241812] shadow-sm ring-1 ring-amber-500/60"
+                          : "bg-white/80 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:text-stone-900 border border-stone-200 dark:border-stone-700"
+                      }`}
+                    >
+                      Line 1 {customText.trim() ? `("${customText.slice(0, 8)}")` : ""}
+                    </button>
+                    {(showSecondaryLine || secondaryText.trim()) && (
+                      <button
+                        type="button"
+                        onClick={() => setActiveElement("line2")}
+                        className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                          (activeElement === "line2" ? "line2" : "line1") === "line2"
+                            ? "bg-[#241812] text-white dark:bg-[#C49A50] dark:text-[#241812] shadow-sm ring-1 ring-amber-500/60"
+                            : "bg-white/80 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:text-stone-900 border border-stone-200 dark:border-stone-700"
+                        }`}
+                      >
+                        Line 2 {secondaryText.trim() ? `("${secondaryText.slice(0, 8)}")` : ""}
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Step 2: Font Style (Applies ONLY to active line) */}
                 <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-[#C49A50] mb-2 flex items-center gap-1.5">
-                    <span className="w-4 h-4 rounded-full bg-[#241812] text-[#F7F5F0] text-[10px] flex items-center justify-center font-bold">2</span>
-                    <span>Choose Font Style:</span>
-                  </label>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-[#C49A50] flex items-center gap-1.5">
+                      <span className="w-4 h-4 rounded-full bg-[#241812] text-[#F7F5F0] text-[10px] flex items-center justify-center font-bold">2</span>
+                      <span>Font Style (for {(activeElement === "line2" ? "Line 2" : "Line 1")}):</span>
+                    </label>
+                  </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {ENGRAVING_FONTS.map((f) => {
-                      const isSelected = selectedFont === f.id;
+                      const isSelected = (activeElement === "line2" ? selectedFont2 : selectedFont1) === f.id;
+                      const activeTextSample = activeElement === "line2" ? (secondaryText.trim() || f.sampleText) : (customText.trim() || f.sampleText);
                       return (
                         <button
                           key={f.id}
                           type="button"
-                          onClick={() => setSelectedFont(f.id)}
+                          onClick={() => {
+                            if (activeElement === "line2") {
+                              setSelectedFont2(f.id);
+                            } else {
+                              setSelectedFont1(f.id);
+                            }
+                          }}
                           className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
                             isSelected
                               ? 'bg-[#241812] text-[#F7F5F0] dark:bg-[#C49A50] dark:text-[#241812] border-[#C49A50] shadow-sm ring-2 ring-[#C49A50]/40 scale-[1.02]'
@@ -1435,7 +1533,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                           }`}
                         >
                           <span className={`block text-xs truncate leading-tight ${f.fontClass}`}>
-                            {customText.trim() ? customText : (secondaryText.trim() || f.sampleText)}
+                            {activeTextSample}
                           </span>
                           <span className="text-[9px] opacity-75 font-sans font-medium block mt-1">
                             {f.name}
@@ -1446,20 +1544,28 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   </div>
                 </div>
 
-                {/* Step 3: Size */}
+                {/* Step 3: Size (Applies ONLY to active line) */}
                 <div>
-                  <label className="block text-[11px] font-bold uppercase tracking-wider text-[#C49A50] mb-2 flex items-center gap-1.5">
-                    <span className="w-4 h-4 rounded-full bg-[#241812] text-[#F7F5F0] text-[10px] flex items-center justify-center font-bold">3</span>
-                    <span>Choose Engraving Size:</span>
-                  </label>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-[#C49A50] flex items-center gap-1.5">
+                      <span className="w-4 h-4 rounded-full bg-[#241812] text-[#F7F5F0] text-[10px] flex items-center justify-center font-bold">3</span>
+                      <span>Size (for {(activeElement === "line2" ? "Line 2" : "Line 1")}):</span>
+                    </label>
+                  </div>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     {ENGRAVING_SIZES.map((s) => {
-                      const isSelected = selectedSize === s.id;
+                      const isSelected = (activeElement === "line2" ? selectedSize2 : selectedSize1) === s.id;
                       return (
                         <button
                           key={s.id}
                           type="button"
-                          onClick={() => setSelectedSize(s.id)}
+                          onClick={() => {
+                            if (activeElement === "line2") {
+                              setSelectedSize2(s.id);
+                            } else {
+                              setSelectedSize1(s.id);
+                            }
+                          }}
                           className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
                             isSelected
                               ? 'bg-[#241812] text-[#F7F5F0] dark:bg-[#C49A50] dark:text-[#241812] border-[#C49A50] shadow-sm ring-2 ring-[#C49A50]/40 scale-[1.02]'
@@ -1478,39 +1584,52 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   </div>
                 </div>
 
-                {/* Step 4: Position On Wood */}
+                {/* Step 4: Engraving Tone & Color Options */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-[11px] font-bold uppercase tracking-wider text-[#C49A50] flex items-center gap-1.5">
                       <span className="w-4 h-4 rounded-full bg-[#241812] text-[#F7F5F0] text-[10px] flex items-center justify-center font-bold">4</span>
-                      <span>Quick Placement ({activeElement === 'line2' ? 'Line 2' : 'Line 1'}):</span>
+                      <span>Color & Inlay Style (for {(activeElement === "line2" ? "Line 2" : "Line 1")}):</span>
                     </label>
-                    <div className="flex items-center gap-1.5">
-                      <button
-                        type="button"
-                        onClick={() => setActiveElement("line1")}
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-md cursor-pointer transition-colors ${
-                          activeElement === 'line1'
-                            ? 'bg-[#241812] text-white dark:bg-[#C49A50] dark:text-[#241812]'
-                            : 'bg-stone-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300'
-                        }`}
-                      >
-                        Line 1
-                      </button>
-                      {(showSecondaryLine || secondaryText.trim()) && (
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {ENGRAVING_COLORS.map((c) => {
+                      const isSelected = (activeElement === "line2" ? selectedColor2 : selectedColor1) === c.id;
+                      return (
                         <button
+                          key={c.id}
                           type="button"
-                          onClick={() => setActiveElement("line2")}
-                          className={`text-[10px] font-bold px-2 py-0.5 rounded-md cursor-pointer transition-colors ${
-                            activeElement === 'line2'
-                              ? 'bg-[#241812] text-white dark:bg-[#C49A50] dark:text-[#241812]'
-                              : 'bg-stone-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300'
+                          onClick={() => {
+                            if (activeElement === "line2") {
+                              setSelectedColor2(c.id);
+                            } else {
+                              setSelectedColor1(c.id);
+                            }
+                          }}
+                          className={`p-2 rounded-xl border flex items-center gap-2 transition-all cursor-pointer ${
+                            isSelected
+                              ? 'bg-[#241812] text-[#F7F5F0] dark:bg-[#C49A50] dark:text-[#241812] border-[#C49A50] shadow-sm ring-2 ring-[#C49A50]/40 scale-[1.02]'
+                              : 'bg-white/80 dark:bg-[#1A120E] text-[#241812] dark:text-[#E2D8CC] border-[#DFCDB7] dark:border-[#38261C] hover:border-[#C49A50]'
                           }`}
                         >
-                          Line 2
+                          <span className={`w-4 h-4 rounded-full shrink-0 shadow-xs ${c.bgClass}`} />
+                          <div className="flex flex-col text-left">
+                            <span className="text-xs font-bold leading-tight truncate">{c.name}</span>
+                            <span className="text-[8px] opacity-75">{c.desc}</span>
+                          </div>
                         </button>
-                      )}
-                    </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Step 5: Position On Wood */}
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-[#C49A50] flex items-center gap-1.5">
+                      <span className="w-4 h-4 rounded-full bg-[#241812] text-[#F7F5F0] text-[10px] flex items-center justify-center font-bold">5</span>
+                      <span>Quick Placement ({activeElement === 'line2' ? 'Line 2' : 'Line 1'}):</span>
+                    </label>
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     {ENGRAVING_POSITIONS.map((p) => {

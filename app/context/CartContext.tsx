@@ -11,13 +11,27 @@ export interface CartItem extends Product {
     secondaryText?: string;
     font?: string;
     size?: string;
+    color?: string;
+    secondaryFont?: string;
+    secondarySize?: string;
+    secondaryColor?: string;
     position?: string;
   };
 }
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (product: Product, customization?: { text?: string; secondaryText?: string; font?: string; size?: string; position?: string }) => void;
+  addToCart: (product: Product, customization?: { 
+    text?: string; 
+    secondaryText?: string; 
+    font?: string; 
+    size?: string; 
+    color?: string;
+    secondaryFont?: string;
+    secondarySize?: string;
+    secondaryColor?: string;
+    position?: string; 
+  }) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, delta: number) => void;
   clearCart: () => void;
@@ -110,7 +124,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   const cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  const addToCart = (product: Product, customization?: { text?: string; secondaryText?: string; font?: string; size?: string; position?: string }) => {
+  const addToCart = (product: Product, customization?: { 
+    text?: string; 
+    secondaryText?: string; 
+    font?: string; 
+    size?: string; 
+    color?: string;
+    secondaryFont?: string;
+    secondarySize?: string;
+    secondaryColor?: string;
+    position?: string; 
+  }) => {
     const pId = (product as any).id || (product as any)._id;
     const normalizedProduct = { ...product, id: pId };
     setCartItems((prevItems) => {
@@ -120,6 +144,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         (item.customization?.secondaryText || "") === (customization?.secondaryText || "") &&
         (item.customization?.font || "") === (customization?.font || "") &&
         (item.customization?.size || "") === (customization?.size || "") &&
+        (item.customization?.color || "") === (customization?.color || "") &&
+        (item.customization?.secondaryFont || "") === (customization?.secondaryFont || "") &&
+        (item.customization?.secondarySize || "") === (customization?.secondarySize || "") &&
+        (item.customization?.secondaryColor || "") === (customization?.secondaryColor || "") &&
         (item.customization?.position || "") === (customization?.position || "")
       );
       if (existingItem) {
