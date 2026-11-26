@@ -72,7 +72,10 @@ export default function Navbar() {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (profileRef.current && !profileRef.current.contains(event.target as Node)) setIsProfileOpen(false);
-      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) setShowSuggestions(false);
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+        setIsSearchOpen(false);
+      }
       if (mobileSearchRef.current && !mobileSearchRef.current.contains(event.target as Node)) setShowSuggestions(false);
       if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) setIsMobileMenuOpen(false);
     }
@@ -119,86 +122,150 @@ export default function Navbar() {
           : "bg-white/98 dark:bg-[#0C0A09]/98 backdrop-blur-md border-b border-stone-200/60 dark:border-[#C49A50]/15"
       }`}>
         <div className="max-w-[1800px] w-full mx-auto px-4 sm:px-6 lg:px-10">
-          <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
+          <div className="flex items-center justify-between h-16 sm:h-20 gap-3 sm:gap-6">
 
-            {/* ── BRAND (CLASSY ULTRA-PREMIUM HERITAGE WOODCRAFT BADGE) ── */}
-            <Link
-              href="/"
-              className="group flex items-center gap-2.5 sm:gap-3.5 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-xl sm:rounded-2xl bg-[#FCFAF6] dark:bg-[#14100D] border border-[#E5D7C4] dark:border-[#C49A50]/25 shadow-[0_4px_12px_rgba(42,22,13,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)] dark:shadow-[0_4px_15px_rgba(0,0,0,0.5)] hover:border-[#C69A4B]/80 hover:shadow-[0_6px_22px_rgba(198,154,75,0.25)] hover:scale-102 active:scale-98 transition-all duration-300 shrink-0 cursor-pointer"
-            >
-              {/* Logo Avatar - Prominent Full Artisan Workshop Badge (Tools on Left & Right Uncropped) */}
-              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden ring-1.5 ring-[#C69A4B]/70 shadow-md shrink-0 bg-[#2E1A11]">
-                <Image
-                  src="/logo.jpg"
-                  alt="Kaashta Crafts"
-                  fill
-                  priority
-                  className="object-contain group-hover:scale-105 transition-transform duration-500 ease-out"
-                />
-              </div>
+            {/* ── LEFT: LOGO + DESKTOP NAV ICONS RIGHT NEXT TO IT ── */}
+            <div className="flex items-center gap-3 sm:gap-5 lg:gap-6 shrink-0">
+              {/* BRAND (CLASSY ULTRA-PREMIUM HERITAGE WOODCRAFT BADGE) */}
+              <Link
+                href="/"
+                className="group flex items-center gap-2.5 sm:gap-3 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl sm:rounded-2xl bg-[#FCFAF6] dark:bg-[#14100D] border border-[#E5D7C4] dark:border-[#C49A50]/25 shadow-[0_4px_12px_rgba(42,22,13,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)] dark:shadow-[0_4px_15px_rgba(0,0,0,0.5)] hover:border-[#C69A4B]/80 hover:shadow-[0_6px_22px_rgba(198,154,75,0.25)] hover:scale-102 active:scale-98 transition-all duration-300 shrink-0 cursor-pointer"
+              >
+                {/* Logo Avatar */}
+                <div className="relative w-11 h-11 sm:w-13 sm:h-13 rounded-xl overflow-hidden ring-1.5 ring-[#C69A4B]/70 shadow-md shrink-0 bg-[#2E1A11]">
+                  <Image
+                    src="/logo.jpg"
+                    alt="Kaashta Crafts"
+                    fill
+                    priority
+                    className="object-contain group-hover:scale-105 transition-transform duration-500 ease-out"
+                  />
+                </div>
 
-              {/* Brand Name - Refined, High-End Luxury Typography */}
-              <div className="flex flex-col justify-center">
-                <span className="font-playfair font-extrabold tracking-tight text-[#22130D] dark:text-[#FAF6EE] text-[16px] sm:text-[21px] leading-tight">
-                  Kaashta<span className="text-[#A27223] dark:text-[#E2BA69] font-bold ml-0.5 sm:ml-1">Crafts</span>
-                </span>
-                <span className="hidden sm:block text-[8px] text-[#8C7B6D] dark:text-[#A3988C] tracking-[0.22em] uppercase font-sans font-semibold -mt-0.5">
-                  Crafting Memories in Wood
-                </span>
-              </div>
-            </Link>
+                {/* Brand Name */}
+                <div className="flex flex-col justify-center">
+                  <span className="font-playfair font-extrabold tracking-tight text-[#22130D] dark:text-[#FAF6EE] text-[16px] sm:text-[20px] leading-tight">
+                    Kaashta<span className="text-[#A27223] dark:text-[#E2BA69] font-bold ml-0.5 sm:ml-1">Crafts</span>
+                  </span>
+                  <span className="hidden sm:block text-[8px] text-[#8C7B6D] dark:text-[#A3988C] tracking-[0.22em] uppercase font-sans font-semibold -mt-0.5">
+                    Crafting Memories in Wood
+                  </span>
+                </div>
+              </Link>
 
-            {/* ── DESKTOP NAV ICONS (CENTERED, SPACIOUS, HOVER TOOLTIP LABEL, ACTIVE HIGHLIGHT) ── */}
-            <div className="hidden lg:flex items-center justify-center flex-1 mx-6 xl:mx-12 gap-6 xl:gap-9">
-              {navLinks.map(link => {
-                const Icon = link.icon;
-                return (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    className="group relative flex flex-col items-center justify-center cursor-pointer p-1"
-                    aria-label={link.name}
-                  >
-                    {/* The Icon Button */}
-                    <div
-                      className={`w-10 h-10 xl:w-11 xl:h-11 rounded-2xl flex items-center justify-center transition-all duration-300 ${
-                        link.isActive
-                          ? "bg-[#21130E] text-[#E6C477] dark:bg-gradient-to-r dark:from-[#C49A50] dark:via-[#D4AF37] dark:to-[#B88636] dark:text-[#0C0A09] shadow-[0_6px_20px_rgba(33,19,14,0.25),0_0_12px_rgba(201,154,69,0.35)] scale-105 ring-2 ring-[#C99A45]/40"
-                          : "text-[#5C4838] dark:text-[#D8CFBF] bg-stone-100/70 dark:bg-[#16120E] border border-stone-200/80 dark:border-[#C49A50]/20 hover:bg-[#21130E] hover:text-[#E6C477] dark:hover:bg-[#1E1712] dark:hover:text-[#E2BA69] hover:shadow-md hover:scale-108 active:scale-95"
-                      }`}
+              {/* ── DESKTOP NAV ICONS (RIGHT NEXT TO LOGO, HOVER TOOLTIP LABEL, ACTIVE HIGHLIGHT) ── */}
+              <div className="hidden lg:flex items-center gap-2.5 xl:gap-3.5">
+                {navLinks.map(link => {
+                  const Icon = link.icon;
+                  return (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      className="group relative flex flex-col items-center justify-center cursor-pointer p-0.5"
+                      aria-label={link.name}
                     >
-                      <Icon className="w-5 h-5 shrink-0 transition-transform duration-300 group-hover:scale-110" />
-                    </div>
+                      {/* The Icon Button */}
+                      <div
+                        className={`w-10 h-10 xl:w-10.5 xl:h-10.5 rounded-2xl flex items-center justify-center transition-all duration-300 ${
+                          link.isActive
+                            ? "bg-[#21130E] text-[#E6C477] dark:bg-gradient-to-r dark:from-[#C49A50] dark:via-[#D4AF37] dark:to-[#B88636] dark:text-[#0C0A09] shadow-[0_6px_20px_rgba(33,19,14,0.25),0_0_12px_rgba(201,154,69,0.35)] scale-105 ring-2 ring-[#C99A45]/40"
+                            : "text-[#5C4838] dark:text-[#D8CFBF] bg-stone-100/70 dark:bg-[#16120E] border border-stone-200/80 dark:border-[#C49A50]/20 hover:bg-[#21130E] hover:text-[#E6C477] dark:hover:bg-[#1E1712] dark:hover:text-[#E2BA69] hover:shadow-md hover:scale-108 active:scale-95"
+                        }`}
+                      >
+                        <Icon className="w-4.5 h-4.5 xl:w-5 xl:h-5 shrink-0 transition-transform duration-300 group-hover:scale-110" />
+                      </div>
 
-                    {/* Active Indicator Underneath */}
-                    {link.isActive && (
-                      <span className="w-2.5 h-[2.5px] rounded-full bg-gradient-to-r from-[#C99A45] via-[#E6C477] to-[#C99A45] shadow-[0_0_8px_#C99A45] mt-1" />
-                    )}
+                      {/* Active Indicator Underneath */}
+                      {link.isActive && (
+                        <span className="w-2.5 h-[2.5px] rounded-full bg-gradient-to-r from-[#C99A45] via-[#E6C477] to-[#C99A45] shadow-[0_0_8px_#C99A45] mt-1" />
+                      )}
 
-                    {/* Name Appears Below On Hover ("over pannuna name kila vara maari venum") */}
-                    <div className="absolute top-[108%] left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md bg-[#21130E] dark:bg-[#1C1612] text-[#F7F3EB] dark:text-[#E2BA69] text-[10.5px] font-black uppercase tracking-wider shadow-xl border border-[#C99A45]/30 pointer-events-none opacity-0 group-hover:opacity-100 group-hover:translate-y-1 translate-y-0 transition-all duration-200 whitespace-nowrap z-50">
-                      <span>{link.name}</span>
-                      <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rotate-45 bg-[#21130E] dark:bg-[#1C1612] border-t border-l border-[#C99A45]/30" />
-                    </div>
-                  </Link>
-                );
-              })}
+                      {/* Name Appears Below On Hover ("over pannuna name kila vara maari venum") */}
+                      <div className="absolute top-[108%] left-1/2 -translate-x-1/2 px-2.5 py-1 rounded-md bg-[#21130E] dark:bg-[#1C1612] text-[#F7F3EB] dark:text-[#E2BA69] text-[10.5px] font-black uppercase tracking-wider shadow-xl border border-[#C99A45]/30 pointer-events-none opacity-0 group-hover:opacity-100 group-hover:translate-y-1 translate-y-0 transition-all duration-200 whitespace-nowrap z-50">
+                        <span>{link.name}</span>
+                        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rotate-45 bg-[#21130E] dark:bg-[#1C1612] border-t border-l border-[#C99A45]/30" />
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
 
-            {/* ── ACTION ICONS (HIGH CONTRAST BOLD HOVER) ── */}
-            <div className="flex items-center gap-1.5 sm:gap-2">
+            {/* ── RIGHT AREA: NAVBAR SEARCH BAR + ACTION ICONS ── */}
+            <div className="flex items-center gap-1.5 sm:gap-2.5 flex-1 justify-end">
 
-              {/* Search Trigger Icon ("search bar vanthu icon ah click pannuna vara maari") */}
-              <button
-                onClick={() => {
-                  setIsSearchOpen(true);
-                  setTimeout(() => searchInputRef.current?.focus(), 80);
-                }}
-                className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-[#21130E] dark:text-[#FAF6EE] border border-stone-200/60 dark:border-[#C49A50]/20 bg-stone-100/60 dark:bg-[#14100D] hover:border-[#C99A45] hover:bg-[#21130E] hover:text-[#E6C477] dark:hover:bg-[#1E1712] dark:hover:text-[#E2BA69] dark:hover:border-[#E2BA69]/60 hover:shadow-md hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer"
-                aria-label="Search"
-              >
-                <Search className="w-4 h-4 stroke-[2.2]" />
-              </button>
+              {/* SEARCH DIRECTLY IN NAVBAR (EXPANDS INSIDE NAVBAR ON CLICK) */}
+              <div className="relative flex items-center justify-end" ref={searchContainerRef}>
+                {isSearchOpen ? (
+                  <form
+                    onSubmit={handleSearch}
+                    className="flex items-center w-56 sm:w-72 md:w-80 lg:w-96 bg-[#FAF7F2] dark:bg-[#16120E] rounded-full h-10 pl-3.5 pr-2 border-2 border-[#C99A45] shadow-[0_4px_16px_rgba(201,154,69,0.2)] animate-in fade-in slide-in-from-right-3 duration-200 relative"
+                  >
+                    <Search className="w-4 h-4 text-[#C69A4B] shrink-0 mr-2" />
+                    <input
+                      ref={searchInputRef}
+                      type="text"
+                      placeholder="Search pieces..."
+                      value={searchQuery}
+                      onChange={e => { setSearchQuery(e.target.value); setShowSuggestions(true); }}
+                      onFocus={() => setShowSuggestions(true)}
+                      className="flex-1 bg-transparent text-xs sm:text-sm text-[#21150F] dark:text-[#FAF6EE] placeholder:text-[#7A6E63]/70 dark:placeholder:text-[#A3988C]/60 outline-none font-medium"
+                    />
+                    {searchQuery && (
+                      <button
+                        type="button"
+                        onClick={() => setSearchQuery("")}
+                        className="text-[11px] text-[#7A6E63] hover:text-[#21150F] dark:hover:text-[#FAF6EE] font-bold px-1.5 mr-1 cursor-pointer"
+                      >
+                        Clear
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => { setIsSearchOpen(false); setShowSuggestions(false); }}
+                      className="w-6 h-6 rounded-full flex items-center justify-center bg-stone-200/80 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-[#21130E] hover:text-white dark:hover:bg-[#C49A50] dark:hover:text-black transition-all cursor-pointer shrink-0"
+                      aria-label="Close search"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+
+                    {/* Live Suggestions Dropdown attached directly to the navbar search bar */}
+                    {showSuggestions && searchQuery.trim() && suggestions.length > 0 && (
+                      <div className="absolute top-[115%] left-0 right-0 bg-white dark:bg-[#14100D] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.25)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.85)] border border-[#E0D3BE] dark:border-[#C49A50]/30 z-50 overflow-hidden divide-y divide-stone-100 dark:divide-[#C49A50]/15">
+                        {suggestions.map(p => (
+                          <Link
+                            href={`/products/${p.id || p._id}`}
+                            key={p.id || p._id}
+                            onClick={() => { setShowSuggestions(false); setIsSearchOpen(false); setSearchQuery(""); }}
+                            className="flex items-center gap-3 p-3 hover:bg-[#FAF7F2] dark:hover:bg-[#1E1712] transition-colors"
+                          >
+                            <div className="w-10 h-10 relative shrink-0 rounded-lg overflow-hidden bg-stone-100 dark:bg-[#1E1712] shadow-inner">
+                              <Image src={p.image} alt={p.name} fill className="object-cover" />
+                            </div>
+                            <div className="flex flex-col flex-1 min-w-0 text-left">
+                              <span className="text-xs font-bold text-[#21150F] dark:text-[#FAF6EE] line-clamp-1">{p.name}</span>
+                              <span className="text-[10px] text-[#7A6E63] dark:text-[#A3988C]">{p.category} · ₹{p.price}</span>
+                            </div>
+                            <ArrowRight className="w-3.5 h-3.5 text-[#C69A4B] dark:text-[#E2BA69] shrink-0" />
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </form>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setIsSearchOpen(true);
+                      setTimeout(() => searchInputRef.current?.focus(), 80);
+                    }}
+                    className="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-[#21130E] dark:text-[#FAF6EE] border border-stone-200/80 dark:border-[#C49A50]/20 bg-stone-100/60 dark:bg-[#14100D] hover:border-[#C99A45] hover:bg-[#21130E] hover:text-[#E6C477] dark:hover:bg-[#1E1712] dark:hover:text-[#E2BA69] dark:hover:border-[#E2BA69]/60 hover:shadow-md hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer"
+                    aria-label="Open Search in Navbar"
+                    title="Search"
+                  >
+                    <Search className="w-4 h-4 stroke-[2.2]" />
+                  </button>
+                )}
+              </div>
 
               {/* Theme */}
               {mounted && (
@@ -341,94 +408,6 @@ export default function Navbar() {
           </div>
         </div>
       </nav>
-
-      {/* ── INTERACTIVE SEARCH OVERLAY MODAL ── */}
-      {isSearchOpen && (
-        <div
-          className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-md flex items-start justify-center pt-20 sm:pt-28 px-4 animate-in fade-in duration-200"
-          onClick={() => setIsSearchOpen(false)}
-        >
-          <div
-            className="w-full max-w-2xl bg-white dark:bg-[#14100D] rounded-3xl p-4 sm:p-6 shadow-2xl border border-[#E0D3BE] dark:border-[#C49A50]/30 animate-in zoom-in-95 duration-200"
-            onClick={e => e.stopPropagation()}
-          >
-            <form onSubmit={handleSearch} className="flex items-center gap-3 bg-[#FAF7F2] dark:bg-[#1C1612] px-4 py-3 rounded-2xl border-2 border-[#E0D3BE] dark:border-[#C49A50]/30 focus-within:border-[#C69A4B] focus-within:ring-2 focus-within:ring-[#C69A4B]/20 transition-all">
-              <Search className="w-5 h-5 text-[#C69A4B] shrink-0" />
-              <input
-                ref={searchInputRef}
-                type="text"
-                placeholder="Search cutting boards, desk organizers, home decor..."
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="flex-1 bg-transparent text-sm sm:text-base text-[#21150F] dark:text-[#FAF6EE] placeholder:text-[#7A6E63]/60 dark:placeholder:text-[#A3988C]/60 outline-none font-medium"
-              />
-              {searchQuery && (
-                <button
-                  type="button"
-                  onClick={() => setSearchQuery("")}
-                  className="text-xs text-[#7A6E63] hover:text-[#21150F] dark:hover:text-[#FAF6EE] font-bold px-2 py-1"
-                >
-                  Clear
-                </button>
-              )}
-              <button
-                type="button"
-                onClick={() => setIsSearchOpen(false)}
-                className="w-8 h-8 rounded-full flex items-center justify-center bg-stone-200/60 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-[#21130E] hover:text-white dark:hover:bg-[#C49A50] dark:hover:text-black transition-all cursor-pointer"
-                aria-label="Close Search"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </form>
-
-            {/* Live Suggestions */}
-            {searchQuery.trim() && suggestions.length > 0 && (
-              <div className="mt-4 divide-y divide-stone-100 dark:divide-[#C49A50]/15 max-h-80 overflow-y-auto">
-                {suggestions.map(p => (
-                  <Link
-                    href={`/products/${p.id || p._id}`}
-                    key={p.id || p._id}
-                    onClick={() => { setIsSearchOpen(false); setSearchQuery(""); }}
-                    className="flex items-center gap-3.5 p-3 hover:bg-[#FAF7F2] dark:hover:bg-[#1E1712] rounded-xl transition-all group"
-                  >
-                    <div className="w-12 h-12 relative shrink-0 rounded-xl overflow-hidden bg-stone-100 dark:bg-[#1E1712] shadow-inner">
-                      <Image src={p.image} alt={p.name} fill className="object-cover group-hover:scale-110 transition-transform duration-300" />
-                    </div>
-                    <div className="flex flex-col flex-1 min-w-0">
-                      <span className="text-sm font-bold text-[#21150F] dark:text-[#FAF6EE] group-hover:text-[#C69A4B] transition-colors truncate">{p.name}</span>
-                      <span className="text-xs text-[#7A6E63] dark:text-[#A3988C]">{p.category} · ₹{p.price}</span>
-                    </div>
-                    <ArrowRight className="w-4 h-4 text-[#C69A4B] opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </Link>
-                ))}
-              </div>
-            )}
-
-            {/* Popular quick searches */}
-            {!searchQuery.trim() && (
-              <div className="mt-4 pt-3 border-t border-stone-100 dark:border-stone-800/80">
-                <p className="text-[11px] font-bold text-[#7A6E63] uppercase tracking-wider mb-2">Popular Categories</p>
-                <div className="flex flex-wrap gap-2">
-                  {["Cutting Board", "Desk Accessories", "Home Decor", "Kitchen"].map(term => (
-                    <button
-                      key={term}
-                      type="button"
-                      onClick={() => {
-                        setSearchQuery(term);
-                        router.push(`/products?search=${encodeURIComponent(term)}`);
-                        setIsSearchOpen(false);
-                      }}
-                      className="px-3 py-1.5 rounded-full text-xs bg-stone-100 dark:bg-[#1E1712] text-[#21150F] dark:text-[#D8CFBF] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#C49A50] dark:hover:text-black transition-all cursor-pointer font-medium"
-                    >
-                      {term}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </>
   );
 }
