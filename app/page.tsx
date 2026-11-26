@@ -38,8 +38,9 @@ const promoBanners = [
     btnText: "Explore Desk Suite",
     href: "/products?category=Desk Accessories",
     image: "/desk-accessories.jpg",
-    overlayGradient: "from-[#190C06] from-15% via-[#190C06]/90 via-48% to-transparent to-85%",
-    mobileOverlayGradient: "from-[#190C06] from-35% via-[#190C06]/85 via-65% to-transparent",
+    bgColor: "bg-[#180C06]",
+    fadeGradient: "from-[#180C06] from-0% via-[#180C06]/70 via-15% via-[#180C06]/20 via-35% to-transparent to-55%",
+    mobileFadeGradient: "from-[#180C06] from-35% via-[#180C06]/85 via-65% to-transparent",
     badgeBg: "bg-[#C99A45]/20 text-[#E6C477] border-[#C99A45]/40",
     btnGradient: "from-[#E6C477] via-[#C99A45] to-[#B88528] text-stone-900",
     glowColor: "rgba(201,154,69,0.35)",
@@ -51,8 +52,9 @@ const promoBanners = [
     btnText: "Shop Home Decor",
     href: "/products?category=Home Decor",
     image: "/home-decor.jpg",
-    overlayGradient: "from-[#0D1610] from-15% via-[#0D1610]/90 via-48% to-transparent to-85%",
-    mobileOverlayGradient: "from-[#0D1610] from-35% via-[#0D1610]/85 via-65% to-transparent",
+    bgColor: "bg-[#0C150E]",
+    fadeGradient: "from-[#0C150E] from-0% via-[#0C150E]/70 via-15% via-[#0C150E]/20 via-35% to-transparent to-55%",
+    mobileFadeGradient: "from-[#0C150E] from-35% via-[#0D1610]/85 via-65% to-transparent",
     badgeBg: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
     btnGradient: "from-[#52B788] via-[#2D6A4F] to-[#1B4332] text-white",
     glowColor: "rgba(82,183,136,0.35)",
@@ -64,8 +66,9 @@ const promoBanners = [
     btnText: "Explore Culinary Art",
     href: "/products?category=Kitchen",
     image: "/kitchen.jpg",
-    overlayGradient: "from-[#1D0907] from-15% via-[#1D0907]/90 via-48% to-transparent to-85%",
-    mobileOverlayGradient: "from-[#1D0907] from-35% via-[#1D0907]/85 via-65% to-transparent",
+    bgColor: "bg-[#1A0806]",
+    fadeGradient: "from-[#1A0806] from-0% via-[#1A0806]/70 via-15% via-[#1A0806]/20 via-35% to-transparent to-55%",
+    mobileFadeGradient: "from-[#1A0806] from-35% via-[#1D0907]/85 via-65% to-transparent",
     badgeBg: "bg-amber-500/20 text-amber-300 border-amber-500/40",
     btnGradient: "from-[#F4A261] via-[#E76F51] to-[#C84B31] text-white",
     glowColor: "rgba(231,111,81,0.35)",
@@ -209,31 +212,44 @@ export default function Home() {
             {promoBanners.map((banner, index) => (
               <SwiperSlide key={index}>
                 <div
-                  className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-[#E0D3BE]/60 dark:border-[#2C2018]/80 min-h-[360px] sm:min-h-[390px] md:h-[410px] flex items-center group"
+                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-[#E0D3BE]/60 dark:border-[#2C2018]/80 min-h-[380px] sm:min-h-[410px] md:h-[430px] flex items-center group ${banner.bgColor}`}
                 >
-                  {/* FULL-BLEED BACKGROUND PHOTO (Spans across entire banner, product on right) */}
-                  <div className="absolute inset-0 w-full h-full">
+                  {/* FAINT AMBIENT PHOTO ON LEFT (Subtle wood atmosphere behind text) */}
+                  <div className="absolute inset-0 w-full h-full opacity-20 pointer-events-none mix-blend-luminosity">
+                    <Image
+                      src={banner.image}
+                      alt=""
+                      fill
+                      sizes="100vw"
+                      className="object-cover object-left filter blur-xs"
+                      aria-hidden="true"
+                    />
+                  </div>
+
+                  {/* RIGHT-SIDE FULL PHOTO (Shows 100% of product - pens, phone, organizer, clock, plant) */}
+                  <div className="absolute right-0 top-0 bottom-0 w-full md:w-[62%] lg:w-[58%] h-full pointer-events-none overflow-hidden">
                     <Image
                       src={banner.image}
                       alt={banner.title}
                       fill
-                      sizes="100vw"
+                      sizes="(max-width: 768px) 100vw, 60vw"
                       priority={index === 0}
-                      className="object-cover object-right md:object-right group-hover:scale-105 transition-transform duration-1000 ease-out"
+                      className="object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
                     />
+                    {/* Seamless gradient fade on the left edge: blends photo into dark background */}
+                    <div className={`hidden md:block absolute inset-0 bg-gradient-to-r ${banner.fadeGradient}`} />
+                    {/* Mobile top-to-bottom fade */}
+                    <div className={`md:hidden absolute inset-0 bg-gradient-to-b ${banner.mobileFadeGradient}`} />
                   </div>
 
-                  {/* DESKTOP GRADIENT: Dark shadow on left where text sits -> smooth fade -> vibrant full-color photo on right */}
-                  <div className={`absolute inset-0 hidden md:block bg-gradient-to-r ${banner.overlayGradient}`} />
-
-                  {/* MOBILE GRADIENT: Dark on top where text sits -> fades down to show photo */}
-                  <div className={`absolute inset-0 md:hidden bg-gradient-to-b ${banner.mobileOverlayGradient}`} />
-
-                  {/* Subtle edge vignette */}
-                  <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/25 pointer-events-none" />
+                  {/* Left ambient radial glow behind text */}
+                  <div
+                    className="absolute -left-10 top-1/2 -translate-y-1/2 w-[380px] h-[380px] rounded-full pointer-events-none blur-3xl opacity-30"
+                    style={{ background: banner.glowColor }}
+                  />
 
                   {/* LEFT CONTENT AREA */}
-                  <div className="relative z-10 w-full md:w-[62%] lg:w-[56%] p-6 sm:p-10 md:p-12 lg:p-14 flex flex-col justify-center items-start text-left">
+                  <div className="relative z-10 w-full md:w-[52%] lg:w-[46%] p-6 sm:p-10 md:p-12 lg:p-14 flex flex-col justify-center items-start text-left">
                     {/* Badge */}
                     <div className="mb-2.5 sm:mb-4">
                       <span className={`inline-flex items-center gap-1.5 backdrop-blur-md text-[9px] sm:text-[11px] font-extrabold tracking-widest uppercase px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border shadow-md ${banner.badgeBg}`}>
