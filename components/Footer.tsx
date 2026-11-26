@@ -198,7 +198,9 @@ export default function Footer() {
 
             {/* Email */}
             <a 
-              href="mailto:kaashtacrafts@gmail.com" 
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=kaashtacrafts@gmail.com&su=Inquiry%20-%20Kaashta%20Crafts" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-2.5 text-xs text-[#EFE7DA]/90 hover:text-[#C69A4B] transition-colors group"
             >
               <div className="w-7 h-7 rounded-lg bg-[#C69A4B]/15 group-hover:bg-[#C69A4B] group-hover:text-[#1A110B] flex items-center justify-center shrink-0 text-[#C69A4B] transition-colors border border-[#C69A4B]/30">

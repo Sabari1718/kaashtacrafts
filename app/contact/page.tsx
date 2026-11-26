@@ -60,6 +60,28 @@ export default function ContactPage() {
     });
   };
 
+  const handleEmailClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const email = "kaashtacrafts@gmail.com";
+    const subject = encodeURIComponent("Inquiry - Kaashta Crafts Handcrafted Woodcraft");
+    const body = encodeURIComponent("Hello Kaashta Crafts Guild,\n\nI would like to inquire about your handcrafted wooden creations...\n\nThank you!");
+    
+    // Copy to clipboard
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(email);
+    }
+    toast.success("Opening Email Compose (kaashtacrafts@gmail.com copied to clipboard)!");
+
+    // Open Web Gmail compose directly in new tab (works 100% on Windows Chrome without default mail client)
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${subject}&body=${body}`;
+    window.open(gmailUrl, "_blank");
+
+    // Also trigger native mailto
+    setTimeout(() => {
+      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    }, 400);
+  };
+
   const handleDirectSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!directForm.name || !directForm.phone || !directForm.message) {
@@ -233,13 +255,14 @@ export default function ContactPage() {
                 For formal corporate purchase orders, institutional procurement, and custom design briefs.
               </p>
             </div>
-            <a
-              href="mailto:kaashtacrafts@gmail.com"
+            <button
+              type="button"
+              onClick={handleEmailClick}
               className="mt-6 w-full py-3 px-4 rounded-xl bg-[#24150E] hover:bg-[#382216] active:scale-95 text-[#E6C477] border border-[#C69A4B]/50 font-bold text-xs uppercase tracking-wider text-center shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <Mail className="w-4 h-4 text-[#C69A4B]" />
               <span>Send Official Email</span>
-            </a>
+            </button>
           </div>
         </div>
 
