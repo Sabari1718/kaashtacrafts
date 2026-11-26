@@ -1475,11 +1475,21 @@ export default function AdminPage() {
                                 <span className="font-medium text-stone-900">{item.quantity}x {item.name}</span>
                                 <span className="font-bold text-amber-800">₹{item.price * item.quantity}</span>
                               </div>
-                              {item.customization?.text && (
-                                <div className="mt-1 inline-flex items-center gap-1.5 bg-amber-50 text-amber-950 border border-amber-200 px-2.5 py-1 rounded-lg text-xs font-semibold w-fit">
-                                  <span>✒️ Laser Engrave:</span>
-                                  <span className="font-bold text-amber-900">"{item.customization.text}"</span>
-                                  <span className="text-[10px] text-amber-700 font-medium">({[item.customization.font, item.customization.size, item.customization.position].filter(Boolean).join(" • ")})</span>
+                              {(item.customization?.text || item.customization?.secondaryText) && (
+                                <div className="mt-1 flex flex-col gap-0.5 bg-amber-50 text-amber-950 border border-amber-200 px-2.5 py-1 rounded-lg text-xs font-semibold w-fit">
+                                  {item.customization.text && (
+                                    <div className="flex items-center gap-1.5">
+                                      <span>✒️ Line 1:</span>
+                                      <span className="font-bold text-amber-900">"{item.customization.text}"</span>
+                                      <span className="text-[10px] text-amber-700 font-medium">({[item.customization.font, item.customization.size, item.customization.position].filter(Boolean).join(" • ")})</span>
+                                    </div>
+                                  )}
+                                  {item.customization.secondaryText && (
+                                    <div className="flex items-center gap-1 text-[11px]">
+                                      <span>✒️ Line 2:</span>
+                                      <span className="font-bold text-amber-900">"{item.customization.secondaryText}"</span>
+                                    </div>
+                                  )}
                                 </div>
                               )}
                             </li>

@@ -8,6 +8,7 @@ export interface CartItem extends Product {
   quantity: number;
   customization?: {
     text?: string;
+    secondaryText?: string;
     font?: string;
     size?: string;
     position?: string;
@@ -16,7 +17,7 @@ export interface CartItem extends Product {
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (product: Product, customization?: { text?: string; font?: string; size?: string; position?: string }) => void;
+  addToCart: (product: Product, customization?: { text?: string; secondaryText?: string; font?: string; size?: string; position?: string }) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, delta: number) => void;
   clearCart: () => void;
@@ -109,11 +110,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   const cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  const addToCart = (product: Product, customization?: { text?: string; font?: string; size?: string; position?: string }) => {
+  const addToCart = (product: Product, customization?: { text?: string; secondaryText?: string; font?: string; size?: string; position?: string }) => {
+    const pId = (product as any).id || (product as any)._id;
+    const normalizedProduct = { ...product, id: pId };
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => 
-        item.id === product.id && 
+        (item.id === pId || (item as any)._id === pId) && 
         (item.customization?.text || "") === (customization?.text || "") &&
+        (item.customization?.secondaryText || "") === (customization?.secondaryText || "") &&
         (item.customization?.font || "") === (customization?.font || "") &&
         (item.customization?.size || "") === (customization?.size || "") &&
         (item.customization?.position || "") === (customization?.position || "")
@@ -123,7 +127,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           item === existingItem ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      return [...prevItems, { ...product, quantity: 1, customization }];
+      return [...prevItems, { ...normalizedProduct, quantity: 1, customization }];
     });
   };
 

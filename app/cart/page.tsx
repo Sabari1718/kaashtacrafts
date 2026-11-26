@@ -122,11 +122,21 @@ export default function CartPage() {
                             <ExternalLink className="w-3.5 h-3.5 opacity-60 group-hover/title:opacity-100 text-[#C49A50] shrink-0" />
                           </h3>
                         </Link>
-                        {item.customization?.text && (
-                          <div className="mt-1 inline-flex items-center gap-1 bg-[#FAF6EE] dark:bg-[#251A12] border border-[#C49A50]/40 px-2 py-0.5 rounded-md text-[11px] font-semibold text-[#8B5A2B] dark:text-[#E6C477]">
-                            <span>✒️ Engraving:</span>
-                            <span className="font-bold">"{item.customization.text}"</span>
-                            <span className="opacity-75 text-[10px]">({[item.customization.font, item.customization.size].filter(Boolean).join(" • ")})</span>
+                        {(item.customization?.text || item.customization?.secondaryText) && (
+                          <div className="mt-1 flex flex-col gap-0.5 bg-[#FAF6EE] dark:bg-[#251A12] border border-[#C49A50]/40 px-2 py-1 rounded-md text-[11px] font-semibold text-[#8B5A2B] dark:text-[#E6C477] w-fit">
+                            {item.customization.text && (
+                              <div className="flex items-center gap-1">
+                                <span>✒️ Line 1:</span>
+                                <span className="font-bold">"{item.customization.text}"</span>
+                                <span className="opacity-75 text-[10px]">({[item.customization.font, item.customization.size].filter(Boolean).join(" • ")})</span>
+                              </div>
+                            )}
+                            {item.customization.secondaryText && (
+                              <div className="flex items-center gap-1 text-[10px]">
+                                <span>✒️ Line 2:</span>
+                                <span className="font-bold">"{item.customization.secondaryText}"</span>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
@@ -167,7 +177,7 @@ export default function CartPage() {
                         <span className="text-[#EAE1D2] dark:text-[#2E241E]">•</span>
 
                         <Link 
-                          href={`/checkout?buyNow=${item.id}${item.customization?.text ? `&customText=${encodeURIComponent(item.customization.text)}&customFont=${encodeURIComponent(item.customization.font || '')}&customSize=${encodeURIComponent(item.customization.size || '')}&customPos=${encodeURIComponent(item.customization.position || '')}` : ''}`}
+                          href={`/checkout?buyNow=${item.id}${item.customization?.text ? `&customText=${encodeURIComponent(item.customization.text)}&customFont=${encodeURIComponent(item.customization.font || '')}&customSize=${encodeURIComponent(item.customization.size || '')}&customPos=${encodeURIComponent(item.customization.position || '')}` : ''}${item.customization?.secondaryText ? `&customSecondaryText=${encodeURIComponent(item.customization.secondaryText)}` : ''}`}
                           className="text-[#C49A50] hover:underline flex items-center gap-1 text-xs font-bold transition-colors"
                         >
                           Buy Now <ArrowRight className="w-3 h-3" />

@@ -12,6 +12,7 @@ function CheckoutContent() {
   const searchParams = useSearchParams();
   const buyNowId = searchParams.get("buyNow");
   const customTextParam = searchParams.get("customText");
+  const customSecondaryTextParam = searchParams.get("customSecondaryText");
   const customFontParam = searchParams.get("customFont");
   const customSizeParam = searchParams.get("customSize");
   const customPosParam = searchParams.get("customPos");
@@ -108,8 +109,9 @@ function CheckoutContent() {
               price: data.price,
               quantity: 1,
               image: data.image,
-              customization: customTextParam ? { 
-                text: customTextParam, 
+              customization: (customTextParam || customSecondaryTextParam) ? { 
+                text: customTextParam || undefined, 
+                secondaryText: customSecondaryTextParam || undefined,
                 font: customFontParam || undefined,
                 size: customSizeParam || undefined,
                 position: customPosParam || undefined
@@ -525,10 +527,18 @@ function CheckoutContent() {
                     </Link>
                     <span className="font-bold text-[#241812] dark:text-[#F7F5F0] shrink-0">₹{item.price * item.quantity}</span>
                   </div>
-                  {item.customization?.text && (
-                    <span className="text-[10px] text-[#8B5A2B] dark:text-[#E6C477] font-semibold mt-0.5">
-                      ✒️ Engraved: "{item.customization.text}" ({[item.customization.font, item.customization.size].filter(Boolean).join(" • ") || 'Royal Calligraphy'})
-                    </span>
+                  {(item.customization?.text || item.customization?.secondaryText) && (
+                    <div className="text-[10px] text-[#8B5A2B] dark:text-[#E6C477] font-semibold mt-0.5 flex flex-col gap-0.5">
+                      {item.customization.text && (
+                        <span>✒️ Line 1: "{item.customization.text}" ({[item.customization.font, item.customization.size].filter(Boolean).join(" • ") || 'Royal Calligraphy'})</span>
+                      )}
+                      {item.customization.secondaryText && (
+                        <span>✒️ Line 2: "{item.customization.secondaryText}"</span>
+                      )}
+                      {item.customization.position && (
+                        <span className="text-[9px] text-[#82786E] font-medium">Position: {item.customization.position}</span>
+                      )}
+                    </div>
                   )}
                 </div>
               ))}
