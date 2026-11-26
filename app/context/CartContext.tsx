@@ -6,11 +6,15 @@ import { Product } from "../data/products";
 
 export interface CartItem extends Product {
   quantity: number;
+  customization?: {
+    text?: string;
+    font?: string;
+  };
 }
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (product: Product) => void;
+  addToCart: (product: Product, customization?: { text?: string; font?: string }) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, delta: number) => void;
   clearCart: () => void;
@@ -103,15 +107,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   const cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, customization?: { text?: string; font?: string }) => {
     setCartItems((prevItems) => {
-      const existingItem = prevItems.find((item) => item.id === product.id);
+      const existingItem = prevItems.find((item) => 
+        item.id === product.id && 
+        (item.customization?.text || "") === (customization?.text || "") &&
+        (item.customization?.font || "") === (customization?.font || "")
+      );
       if (existingItem) {
         return prevItems.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item === existingItem ? { ...item, quantity: item.quantity + 1 } : item
         );
       }
-      return [...prevItems, { ...product, quantity: 1 }];
+      return [...prevItems, { ...product, quantity: 1, customization }];
     });
   };
 

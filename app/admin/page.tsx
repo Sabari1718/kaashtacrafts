@@ -1470,9 +1470,20 @@ export default function AdminPage() {
                         <h4 className="font-semibold text-stone-900 mb-2">Items Ordered</h4>
                         <ul className="text-sm text-stone-600 flex flex-col gap-2">
                           {order.items.map((item: any, index: number) => (
-                            <li key={index} className="flex justify-between border-b border-stone-50 pb-1">
-                              <span>{item.quantity}x {item.name}</span>
-                              <span className="font-medium text-stone-900">₹{item.price * item.quantity}</span>
+                            <li key={index} className="flex flex-col border-b border-stone-100 pb-2">
+                              <div className="flex justify-between items-center">
+                                <span className="font-medium text-stone-900">{item.quantity}x {item.name}</span>
+                                <span className="font-bold text-amber-800">₹{item.price * item.quantity}</span>
+                              </div>
+                              {item.customization?.text && (
+                                <div className="mt-1 inline-flex items-center gap-1.5 bg-amber-50 text-amber-950 border border-amber-200 px-2.5 py-1 rounded-lg text-xs font-semibold w-fit">
+                                  <span>✒️ Laser Engrave:</span>
+                                  <span className="font-bold text-amber-900">"{item.customization.text}"</span>
+                                  {item.customization.font && (
+                                    <span className="text-[10px] text-amber-700 font-medium">({item.customization.font})</span>
+                                  )}
+                                </div>
+                              )}
                             </li>
                           ))}
                         </ul>

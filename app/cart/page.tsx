@@ -104,6 +104,15 @@ export default function CartPage() {
                       <div>
                         <span className="text-[10px] font-bold tracking-[0.16em] uppercase text-[#C49A50]">{item.category}</span>
                         <h3 className="text-base font-bold text-[#241812] dark:text-[#F7F5F0] line-clamp-1">{item.name}</h3>
+                        {item.customization?.text && (
+                          <div className="mt-1 inline-flex items-center gap-1 bg-[#FAF6EE] dark:bg-[#251A12] border border-[#C49A50]/40 px-2 py-0.5 rounded-md text-[11px] font-semibold text-[#8B5A2B] dark:text-[#E6C477]">
+                            <span>✒️ Engraving:</span>
+                            <span className="font-bold">"{item.customization.text}"</span>
+                            {item.customization.font && (
+                              <span className="opacity-75 text-[10px]">({item.customization.font})</span>
+                            )}
+                          </div>
+                        )}
                       </div>
                       <span className="text-base font-bold text-[#241812] dark:text-[#F7F5F0]">
                         ₹{item.price * item.quantity}
@@ -131,7 +140,7 @@ export default function CartPage() {
 
                       <div className="flex items-center gap-4">
                         <Link 
-                          href={`/checkout?buyNow=${item.id}`}
+                          href={`/checkout?buyNow=${item.id}${item.customization?.text ? `&customText=${encodeURIComponent(item.customization.text)}&customFont=${encodeURIComponent(item.customization.font || '')}` : ''}`}
                           className="text-[#C49A50] hover:underline flex items-center gap-1 text-xs font-bold transition-colors"
                         >
                           Buy Now <ArrowRight className="w-3 h-3" />

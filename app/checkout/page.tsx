@@ -11,6 +11,8 @@ function CheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const buyNowId = searchParams.get("buyNow");
+  const customTextParam = searchParams.get("customText");
+  const customFontParam = searchParams.get("customFont");
   const selectedIdsParam = searchParams.get("selectedIds");
   const selectedIds = selectedIdsParam ? selectedIdsParam.split(",") : [];
   
@@ -103,7 +105,8 @@ function CheckoutContent() {
               name: data.name,
               price: data.price,
               quantity: 1,
-              image: data.image
+              image: data.image,
+              customization: customTextParam ? { text: customTextParam, font: customFontParam || undefined } : undefined
             }]);
             setCheckoutTotal(data.price);
           }
@@ -193,7 +196,8 @@ function CheckoutContent() {
           name: item.name,
           price: item.price,
           quantity: item.quantity,
-          image: item.image
+          image: item.image,
+          customization: item.customization
         })),
         totalAmount: finalTotal,
         promoCode: appliedPromo ? appliedPromo.code : undefined
@@ -503,9 +507,16 @@ function CheckoutContent() {
             
             <div className="flex flex-col gap-3 mb-5 max-h-56 overflow-y-auto pr-1">
               {checkoutItems.map((item, idx) => (
-                <div key={idx} className="flex justify-between items-center text-xs">
-                  <span className="text-[#82786E] dark:text-[#A39A90] line-clamp-1 pr-3">{item.quantity} × {item.name}</span>
-                  <span className="font-bold text-[#241812] dark:text-[#F7F5F0] shrink-0">₹{item.price * item.quantity}</span>
+                <div key={idx} className="flex flex-col text-xs pb-2 border-b border-[#EAE1D2]/40 dark:border-[#2E241E]/40 last:border-b-0">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[#82786E] dark:text-[#A39A90] line-clamp-1 pr-3">{item.quantity} × {item.name}</span>
+                    <span className="font-bold text-[#241812] dark:text-[#F7F5F0] shrink-0">₹{item.price * item.quantity}</span>
+                  </div>
+                  {item.customization?.text && (
+                    <span className="text-[10px] text-[#8B5A2B] dark:text-[#E6C477] font-semibold mt-0.5">
+                      ✒️ Engraved: "{item.customization.text}" ({item.customization.font || 'Royal Calligraphy'})
+                    </span>
+                  )}
                 </div>
               ))}
             </div>

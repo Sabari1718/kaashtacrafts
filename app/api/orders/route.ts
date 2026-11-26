@@ -91,6 +91,7 @@ export async function POST(req: Request) {
           <td style="padding: 10px; border-bottom: 1px solid #ddd;">
             <strong>${item.name}</strong><br/>
             Qty: ${item.quantity}
+            ${item.customization?.text ? `<br/><span style="color: #8b5a2b; font-size: 0.9em; font-weight: bold; background: #faf5ee; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 4px;">✒️ Engraving: "${item.customization.text}" (${item.customization.font || 'Royal Calligraphy'})</span>` : ''}
           </td>
           <td style="padding: 10px; border-bottom: 1px solid #ddd; text-align: right;">
             ₹${item.price * item.quantity}
@@ -178,7 +179,13 @@ export async function POST(req: Request) {
     // 💬 WHATSAPP ORDER NOTIFICATION (+91 8838098116)
     // ==========================================
     const itemsSummary = items
-      .map((item: any, idx: number) => `${idx + 1}. *${item.name}* (Qty: ${item.quantity}) - ₹${item.price * item.quantity}`)
+      .map((item: any, idx: number) => {
+        let line = `${idx + 1}. *${item.name}* (Qty: ${item.quantity}) - ₹${item.price * item.quantity}`;
+        if (item.customization?.text) {
+          line += `\n   ✒️ *Custom Engraving:* "${item.customization.text}" (${item.customization.font || "Royal Calligraphy"})`;
+        }
+        return line;
+      })
       .join('\n');
 
     const whatsappMessage = 

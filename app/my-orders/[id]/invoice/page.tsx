@@ -117,6 +117,11 @@ export default function InvoicePage() {
                 <tr key={idx} className="border-b border-[#EAE1D2] last:border-0">
                   <td className="py-4 px-2">
                     <p className="font-medium text-sm text-[#241812]">{item.name}</p>
+                    {item.customization?.text && (
+                      <p className="text-[11px] font-semibold text-[#8B5A2B] mt-0.5">
+                        ✒️ Laser Engraving: "{item.customization.text}" ({item.customization.font || 'Royal Calligraphy'})
+                      </p>
+                    )}
                     <p className="text-[10px] font-mono text-[#82786E] mt-0.5">SKU: {item.productId.slice(-8)}</p>
                   </td>
                   <td className="py-4 px-2 text-center text-xs text-[#82786E]">{item.quantity}</td>

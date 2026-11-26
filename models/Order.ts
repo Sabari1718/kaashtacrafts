@@ -6,6 +6,11 @@ export interface IOrderItem {
   price: number;
   quantity: number;
   image: string;
+  customization?: {
+    text?: string;
+    font?: string;
+    notes?: string;
+  };
 }
 
 export interface IOrder extends mongoose.Document {
@@ -28,6 +33,11 @@ const OrderItemSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   quantity: { type: Number, required: true },
   image: { type: String, required: true },
+  customization: {
+    text: { type: String },
+    font: { type: String },
+    notes: { type: String },
+  },
 });
 
 const OrderSchema = new mongoose.Schema({

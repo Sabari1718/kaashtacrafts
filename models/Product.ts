@@ -20,6 +20,8 @@ export interface IProduct extends Document {
   order?: number;
   inStock: boolean;
   featured: boolean;
+  isCustomizable?: boolean;
+  customizationPlaceholder?: string;
   reviews: IReview[];
   rating: number;
   numReviews: number;
@@ -44,6 +46,8 @@ const ProductSchema: Schema = new Schema({
   order: { type: Number, default: 0 },
   inStock: { type: Boolean, default: true },
   featured: { type: Boolean, default: false },
+  isCustomizable: { type: Boolean, default: true },
+  customizationPlaceholder: { type: String, default: "e.g. Amma's Kitchen / Siva & Ganesh" },
   reviews: [ReviewSchema],
   rating: { type: Number, default: 0 },
   numReviews: { type: Number, default: 0 },
