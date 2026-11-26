@@ -47,7 +47,23 @@ export default function CartPage() {
             
             {/* Cart Items List */}
             <div className="flex-grow w-full flex flex-col gap-4">
-              {cartItems.map((item) => (
+              {cartItems.map((item) => {
+                const customQuery = new URLSearchParams();
+                if (item.customization?.text) customQuery.set("customText", item.customization.text);
+                if (item.customization?.secondaryText) customQuery.set("secondaryText", item.customization.secondaryText);
+                if (item.customization?.font) customQuery.set("customFont", item.customization.font);
+                if (item.customization?.size) customQuery.set("customSize", item.customization.size);
+                if (item.customization?.color) customQuery.set("customColor", item.customization.color);
+                if (item.customization?.secondaryFont) customQuery.set("customSecondaryFont", item.customization.secondaryFont);
+                if (item.customization?.secondarySize) customQuery.set("customSecondarySize", item.customization.secondarySize);
+                if (item.customization?.secondaryColor) customQuery.set("customSecondaryColor", item.customization.secondaryColor);
+                if (item.customization?.position) customQuery.set("customPos", item.customization.position);
+                customQuery.set("fromCart", "true");
+
+                const productUrl = `/products/${item.id || (item as any)._id}?${customQuery.toString()}`;
+                const displayImage = (item.images && item.images.length > 1) ? item.images[1] : (item.images?.[0] || item.image);
+
+                return (
                 <div 
                   key={item.id} 
                   className={`flex flex-col sm:flex-row items-center gap-4 p-4 rounded-3xl transition-all duration-300 border ${
@@ -76,7 +92,7 @@ export default function CartPage() {
                     </div>
                   </button>
 
-                  {/* Thumbnail Image (Clickable Link to Product Details) */}
+                  {/* Thumbnail Image (Clickable Link with Live Wood Carving Preview Badge) */}
                   <div className="relative w-full sm:w-28 h-28 rounded-2xl overflow-hidden bg-[#EAE1D2]/30 dark:bg-[#2E241E]/30 shrink-0">
                     <button 
                       onClick={() => toggleSelection(item.id)}
@@ -91,16 +107,29 @@ export default function CartPage() {
                       </div>
                     </button>
                     <Link 
-                      href={`/products/${item.id || (item as any)._id}`}
+                      href={productUrl}
                       className="block w-full h-full relative group/img cursor-pointer"
-                      title={`Open ${item.name}`}
+                      title={`Open ${item.name} with your custom engraving`}
                     >
                       <Image 
-                        src={item.image} 
+                        src={displayImage} 
                         alt={item.name} 
                         fill 
                         className="object-cover group-hover/img:scale-108 transition-transform duration-300"
                       />
+                      {(item.customization?.text || item.customization?.secondaryText) && (
+                        <>
+                          <div className="absolute top-1.5 left-1.5 bg-[#241812] text-[#E0D3BE] text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border border-[#C49A50]/60 z-10 shadow-xs flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
+                            <span>Engraved</span>
+                          </div>
+                          <div className="absolute inset-x-1.5 bottom-1.5 bg-black/80 backdrop-blur-[2px] rounded-lg px-1.5 py-1 text-center border border-[#C49A50]/60 shadow-xs pointer-events-none z-10">
+                            <p className="text-[9px] font-black text-[#F7F5F0] truncate drop-shadow-sm font-serif">
+                              ✒️ {item.customization.text || item.customization.secondaryText}
+                            </p>
+                          </div>
+                        </>
+                      )}
                       <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/25 transition-colors flex items-center justify-center">
                         <Eye className="w-5 h-5 text-white opacity-0 group-hover/img:opacity-100 transition-opacity drop-shadow-md" />
                       </div>
@@ -113,9 +142,9 @@ export default function CartPage() {
                       <div>
                         <span className="text-[10px] font-bold tracking-[0.16em] uppercase text-[#C49A50]">{item.category}</span>
                         <Link 
-                          href={`/products/${item.id || (item as any)._id}`}
+                          href={productUrl}
                           className="group/title block"
-                          title={`Click to open ${item.name}`}
+                          title={`Click to open ${item.name} with your custom engraving`}
                         >
                           <h3 className="text-base font-bold text-[#241812] dark:text-[#F7F5F0] line-clamp-1 group-hover/title:text-[#C49A50] transition-colors flex items-center gap-1.5 cursor-pointer">
                             <span>{item.name}</span>
@@ -123,21 +152,28 @@ export default function CartPage() {
                           </h3>
                         </Link>
                         {(item.customization?.text || item.customization?.secondaryText) && (
-                          <div className="mt-1 flex flex-col gap-0.5 bg-[#FAF6EE] dark:bg-[#251A12] border border-[#C49A50]/40 px-2 py-1 rounded-md text-[11px] font-semibold text-[#8B5A2B] dark:text-[#E6C477] w-fit">
+                          <div className="mt-1 flex flex-col gap-1 bg-[#FAF6EE] dark:bg-[#251A12] border border-[#C49A50]/40 p-2 rounded-xl text-[11px] font-semibold text-[#8B5A2B] dark:text-[#E6C477] w-fit shadow-xs">
                             {item.customization.text && (
-                              <div className="flex items-center gap-1">
-                                <span>✒️ Line 1:</span>
-                                <span className="font-bold">"{item.customization.text}"</span>
+                              <div className="flex items-center gap-1 flex-wrap">
+                                <span className="text-[#C49A50] font-bold">✒️ Line 1:</span>
+                                <span className="font-extrabold text-[#241812] dark:text-[#F7F5F0]">"{item.customization.text}"</span>
                                 <span className="opacity-75 text-[10px]">({[item.customization.font, item.customization.size, item.customization.color].filter(Boolean).join(" • ")})</span>
                               </div>
                             )}
                             {item.customization.secondaryText && (
-                              <div className="flex items-center gap-1 text-[10px]">
-                                <span>✒️ Line 2:</span>
-                                <span className="font-bold">"{item.customization.secondaryText}"</span>
+                              <div className="flex items-center gap-1 flex-wrap text-[10px]">
+                                <span className="text-[#C49A50] font-bold">✒️ Line 2:</span>
+                                <span className="font-extrabold text-[#241812] dark:text-[#F7F5F0]">"{item.customization.secondaryText}"</span>
                                 <span className="opacity-75 text-[9px]">({[item.customization.secondaryFont, item.customization.secondarySize, item.customization.secondaryColor].filter(Boolean).join(" • ")})</span>
                               </div>
                             )}
+                            <Link 
+                              href={productUrl}
+                              className="inline-flex items-center gap-1 text-[10px] font-bold text-[#C49A50] hover:underline pt-0.5"
+                            >
+                              <Sparkles className="w-3 h-3" />
+                              <span>Click to Open & View with Your Engraving</span>
+                            </Link>
                           </div>
                         )}
                       </div>
@@ -167,12 +203,12 @@ export default function CartPage() {
 
                       <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
                         <Link 
-                          href={`/products/${item.id || (item as any)._id}`}
+                          href={productUrl}
                           className="text-[#82786E] hover:text-[#241812] dark:hover:text-[#F7F5F0] flex items-center gap-1 text-xs font-semibold transition-colors"
-                          title="Open product page"
+                          title="Open product page with your saved engraving"
                         >
                           <Eye className="w-3.5 h-3.5 text-[#C49A50]" />
-                          <span>View Product</span>
+                          <span>View & Edit Engraving</span>
                         </Link>
 
                         <span className="text-[#EAE1D2] dark:text-[#2E241E]">•</span>
@@ -196,7 +232,8 @@ export default function CartPage() {
                     </div>
                   </div>
                 </div>
-              ))}
+              );
+              })}
             </div>
 
             {/* Order Summary Box */}
@@ -231,8 +268,17 @@ export default function CartPage() {
                       return;
                     }
                     const itemsList = selectedItems
-                      .map((item, i) => `${i + 1}. *${item.name}* (Qty: ${item.quantity}) - ₹${item.price * item.quantity}`)
-                      .join('\n');
+                      .map((item, i) => {
+                        let desc = `${i + 1}. *${item.name}* (Qty: ${item.quantity}) - ₹${item.price * item.quantity}`;
+                        if (item.customization?.text) {
+                          desc += `\n   ✒️ Line 1: "${item.customization.text}" (${[item.customization.font, item.customization.size, item.customization.color].filter(Boolean).join(", ")})`;
+                        }
+                        if (item.customization?.secondaryText) {
+                          desc += `\n   ✒️ Line 2: "${item.customization.secondaryText}" (${[item.customization.secondaryFont, item.customization.secondarySize, item.customization.secondaryColor].filter(Boolean).join(", ")})`;
+                        }
+                        return desc;
+                      })
+                      .join('\n\n');
                     const waText = 
 `🛍️ *KAASHTA CRAFTS BAG ORDER*
 ━━━━━━━━━━━━━━━━━━━━

@@ -57,7 +57,7 @@ const ENGRAVING_COLORS = [
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { data: session } = useSession();
   const [product, setProduct] = useState<Product | null>(null);
@@ -68,6 +68,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [isMainZoomOpen, setIsMainZoomOpen] = useState(false);
   const [touchStartX, setTouchStartX] = useState<number | null>(null);
   const [touchEndX, setTouchEndX] = useState<number | null>(null);
+  const [isLoadedFromCart, setIsLoadedFromCart] = useState(false);
 
   // Bespoke Custom Laser Engraving State
   const [customText, setCustomText] = useState("");
@@ -141,6 +142,105 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       setIsLoading(false);
     }
   }
+
+  // Restore customization if arriving from Bag/Cart or if already in Bag
+  useEffect(() => {
+    if (!product || typeof window === "undefined") return;
+
+    const sp = new URLSearchParams(window.location.search);
+    const qText = sp.get("customText");
+    const qSecondary = sp.get("secondaryText") || sp.get("customSecondaryText");
+    const qFont = sp.get("customFont");
+    const qSize = sp.get("customSize");
+    const qColor = sp.get("customColor");
+    const qSecondaryFont = sp.get("customSecondaryFont");
+    const qSecondarySize = sp.get("customSecondarySize");
+    const qSecondaryColor = sp.get("customSecondaryColor");
+    const qPos = sp.get("customPos") || sp.get("position");
+
+    let sourceCustom: {
+      text?: string;
+      secondaryText?: string;
+      font?: string;
+      size?: string;
+      color?: string;
+      secondaryFont?: string;
+      secondarySize?: string;
+      secondaryColor?: string;
+      position?: string;
+    } | null = null;
+
+    if (qText || qSecondary) {
+      sourceCustom = {
+        text: qText || "",
+        secondaryText: qSecondary || "",
+        font: qFont || "",
+        size: qSize || "",
+        color: qColor || "",
+        secondaryFont: qSecondaryFont || "",
+        secondarySize: qSecondarySize || "",
+        secondaryColor: qSecondaryColor || "",
+        position: qPos || ""
+      };
+      setIsLoadedFromCart(true);
+    } else {
+      const pId = product.id || (product as any)._id;
+      const cartMatch = cartItems?.find(item => 
+        (item.id === pId || (item as any)._id === pId) && 
+        (item.customization?.text || item.customization?.secondaryText)
+      );
+      if (cartMatch?.customization) {
+        sourceCustom = cartMatch.customization;
+        setIsLoadedFromCart(true);
+      }
+    }
+
+    if (sourceCustom) {
+      if (sourceCustom.text) {
+        setCustomText(sourceCustom.text);
+      }
+      if (sourceCustom.secondaryText) {
+        setSecondaryText(sourceCustom.secondaryText);
+        setShowSecondaryLine(true);
+      }
+      if (sourceCustom.font) {
+        const found = ENGRAVING_FONTS.find(f => f.id === sourceCustom?.font || f.name.toLowerCase() === sourceCustom?.font?.toLowerCase());
+        if (found) setSelectedFont1(found.id);
+      }
+      if (sourceCustom.size) {
+        const found = ENGRAVING_SIZES.find(s => s.id === sourceCustom?.size || s.label.toLowerCase() === sourceCustom?.size?.toLowerCase());
+        if (found) setSelectedSize1(found.id);
+      }
+      if (sourceCustom.color) {
+        const found = ENGRAVING_COLORS.find(c => c.id === sourceCustom?.color || c.name.toLowerCase() === sourceCustom?.color?.toLowerCase());
+        if (found) setSelectedColor1(found.id);
+      }
+      if (sourceCustom.secondaryFont) {
+        const found = ENGRAVING_FONTS.find(f => f.id === sourceCustom?.secondaryFont || f.name.toLowerCase() === sourceCustom?.secondaryFont?.toLowerCase());
+        if (found) setSelectedFont2(found.id);
+      }
+      if (sourceCustom.secondarySize) {
+        const found = ENGRAVING_SIZES.find(s => s.id === sourceCustom?.secondarySize || s.label.toLowerCase() === sourceCustom?.secondarySize?.toLowerCase());
+        if (found) setSelectedSize2(found.id);
+      }
+      if (sourceCustom.secondaryColor) {
+        const found = ENGRAVING_COLORS.find(c => c.id === sourceCustom?.secondaryColor || c.name.toLowerCase() === sourceCustom?.secondaryColor?.toLowerCase());
+        if (found) setSelectedColor2(found.id);
+      }
+      if (sourceCustom.position) {
+        const m1 = sourceCustom.position.match(/L1:x:(\d+)%,y:(\d+)%/);
+        if (m1) setTextPos1({ x: Number(m1[1]), y: Number(m1[2]) });
+        const m2 = sourceCustom.position.match(/L2:x:(\d+)%,y:(\d+)%/);
+        if (m2) setTextPos2({ x: Number(m2[1]), y: Number(m2[2]) });
+      }
+
+      const imagesList = Array.from(new Set([product.image, ...(product.images || []), ...(product.usageImages || [])].filter(Boolean)));
+      if (imagesList.length > 1) {
+        setActiveImageIndex(1);
+        setModalImageIndex(1);
+      }
+    }
+  }, [product, cartItems]);
 
   const handleGoBack = () => {
     if (typeof window !== "undefined" && window.history.length > 1 && document.referrer.includes(window.location.host)) {
@@ -561,28 +661,23 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
             {/* ═════════════════════════════════════════════════════════════════
                 LIVE REAL-TIME LASER ENGRAVING DIRECTLY ON THE PRODUCT PHOTO
-                (Shown when personalized)
+                (Shown when personalized or loaded from Bag)
                 ═════════════════════════════════════════════════════════════════ */}
             {customText.trim() && (
               <div
-                className="absolute z-20 pointer-events-none select-none transition-all duration-300 ease-out flex flex-col items-center justify-center px-4"
+                className="absolute z-20 pointer-events-none select-none transition-all duration-300 ease-out flex flex-col items-center justify-center px-2"
                 style={{
-                  top: `${textPos1?.y ?? (engravingPosition === "top" ? 30 : engravingPosition === "bottom" ? 68 : 50)}%`,
+                  top: `${textPos1?.y ?? 38}%`,
                   left: `${textPos1?.x ?? 50}%`,
                   transform: "translate(-50%, -50%)",
-                  width: "84%",
-                  maxWidth: "400px"
+                  maxWidth: "80%"
                 }}
               >
-                <div className="relative text-center w-full px-3 py-2.5 rounded-2xl border-2 border-dashed border-[#8B5A2B]/60 bg-black/10 dark:bg-black/40 backdrop-blur-[0.5px] shadow-sm animate-in fade-in duration-200">
-                  
-                  {/* Floating Laser Badge */}
-                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#241812] text-[#E0D3BE] text-[8px] sm:text-[9px] font-black uppercase tracking-widest px-3 py-0.5 rounded-full shadow-md whitespace-nowrap border border-[#C49A50]/60 flex items-center gap-1.5">
+                <div className="relative text-center w-full px-3 py-1.5 rounded-2xl border-2 border-dashed border-[#8B5A2B]/60 bg-black/15 dark:bg-black/45 backdrop-blur-[0.5px] shadow-sm animate-in fade-in duration-200">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#241812] text-[#E0D3BE] text-[7px] sm:text-[8px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full shadow-md whitespace-nowrap border border-[#C49A50]/60 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
-                    <span>Live Carved Preview on Wood</span>
+                    <span>Line 1 Engraved</span>
                   </div>
-
-                  {/* Real-time carved text on the wood */}
                   <p
                     className={`leading-tight break-words select-none transition-all duration-150 ${
                       (ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0]).fontClass
@@ -594,32 +689,40 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                       letterSpacing: (ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0]).letterSpacing || "normal",
                     }}
                   >
-                    {customText.trim() || (secondaryText.trim() ? "" : "Your Name Here")}
+                    {customText.trim()}
                   </p>
+                </div>
+              </div>
+            )}
 
-                  {secondaryText.trim() && (
-                    <p
-                      className={`leading-tight break-words select-none transition-all duration-150 mt-0.5 ${
-                        (ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0]).fontClass
-                      }`}
-                      style={{
-                        fontSize: `clamp(12px, 3.6vw, ${(ENGRAVING_SIZES.find(s => s.id === selectedSize2)?.sizePx || 18)}px)`,
-                        color: (ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0]).hex,
-                        textShadow: (ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0]).shadow,
-                        letterSpacing: (ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0]).letterSpacing || "normal",
-                      }}
-                    >
-                      {secondaryText.trim()}
-                    </p>
-                  )}
-
-                  <div className="flex items-center justify-center gap-2 mt-1 pt-1 border-t border-[#8B5A2B]/20 text-[8px] sm:text-[9px] font-bold text-[#3D2214] dark:text-[#E0D3BE]/90">
-                    <span>{(ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0]).name}</span>
-                    <span>•</span>
-                    <span>{(ENGRAVING_SIZES.find(s => s.id === selectedSize1) || ENGRAVING_SIZES[1]).label}</span>
-                    <span>•</span>
-                    <span>{(ENGRAVING_COLORS.find(c => c.id === selectedColor1) || ENGRAVING_COLORS[0]).name}</span>
+            {secondaryText.trim() && (
+              <div
+                className="absolute z-20 pointer-events-none select-none transition-all duration-300 ease-out flex flex-col items-center justify-center px-2"
+                style={{
+                  top: `${textPos2?.y ?? 64}%`,
+                  left: `${textPos2?.x ?? 50}%`,
+                  transform: "translate(-50%, -50%)",
+                  maxWidth: "80%"
+                }}
+              >
+                <div className="relative text-center w-full px-3 py-1.5 rounded-2xl border-2 border-dashed border-[#8B5A2B]/60 bg-black/15 dark:bg-black/45 backdrop-blur-[0.5px] shadow-sm animate-in fade-in duration-200">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#241812] text-[#E0D3BE] text-[7px] sm:text-[8px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full shadow-md whitespace-nowrap border border-[#C49A50]/60 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping inline-block" />
+                    <span>Line 2 Engraved</span>
                   </div>
+                  <p
+                    className={`leading-tight break-words select-none transition-all duration-150 ${
+                      (ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0]).fontClass
+                    }`}
+                    style={{
+                      fontSize: `clamp(12px, 3.6vw, ${(ENGRAVING_SIZES.find(s => s.id === selectedSize2)?.sizePx || 18)}px)`,
+                      color: (ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0]).hex,
+                      textShadow: (ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0]).shadow,
+                      letterSpacing: (ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0]).letterSpacing || "normal",
+                    }}
+                  >
+                    {secondaryText.trim()}
+                  </p>
                 </div>
               </div>
             )}
@@ -747,6 +850,32 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               100% Solid Seasoned Wood
             </span>
           </div>
+
+          {/* Active Personalized Laser Engraving Banner */}
+          {(customText.trim() || secondaryText.trim()) && (
+            <div className="bg-[#FAF6EE] dark:bg-[#1E1713] border-2 border-[#C49A50]/60 rounded-2xl p-3 sm:p-3.5 mb-3 shadow-xs flex items-center justify-between gap-3 animate-in fade-in">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-[#C49A50]/20 flex items-center justify-center shrink-0 text-[#C49A50]">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-[#241812] dark:text-[#F7F5F0]">
+                    {isLoadedFromCart ? "✨ Customized Piece Loaded from Your Bag" : "✨ Personalized Laser Engraving Active"}
+                  </p>
+                  <p className="text-[11px] text-[#8B5A2B] dark:text-[#E6C477] font-semibold">
+                    "{customText || secondaryText}"{secondaryText && customText ? ` & "${secondaryText}"` : ''} carved on wood preview
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={handleStartCustomizing}
+                className="px-3.5 py-1.5 rounded-full bg-[#241812] text-[#F7F5F0] hover:bg-[#38261C] text-xs font-bold shrink-0 transition-all cursor-pointer shadow-xs active:scale-95 flex items-center gap-1"
+              >
+                <span>Edit</span>
+              </button>
+            </div>
+          )}
 
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold font-playfair text-[#241812] dark:text-[#F7F5F0] mb-3 leading-tight">
             {product.name}
