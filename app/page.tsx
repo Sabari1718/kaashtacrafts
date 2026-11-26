@@ -38,10 +38,10 @@ const promoBanners = [
     btnText: "Explore Desk Suite",
     href: "/products?category=Desk Accessories",
     image: "/desk-accessories.jpg",
-    bgGradient: "from-[#2A150C] via-[#3D1E10] to-[#1A0B06]",
-    badgeBg: "bg-[#C99A45]/20 text-[#E6C477] border-[#C99A45]/40",
-    btnGradient: "from-[#E6C477] via-[#C99A45] to-[#B88528]",
-    glowColor: "rgba(201,154,69,0.35)",
+    bgGradient: "from-[#0F0C0A] via-[#1A1410] to-[#0A0806]",
+    badgeBg: "bg-[#D4AF37]/15 text-[#F3E5AB] border-[#D4AF37]/40 shadow-xs",
+    btnGradient: "from-[#D4AF37] via-[#F5E2B3] to-[#C49A50] text-[#0A0806] font-black shadow-[0_4px_25px_rgba(212,175,55,0.45)] hover:shadow-[0_6px_30px_rgba(212,175,55,0.6)]",
+    glowColor: "rgba(212,175,55,0.25)",
   },
   {
     tag: "🌿 SANCTUARY COLLECTION • NATURE'S TOUCH",
@@ -50,10 +50,10 @@ const promoBanners = [
     btnText: "Shop Home Decor",
     href: "/products?category=Home Decor",
     image: "/home-decor.jpg",
-    bgGradient: "from-[#1B281E] via-[#2A3D2D] to-[#121B14]",
-    badgeBg: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
-    btnGradient: "from-[#52B788] via-[#2D6A4F] to-[#1B4332] text-white",
-    glowColor: "rgba(82,183,136,0.35)",
+    bgGradient: "from-[#0A140F] via-[#12221A] to-[#060D0A]",
+    badgeBg: "bg-emerald-500/20 text-emerald-200 border-emerald-400/40 shadow-xs",
+    btnGradient: "from-[#34D399] via-[#10B981] to-[#059669] text-white font-black shadow-[0_4px_25px_rgba(16,185,129,0.45)] hover:shadow-[0_6px_30px_rgba(16,185,129,0.6)]",
+    glowColor: "rgba(16,185,129,0.25)",
   },
   {
     tag: "🔥 LIMITED EDITION • 100% FOOD-SAFE TEAK",
@@ -62,10 +62,10 @@ const promoBanners = [
     btnText: "Explore Culinary Art",
     href: "/products?category=Kitchen",
     image: "/kitchen.jpg",
-    bgGradient: "from-[#3B1713] via-[#521C16] to-[#240A07]",
-    badgeBg: "bg-amber-500/20 text-amber-300 border-amber-500/40",
-    btnGradient: "from-[#F4A261] via-[#E76F51] to-[#C84B31] text-white",
-    glowColor: "rgba(231,111,81,0.35)",
+    bgGradient: "from-[#1A0C0E] via-[#2A1316] to-[#0D0607]",
+    badgeBg: "bg-rose-500/20 text-rose-200 border-rose-400/40 shadow-xs",
+    btnGradient: "from-[#FB7185] via-[#F43F5E] to-[#BE123C] text-white font-black shadow-[0_4px_25px_rgba(244,63,94,0.45)] hover:shadow-[0_6px_30px_rgba(244,63,94,0.6)]",
+    glowColor: "rgba(244,63,94,0.25)",
   },
 ];
 
@@ -184,29 +184,29 @@ export default function Home() {
       {/* ══════════════════════════════════════════════
           1. CATEGORY NAVIGATION BAR (MAJOR LUXURY REDESIGN)
           ══════════════════════════════════════════════ */}
-      <section className="w-full bg-white dark:bg-[#120F0D]/95 backdrop-blur-md border-b border-stone-200/80 dark:border-[#C49A50]/20 shadow-2xs">
+      <section className="w-full bg-white dark:bg-[#0C0A09]/95 backdrop-blur-md border-b border-stone-200/80 dark:border-[#D4AF37]/20 shadow-2xs">
         <div className="max-w-[1440px] mx-auto px-2 sm:px-6 py-2 sm:py-2.5 overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-2 sm:gap-3.5 min-w-max mx-auto justify-start sm:justify-center">
             {sortedTopCategories.map((cat: any, idx) => (
               <Link
                 href={cat.href}
                 key={idx}
-                className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl bg-white dark:bg-[#14100D] border-2 border-[#E0D3BE] dark:border-[#C49A50]/25 hover:border-[#C99A45] hover:dark:border-[#D4AF37] hover:bg-[#21130E] dark:hover:bg-[#1E1712] shadow-sm hover:shadow-[0_10px_25px_-3px_rgba(0,0,0,0.6),0_0_15px_rgba(212,175,55,0.35)] hover:-translate-y-1.5 active:translate-y-0 transition-all duration-250 ease-out cursor-pointer overflow-hidden"
+                className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl bg-[#FAF7F2] dark:bg-[#14100D] border border-[#E0D3BE] dark:border-[#D4AF37]/25 hover:border-[#C99A45] hover:dark:border-[#D4AF37] hover:bg-white dark:hover:bg-[#1C1612] shadow-xs hover:shadow-[0_10px_25px_-3px_rgba(0,0,0,0.5),0_0_15px_rgba(212,175,55,0.3)] hover:-translate-y-1 active:translate-y-0 transition-all duration-250 ease-out cursor-pointer overflow-hidden"
               >
                 {/* Active/Hover Gold Accent Bar on Bottom */}
-                <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#E6C477] via-[#C99A45] to-[#E6C477] opacity-0 group-hover:opacity-100 transition-opacity duration-250 shadow-[0_0_8px_#C99A45]" />
+                <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] opacity-0 group-hover:opacity-100 transition-opacity duration-250 shadow-[0_0_8px_#D4AF37]" />
 
                 {/* Scaled Icon Image */}
-                <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl overflow-hidden ring-1.5 sm:ring-2 ring-[#E0D3BE] dark:ring-[#C49A50]/30 group-hover:ring-[#E6C477] group-hover:dark:ring-[#D4AF37] group-hover:scale-115 transition-all duration-250 shrink-0 shadow-xs">
-                  <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-125 transition-transform duration-500 ease-out" />
+                <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl overflow-hidden ring-1.5 sm:ring-2 ring-[#E0D3BE] dark:ring-[#D4AF37]/35 group-hover:ring-[#D4AF37] group-hover:scale-110 transition-all duration-250 shrink-0 shadow-xs">
+                  <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-120 transition-transform duration-500 ease-out" />
                 </div>
 
                 {/* Text Content */}
                 <div className="flex flex-col leading-none">
-                  <span className="text-[11.5px] sm:text-[12.5px] font-black text-[#21130E] dark:text-[#FAF6EE] group-hover:text-[#F7F3EB] dark:group-hover:text-[#D4AF37] transition-colors tracking-tight font-sans">
+                  <span className="text-[11.5px] sm:text-[12.5px] font-black text-[#21130E] dark:text-[#FAF6EE] group-hover:text-[#8C5819] dark:group-hover:text-[#D4AF37] transition-colors tracking-tight font-sans">
                     {cat.name}
                   </span>
-                  <span className="text-[8px] sm:text-[8.5px] text-[#7A6E63] dark:text-[#A3988C] group-hover:text-[#E6C477] dark:group-hover:text-[#D4AF37] tracking-wider uppercase mt-0.5 sm:mt-1 font-extrabold transition-colors font-sans">
+                  <span className="text-[8px] sm:text-[8.5px] text-[#7A6E63] dark:text-[#A3988C] group-hover:text-[#D4AF37] dark:group-hover:text-[#D4AF37] tracking-wider uppercase mt-0.5 sm:mt-1 font-extrabold transition-colors font-sans">
                     {cat.tag}
                   </span>
                 </div>
@@ -243,7 +243,7 @@ export default function Home() {
             {promoBanners.map((banner, index) => (
               <SwiperSlide key={index}>
                 <div
-                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-[#E0D3BE]/60 dark:border-[#C49A50]/30 bg-gradient-to-r ${banner.bgGradient} flex flex-col md:flex-row items-center justify-between min-h-[360px] md:min-h-[390px]`}
+                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5),0_0_25px_rgba(212,175,55,0.1)] border border-[#E0D3BE]/80 dark:border-[#D4AF37]/35 bg-gradient-to-r ${banner.bgGradient} flex flex-col md:flex-row items-center justify-between min-h-[360px] md:min-h-[390px]`}
                 >
                   {/* Subtle decorative glow circles */}
                   <div
@@ -340,12 +340,12 @@ export default function Home() {
       {/* ══════════════════════════════════════════════
           3. MARQUEE TRUST STRIP
           ══════════════════════════════════════════════ */}
-      <section className="w-full bg-[#21150F] border-y border-[#38251C] py-3.5 overflow-hidden">
+      <section className="w-full bg-[#0A0807] border-y border-[#D4AF37]/25 py-3 overflow-hidden shadow-inner">
         <div className="marquee-track gap-0">
           {[...marqueeItems, ...marqueeItems].map((item, i) => (
             <div key={i} className="flex items-center gap-6 px-6 shrink-0">
-              <span className="label-luxury text-[#DEB96A] whitespace-nowrap text-[9px]">{item}</span>
-              <span className="w-1 h-1 rounded-full bg-[#C69A4B]/40 shrink-0" />
+              <span className="label-luxury text-[#F3E5AB] font-bold tracking-[0.22em] text-[9.5px] uppercase whitespace-nowrap">{item}</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] shadow-[0_0_6px_#D4AF37] shrink-0" />
             </div>
           ))}
         </div>
@@ -362,7 +362,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-6 mb-6 sm:mb-10">
             <div>
               <p className="label-luxury text-[#7A4513] dark:text-[#DEB96A] font-extrabold mb-1.5 sm:mb-2.5">Handcrafted Treasures</p>
-              <h2 className="heading-display text-2xl sm:text-4xl md:text-[46px] text-[#21150F] dark:text-[#F7F3EB] leading-[1.15]">
+              <h2 className="heading-display text-2xl sm:text-4xl md:text-[46px] text-[#21150F] dark:text-[#FAF6EE] leading-[1.15]">
                 Best of{" "}
                 <span className="text-gold-gradient font-black">Kaashta Crafts</span>
               </h2>
@@ -378,12 +378,12 @@ export default function Home() {
                     onClick={() => setSelectedFilter(cat)}
                     className={`relative px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-[12px] font-black tracking-wider uppercase whitespace-nowrap cursor-pointer transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 font-sans shrink-0 ${
                       isActive
-                        ? "bg-[#21130E] text-white dark:text-[#E6C477] border-2 border-[#C99A45] shadow-sm ring-2 ring-[#C99A45]/30"
-                        : "bg-white dark:bg-[#1E130E] text-[#21130E] dark:text-[#EDE4D6] border-2 border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#21130E] dark:hover:text-[#E6C477] hover:shadow-sm"
+                        ? "bg-[#21130E] text-white dark:bg-gradient-to-r dark:from-[#D4AF37] dark:via-[#F3E5AB] dark:to-[#C5A059] dark:text-[#0A0807] dark:border-transparent font-black shadow-md ring-2 ring-[#C99A45]/30 dark:ring-[#D4AF37]/50"
+                        : "bg-white dark:bg-[#14100D] text-[#21130E] dark:text-[#D8CFBF] border-2 border-[#E0D3BE] dark:border-[#D4AF37]/20 hover:border-[#C99A45] hover:dark:border-[#D4AF37] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#1E1712] dark:hover:text-[#FAF6EE] hover:shadow-sm"
                     }`}
                   >
                     {isActive && (
-                      <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-gradient-to-r from-[#E6C477] to-[#C99A45] shadow-[0_0_8px_#C99A45] animate-pulse" />
+                      <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-gradient-to-r from-[#E6C477] to-[#C99A45] dark:from-[#0A0807] dark:to-[#1A1410] shadow-[0_0_8px_#C99A45] animate-pulse" />
                     )}
                     <span>{cat}</span>
                   </button>
@@ -403,10 +403,10 @@ export default function Home() {
               return (
                 <div
                   key={pid}
-                  className="product-card-luxury dark:bg-[#1E1510] group flex flex-col"
+                  className="product-card-luxury group flex flex-col"
                 >
                   {/* IMAGE */}
-                  <Link href={`/products/${pid}`} className="relative block overflow-hidden bg-gradient-to-b from-[#EDE5D8] to-[#E0D3BE] dark:from-[#261D15] dark:to-[#1E1510]" style={{ aspectRatio: "4/5" }}>
+                  <Link href={`/products/${pid}`} className="relative block overflow-hidden bg-gradient-to-b from-[#EDE5D8] to-[#E0D3BE] dark:from-[#181310] dark:to-[#0D0A08]" style={{ aspectRatio: "4/5" }}>
                     <Image
                       src={product.image}
                       alt={product.name}
@@ -419,14 +419,14 @@ export default function Home() {
 
                     {/* Hover CTA */}
                     <div className="absolute inset-0 flex items-end justify-center pb-5 opacity-0 group-hover:opacity-100 transition-all duration-400 translate-y-3 group-hover:translate-y-0">
-                      <span className="bg-[#F7F3EB]/95 backdrop-blur-sm text-[#21150F] text-[11px] font-bold tracking-widest uppercase px-5 py-2 rounded-full border border-[#E0D3BE]/50 flex items-center gap-1.5">
-                        View Details <ArrowUpRight className="w-3 h-3 text-[#C69A4B]" />
+                      <span className="bg-[#F7F3EB]/95 dark:bg-[#14100D]/95 backdrop-blur-sm text-[#21150F] dark:text-[#FAF6EE] text-[11px] font-bold tracking-widest uppercase px-5 py-2 rounded-full border border-[#E0D3BE]/50 dark:border-[#D4AF37]/30 flex items-center gap-1.5 shadow-md">
+                        View Details <ArrowUpRight className="w-3 h-3 text-[#C69A4B] dark:text-[#E2BA69]" />
                       </span>
                     </div>
 
                     {/* Discount badge */}
                     {disc > 0 && (
-                      <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 bg-[#21150F] text-[#DEB96A] text-[9px] sm:text-[10px] font-black px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full tracking-widest uppercase shadow-sm">
+                      <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 bg-[#21150F] dark:bg-[#0C0A09] text-[#DEB96A] dark:text-[#E2BA69] border border-transparent dark:border-[#D4AF37]/30 text-[9px] sm:text-[10px] font-black px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full tracking-widest uppercase shadow-sm">
                         −{disc}%
                       </div>
                     )}
@@ -435,9 +435,9 @@ export default function Home() {
                     <button
                       onClick={e => handleWishlist(e, product)}
                       aria-label="Wishlist"
-                      className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 dark:bg-[#1E1510]/90 backdrop-blur flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-sm border border-[#E0D3BE]/40 cursor-pointer z-10"
+                      className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/90 dark:bg-[#14100D]/90 backdrop-blur flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-sm border border-[#E0D3BE]/40 dark:border-[#D4AF37]/30 cursor-pointer z-10"
                     >
-                      <Heart className={`w-3.5 h-3.5 transition-colors ${isSaved ? "fill-red-500 text-red-500" : "text-[#38251C] hover:text-red-500"}`} />
+                      <Heart className={`w-3.5 h-3.5 transition-colors ${isSaved ? "fill-red-500 text-red-500" : "text-[#38251C] dark:text-[#D8CFBF] hover:text-red-500"}`} />
                     </button>
                   </Link>
 
@@ -445,7 +445,7 @@ export default function Home() {
                   <div className="p-3 sm:p-4 flex flex-col flex-grow">
                     <p className="label-luxury text-[#7A4513] dark:text-[#DEB96A] font-extrabold text-[8.5px] sm:text-[9px] mb-1 sm:mb-1.5">{product.category}</p>
                     <Link href={`/products/${pid}`}>
-                      <h3 className="font-playfair font-bold text-xs sm:text-[15px] text-[#21150F] dark:text-[#F7F3EB] line-clamp-1 mb-1 sm:mb-1.5 leading-tight group-hover:text-[#38251C] dark:group-hover:text-[#DEB96A] transition-colors">
+                      <h3 className="font-playfair font-bold text-xs sm:text-[15px] text-[#21150F] dark:text-[#FAF6EE] line-clamp-1 mb-1 sm:mb-1.5 leading-tight group-hover:text-[#38251C] dark:group-hover:text-[#DEB96A] transition-colors">
                         {product.name}
                       </h3>
                     </Link>
@@ -453,18 +453,18 @@ export default function Home() {
                     {/* Stars */}
                     <div className="flex items-center gap-1 sm:gap-1.5 mb-2 sm:mb-3">
                       <Star className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-[#C69A4B] text-[#C69A4B]" />
-                      <span className="text-[10px] sm:text-[11px] font-bold text-[#21150F] dark:text-[#F7F3EB]">{product.rating || 4.9}</span>
-                      <span className="text-[9px] sm:text-[10px] text-[#7A6E63]">({product.numReviews || 38})</span>
+                      <span className="text-[10px] sm:text-[11px] font-bold text-[#21150F] dark:text-[#FAF6EE]">{product.rating || 4.9}</span>
+                      <span className="text-[9px] sm:text-[10px] text-[#7A6E63] dark:text-[#A3988C]">({product.numReviews || 38})</span>
                     </div>
 
                     {/* Price + Cart */}
-                    <div className="mt-auto flex items-center justify-between pt-2 sm:pt-3 border-t border-[#E0D3BE]/60 dark:border-[#2C2018]/60">
+                    <div className="mt-auto flex items-center justify-between pt-2 sm:pt-3 border-t border-[#E0D3BE]/60 dark:border-[#D4AF37]/20">
                       <div>
                         <div className="flex items-baseline gap-1 sm:gap-1.5">
-                          <span className="font-sans font-black text-sm sm:text-xl text-[#21130E] dark:text-[#F7F3EB] tracking-tight">
+                          <span className="font-sans font-black text-sm sm:text-xl text-[#21130E] dark:text-[#FAF6EE] tracking-tight">
                             ₹{product.price}
                           </span>
-                          <span className="text-[10px] sm:text-[11px] font-sans font-semibold text-[#7A6E63] line-through">
+                          <span className="text-[10px] sm:text-[11px] font-sans font-semibold text-[#7A6E63] dark:text-[#A3988C] line-through">
                             ₹{origPrice}
                           </span>
                         </div>
@@ -473,7 +473,7 @@ export default function Home() {
                       <button
                         onClick={e => handleAddToCart(e, product)}
                         aria-label="Add to cart"
-                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-[#21130E] hover:bg-[#38251A] dark:bg-[#C99A45] dark:hover:bg-[#E6C477] text-[#F7F3EB] dark:text-[#21130E] flex items-center justify-center transition-all shadow-sm hover:shadow-md hover:scale-105 active:scale-95 cursor-pointer"
+                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-[#21130E] hover:bg-[#38251A] dark:bg-gradient-to-r dark:from-[#D4AF37] dark:to-[#C5A059] dark:hover:from-[#F3E5AB] dark:hover:to-[#D4AF37] text-[#F7F3EB] dark:text-[#0A0807] flex items-center justify-center transition-all shadow-sm hover:shadow-md hover:scale-105 active:scale-95 cursor-pointer"
                       >
                         <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </button>
