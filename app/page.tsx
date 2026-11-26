@@ -29,49 +29,52 @@ const categories = [
   { name: "Gifts & Curios",   tag: "Bespoke Tokens",   image: "/gifts.jpg",             href: "/products" },
 ];
 
-/* ─── PROMOTIONAL BANNERS DATA (3 VIBRANT LUXURY PANORAMIC BANNERS) ─── */
+/* ─── PROMOTIONAL BANNERS DATA (CIRCUIT POINTCARE DESIGN PATTERN) ─── */
 const promoBanners = [
   {
-    tag: "✨ ARTISANAL HERITAGE • UP TO 40% OFF",
+    tag: "Artisanal Heritage • Up to 40% Off",
     title: "Sculpted for Everyday Luxury.",
     subtitle: "Handcrafted executive teak desk suites, organizers, and heritage docking pieces carved by master woodturners.",
     btnText: "Explore Desk Suite",
     href: "/products?category=Desk Accessories",
-    image: "/desk-accessories.jpg",
-    bgColor: "bg-[#180C06]",
-    fadeGradient: "from-[#180C06] from-0% via-[#180C06]/70 via-15% via-[#180C06]/20 via-35% to-transparent to-55%",
-    mobileFadeGradient: "from-[#180C06] from-35% via-[#180C06]/85 via-65% to-transparent",
-    badgeBg: "bg-[#C99A45]/20 text-[#E6C477] border-[#C99A45]/40",
-    btnGradient: "from-[#E6C477] via-[#C99A45] to-[#B88528] text-stone-900",
-    glowColor: "rgba(201,154,69,0.35)",
+    cutoutImage: "/desk-cutout.png",
+    bgGradient: "from-[#FDF8EE] via-[#F8E7D0] to-[#E6C38E] dark:from-[#25150C] dark:via-[#361E12] dark:to-[#4A2B1B]",
+    borderClass: "border-[#E8C590]/50 dark:border-[#4A2B1B]/60",
+    badgeBg: "bg-white/85 dark:bg-black/35 border-[#D4A259]/40 text-[#8B5614] dark:text-[#E8C488]",
+    titleClass: "text-[#26150B] dark:text-[#FDFBF7]",
+    subtitleClass: "text-[#5C3B24] dark:text-[#D4C0B2]",
+    btnClass: "bg-[#26150B] hover:bg-[#3D2214] text-[#FAF5ED] dark:bg-[#C99A45] dark:hover:bg-[#B88528] dark:text-stone-950",
+    lineColor: "#C99A45",
   },
   {
-    tag: "🌿 SANCTUARY COLLECTION • NATURE'S TOUCH",
+    tag: "Sanctuary Collection • Nature's Touch",
     title: "Bring Nature Into Your Living Space.",
     subtitle: "Warm botanical candle pillars, sculptural wooden clocks, and hand-chiseled teak sanctuary decor made to last generations.",
     btnText: "Shop Home Decor",
     href: "/products?category=Home Decor",
-    image: "/home-decor.jpg",
-    bgColor: "bg-[#0C150E]",
-    fadeGradient: "from-[#0C150E] from-0% via-[#0C150E]/70 via-15% via-[#0C150E]/20 via-35% to-transparent to-55%",
-    mobileFadeGradient: "from-[#0C150E] from-35% via-[#0D1610]/85 via-65% to-transparent",
-    badgeBg: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
-    btnGradient: "from-[#52B788] via-[#2D6A4F] to-[#1B4332] text-white",
-    glowColor: "rgba(82,183,136,0.35)",
+    cutoutImage: "/home-decor-cutout.png",
+    bgGradient: "from-[#EDF8F2] via-[#C8EFD9] to-[#82D6A9] dark:from-[#0E1A14] dark:via-[#162B20] dark:to-[#224030]",
+    borderClass: "border-emerald-300/50 dark:border-emerald-700/50",
+    badgeBg: "bg-white/85 dark:bg-black/35 border-emerald-300/50 text-[#154E2E] dark:text-[#8CE4B6]",
+    titleClass: "text-[#0E2E1C] dark:text-[#F2FAF5]",
+    subtitleClass: "text-[#28573D] dark:text-[#B6DAC5]",
+    btnClass: "bg-[#124529] hover:bg-[#1A5C38] text-white dark:bg-[#2EB872] dark:hover:bg-[#259B5F] dark:text-stone-950",
+    lineColor: "#228C56",
   },
   {
-    tag: "🔥 LIMITED EDITION • 100% FOOD-SAFE TEAK",
+    tag: "Limited Edition • 100% Food-Safe Teak",
     title: "Timeless Dining Sculptures & Platters.",
     subtitle: "Turn everyday dining into ritual with hand-turned organic acacia bowls, spice jars, and artisan serving platters.",
     btnText: "Explore Culinary Art",
     href: "/products?category=Kitchen",
-    image: "/kitchen.jpg",
-    bgColor: "bg-[#1A0806]",
-    fadeGradient: "from-[#1A0806] from-0% via-[#1A0806]/70 via-15% via-[#1A0806]/20 via-35% to-transparent to-55%",
-    mobileFadeGradient: "from-[#1A0806] from-35% via-[#1D0907]/85 via-65% to-transparent",
-    badgeBg: "bg-amber-500/20 text-amber-300 border-amber-500/40",
-    btnGradient: "from-[#F4A261] via-[#E76F51] to-[#C84B31] text-white",
-    glowColor: "rgba(231,111,81,0.35)",
+    cutoutImage: "/kitchen-cutout.png",
+    bgGradient: "from-[#FFF2ED] via-[#FDDCCD] to-[#F8AF98] dark:from-[#24110E] dark:via-[#351915] dark:to-[#4A231E]",
+    borderClass: "border-rose-300/50 dark:border-rose-700/50",
+    badgeBg: "bg-white/85 dark:bg-black/35 border-rose-300/50 text-[#9E2A2B] dark:text-[#FCA5A5]",
+    titleClass: "text-[#3B150F] dark:text-[#FFF5F2]",
+    subtitleClass: "text-[#6E2E23] dark:text-[#DEC1BB]",
+    btnClass: "bg-[#9E2A2B] hover:bg-[#B73233] text-white dark:bg-[#E76F51] dark:hover:bg-[#D65B3D] dark:text-stone-950",
+    lineColor: "#E76F51",
   },
 ];
 
@@ -212,69 +215,83 @@ export default function Home() {
             {promoBanners.map((banner, index) => (
               <SwiperSlide key={index}>
                 <div
-                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-[#E0D3BE]/60 dark:border-[#2C2018]/80 min-h-[380px] sm:min-h-[410px] md:h-[430px] flex items-center group ${banner.bgColor}`}
+                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border ${banner.borderClass} min-h-[360px] sm:min-h-[390px] md:h-[410px] flex flex-col md:flex-row items-center bg-gradient-to-r ${banner.bgGradient} group transition-all`}
                 >
-                  {/* FAINT AMBIENT PHOTO ON LEFT (Subtle wood atmosphere behind text) */}
-                  <div className="absolute inset-0 w-full h-full opacity-20 pointer-events-none mix-blend-luminosity">
-                    <Image
-                      src={banner.image}
-                      alt=""
-                      fill
-                      sizes="100vw"
-                      className="object-cover object-left filter blur-xs"
-                      aria-hidden="true"
+                  {/* BACKGROUND DECORATIVE CONNECTING CRAFT LINES & NODES (Circuit PointCare Design Motif) */}
+                  <svg
+                    className="absolute inset-0 w-full h-full pointer-events-none opacity-35 dark:opacity-25"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <defs>
+                      <pattern id={`grid-dots-${index}`} width="24" height="24" patternUnits="userSpaceOnUse">
+                        <circle cx="2" cy="2" r="1" fill={banner.lineColor} />
+                      </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill={`url(#grid-dots-${index})`} opacity="0.35" />
+                    {/* Connecting dashed trace lines */}
+                    <path
+                      d="M 40 70 H 260 L 310 110 H 750 L 800 60 H 1200"
+                      stroke={banner.lineColor}
+                      strokeWidth="1.5"
+                      strokeDasharray="4 4"
+                      fill="none"
                     />
-                  </div>
-
-                  {/* RIGHT-SIDE FULL PHOTO (Shows 100% of product - pens, phone, organizer, clock, plant) */}
-                  <div className="absolute right-0 top-0 bottom-0 w-full md:w-[62%] lg:w-[58%] h-full pointer-events-none overflow-hidden">
-                    <Image
-                      src={banner.image}
-                      alt={banner.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 60vw"
-                      priority={index === 0}
-                      className="object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
+                    <circle cx="260" cy="70" r="3" fill={banner.lineColor} />
+                    <circle cx="310" cy="110" r="3" fill={banner.lineColor} />
+                    <circle cx="750" cy="110" r="3" fill={banner.lineColor} />
+                    <path
+                      d="M 60 300 H 380 L 440 260 H 900"
+                      stroke={banner.lineColor}
+                      strokeWidth="1.5"
+                      strokeDasharray="4 4"
+                      fill="none"
                     />
-                    {/* Seamless gradient fade on the left edge: blends photo into dark background */}
-                    <div className={`hidden md:block absolute inset-0 bg-gradient-to-r ${banner.fadeGradient}`} />
-                    {/* Mobile top-to-bottom fade */}
-                    <div className={`md:hidden absolute inset-0 bg-gradient-to-b ${banner.mobileFadeGradient}`} />
-                  </div>
-
-                  {/* Left ambient radial glow behind text */}
-                  <div
-                    className="absolute -left-10 top-1/2 -translate-y-1/2 w-[380px] h-[380px] rounded-full pointer-events-none blur-3xl opacity-30"
-                    style={{ background: banner.glowColor }}
-                  />
+                    <circle cx="380" cy="300" r="3" fill={banner.lineColor} />
+                    <circle cx="440" cy="260" r="3" fill={banner.lineColor} />
+                  </svg>
 
                   {/* LEFT CONTENT AREA */}
-                  <div className="relative z-10 w-full md:w-[52%] lg:w-[46%] p-6 sm:p-10 md:p-12 lg:p-14 flex flex-col justify-center items-start text-left">
+                  <div className="relative z-10 w-full md:w-[50%] lg:w-[48%] p-6 sm:p-10 md:p-12 lg:p-14 flex flex-col justify-center items-start text-left">
                     {/* Badge */}
-                    <div className="mb-2.5 sm:mb-4">
-                      <span className={`inline-flex items-center gap-1.5 backdrop-blur-md text-[9px] sm:text-[11px] font-extrabold tracking-widest uppercase px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border shadow-md ${banner.badgeBg}`}>
-                        {banner.tag}
+                    <div className="mb-2.5 sm:mb-3.5">
+                      <span className={`inline-flex items-center gap-1.5 backdrop-blur-md text-[10px] sm:text-[11px] font-extrabold tracking-wider uppercase px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border shadow-2xs ${banner.badgeBg}`}>
+                        <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                        <span>{banner.tag}</span>
                       </span>
                     </div>
 
                     {/* Headline */}
-                    <h2 className="heading-display text-xl sm:text-3xl md:text-[34px] lg:text-[40px] text-white font-extrabold leading-[1.14] mb-2 sm:mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] tracking-tight">
+                    <h2 className={`heading-display text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-black leading-[1.12] mb-2 sm:mb-3 tracking-tight ${banner.titleClass}`}>
                       {banner.title}
                     </h2>
 
                     {/* Subtitle / Description */}
-                    <p className="text-xs sm:text-[14px] text-stone-200/95 leading-relaxed mb-4 sm:mb-6 font-sans font-normal max-w-lg line-clamp-2 sm:line-clamp-none drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
+                    <p className={`text-xs sm:text-sm md:text-[15px] leading-relaxed mb-4 sm:mb-6 font-sans font-medium max-w-lg ${banner.subtitleClass}`}>
                       {banner.subtitle}
                     </p>
 
                     {/* CTA Button */}
                     <Link
                       href={banner.href}
-                      className={`inline-flex items-center gap-2 sm:gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full bg-gradient-to-r ${banner.btnGradient} font-extrabold text-[11px] sm:text-[13px] tracking-wider uppercase transition-all duration-300 shadow-xl hover:scale-105 active:scale-95 hover:shadow-2xl`}
+                      className={`inline-flex items-center gap-2 sm:gap-2.5 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-bold text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 shadow-md hover:shadow-xl hover:scale-105 active:scale-95 ${banner.btnClass}`}
                     >
                       <span>{banner.btnText}</span>
                       <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </Link>
+                  </div>
+
+                  {/* RIGHT PRODUCT SHOWCASE (Clean Cutout with soft natural 3D drop shadow, 100% visible) */}
+                  <div className="relative z-10 w-full md:w-[50%] lg:w-[52%] h-[240px] sm:h-[280px] md:h-full flex items-center justify-center md:justify-end p-4 sm:p-6 md:p-8 lg:pr-12 pointer-events-none">
+                    <div className="relative w-full max-w-[500px] h-full flex items-center justify-center md:justify-end">
+                      <Image
+                        src={banner.cutoutImage}
+                        alt={banner.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        priority={index === 0}
+                        className="object-contain object-center md:object-right filter drop-shadow-[0_16px_28px_rgba(0,0,0,0.18)] dark:drop-shadow-[0_16px_28px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                    </div>
                   </div>
                 </div>
               </SwiperSlide>
