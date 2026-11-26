@@ -11,13 +11,13 @@ import { Toaster } from "sonner";
 const manrope = Manrope({
   variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
-  weight: ["600", "700"],
+  display: "swap",
 });
 
 export const viewport: Viewport = {
