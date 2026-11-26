@@ -108,9 +108,7 @@ export default function CartPage() {
                           <div className="mt-1 inline-flex items-center gap-1 bg-[#FAF6EE] dark:bg-[#251A12] border border-[#C49A50]/40 px-2 py-0.5 rounded-md text-[11px] font-semibold text-[#8B5A2B] dark:text-[#E6C477]">
                             <span>✒️ Engraving:</span>
                             <span className="font-bold">"{item.customization.text}"</span>
-                            {item.customization.font && (
-                              <span className="opacity-75 text-[10px]">({item.customization.font})</span>
-                            )}
+                            <span className="opacity-75 text-[10px]">({[item.customization.font, item.customization.size].filter(Boolean).join(" • ")})</span>
                           </div>
                         )}
                       </div>
@@ -140,7 +138,7 @@ export default function CartPage() {
 
                       <div className="flex items-center gap-4">
                         <Link 
-                          href={`/checkout?buyNow=${item.id}${item.customization?.text ? `&customText=${encodeURIComponent(item.customization.text)}&customFont=${encodeURIComponent(item.customization.font || '')}` : ''}`}
+                          href={`/checkout?buyNow=${item.id}${item.customization?.text ? `&customText=${encodeURIComponent(item.customization.text)}&customFont=${encodeURIComponent(item.customization.font || '')}&customSize=${encodeURIComponent(item.customization.size || '')}&customPos=${encodeURIComponent(item.customization.position || '')}` : ''}`}
                           className="text-[#C49A50] hover:underline flex items-center gap-1 text-xs font-bold transition-colors"
                         >
                           Buy Now <ArrowRight className="w-3 h-3" />

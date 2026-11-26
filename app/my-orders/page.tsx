@@ -362,7 +362,7 @@ export default function MyOrdersPage() {
                             <p className="text-xs text-[#82786E]">Qty: {item.quantity} • ₹{item.price} each</p>
                             {item.customization?.text && (
                               <p className="text-[11px] font-semibold text-[#8B5A2B] dark:text-[#E6C477] mt-0.5">
-                                ✒️ Laser Engraved: "{item.customization.text}" ({item.customization.font || 'Royal Calligraphy'})
+                                ✒️ Laser Engraved: "{item.customization.text}" ({[item.customization.font, item.customization.size].filter(Boolean).join(" • ") || 'Royal Calligraphy'})
                               </p>
                             )}
                           </div>

@@ -9,12 +9,14 @@ export interface CartItem extends Product {
   customization?: {
     text?: string;
     font?: string;
+    size?: string;
+    position?: string;
   };
 }
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (product: Product, customization?: { text?: string; font?: string }) => void;
+  addToCart: (product: Product, customization?: { text?: string; font?: string; size?: string; position?: string }) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, delta: number) => void;
   clearCart: () => void;
@@ -107,12 +109,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   const cartTotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
 
-  const addToCart = (product: Product, customization?: { text?: string; font?: string }) => {
+  const addToCart = (product: Product, customization?: { text?: string; font?: string; size?: string; position?: string }) => {
     setCartItems((prevItems) => {
       const existingItem = prevItems.find((item) => 
         item.id === product.id && 
         (item.customization?.text || "") === (customization?.text || "") &&
-        (item.customization?.font || "") === (customization?.font || "")
+        (item.customization?.font || "") === (customization?.font || "") &&
+        (item.customization?.size || "") === (customization?.size || "") &&
+        (item.customization?.position || "") === (customization?.position || "")
       );
       if (existingItem) {
         return prevItems.map((item) =>

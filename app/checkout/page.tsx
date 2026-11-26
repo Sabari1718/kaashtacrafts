@@ -13,6 +13,8 @@ function CheckoutContent() {
   const buyNowId = searchParams.get("buyNow");
   const customTextParam = searchParams.get("customText");
   const customFontParam = searchParams.get("customFont");
+  const customSizeParam = searchParams.get("customSize");
+  const customPosParam = searchParams.get("customPos");
   const selectedIdsParam = searchParams.get("selectedIds");
   const selectedIds = selectedIdsParam ? selectedIdsParam.split(",") : [];
   
@@ -106,7 +108,12 @@ function CheckoutContent() {
               price: data.price,
               quantity: 1,
               image: data.image,
-              customization: customTextParam ? { text: customTextParam, font: customFontParam || undefined } : undefined
+              customization: customTextParam ? { 
+                text: customTextParam, 
+                font: customFontParam || undefined,
+                size: customSizeParam || undefined,
+                position: customPosParam || undefined
+              } : undefined
             }]);
             setCheckoutTotal(data.price);
           }
@@ -514,7 +521,7 @@ function CheckoutContent() {
                   </div>
                   {item.customization?.text && (
                     <span className="text-[10px] text-[#8B5A2B] dark:text-[#E6C477] font-semibold mt-0.5">
-                      ✒️ Engraved: "{item.customization.text}" ({item.customization.font || 'Royal Calligraphy'})
+                      ✒️ Engraved: "{item.customization.text}" ({[item.customization.font, item.customization.size].filter(Boolean).join(" • ") || 'Royal Calligraphy'})
                     </span>
                   )}
                 </div>

@@ -9,6 +9,8 @@ export interface IOrderItem {
   customization?: {
     text?: string;
     font?: string;
+    size?: string;
+    position?: string;
     notes?: string;
   };
 }
@@ -36,6 +38,8 @@ const OrderItemSchema = new mongoose.Schema({
   customization: {
     text: { type: String },
     font: { type: String },
+    size: { type: String },
+    position: { type: String },
     notes: { type: String },
   },
 });

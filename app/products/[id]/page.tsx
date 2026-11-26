@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -25,10 +25,25 @@ interface Product extends BaseProduct {
 }
 
 const ENGRAVING_FONTS = [
-  { id: "calligraphy", name: "Royal Script", fontClass: "font-serif italic font-bold", sampleText: "Amma's Kitchen" },
-  { id: "serif", name: "Heritage Serif", fontClass: "font-serif font-black uppercase tracking-wider", sampleText: "SIVA & GANESH" },
-  { id: "modern", name: "Executive Bold", fontClass: "font-sans font-black tracking-tight", sampleText: "KAASHTA CRAFTS" },
-  { id: "artisan", name: "Artisan Monogram", fontClass: "font-mono font-bold tracking-widest uppercase", sampleText: "EST. 2024" },
+  { id: "calligraphy", name: "Royal Script", fontClass: "font-serif italic font-bold", sampleText: "Amma's Kitchen", letterSpacing: "0.02em" },
+  { id: "serif", name: "Heritage Serif", fontClass: "font-serif font-black uppercase tracking-wider", sampleText: "SIVA & GANESH", letterSpacing: "0.08em" },
+  { id: "modern", name: "Executive Bold", fontClass: "font-sans font-black tracking-tight uppercase", sampleText: "KAASHTA CRAFTS", letterSpacing: "0.04em" },
+  { id: "artisan", name: "Artisan Monogram", fontClass: "font-mono font-bold tracking-widest uppercase", sampleText: "EST. 2024", letterSpacing: "0.15em" },
+  { id: "cursive", name: "Cursive Signature", fontClass: "font-serif italic font-medium", sampleText: "Priya & Rajesh", letterSpacing: "0.01em" },
+  { id: "minimal", name: "Minimal Roman", fontClass: "font-serif font-semibold uppercase tracking-widest", sampleText: "THE SHARMA'S", letterSpacing: "0.18em" },
+];
+
+const ENGRAVING_SIZES = [
+  { id: "sm", label: "Small", sub: "18px", sizePx: 18, desc: "Subtle Initials & Dates" },
+  { id: "md", label: "Medium", sub: "26px", sizePx: 26, desc: "Classic Name (Popular)" },
+  { id: "lg", label: "Large", sub: "34px", sizePx: 34, desc: "Prominent Statement" },
+  { id: "xl", label: "Grand XL", sub: "42px", sizePx: 42, desc: "Hero Gift Header" },
+];
+
+const ENGRAVING_POSITIONS = [
+  { id: "top", label: "Top Area", topPercent: "30%", icon: "⬆️" },
+  { id: "center", label: "Center Stage", topPercent: "50%", icon: "🎯" },
+  { id: "bottom", label: "Lower Area", topPercent: "68%", icon: "⬇️" },
 ];
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -48,7 +63,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   // Bespoke Custom Laser Engraving State
   const [customText, setCustomText] = useState("");
   const [selectedFont, setSelectedFont] = useState("calligraphy");
-  const [isEngravingOpen, setIsEngravingOpen] = useState(false);
+  const [selectedSize, setSelectedSize] = useState("md");
+  const [engravingPosition, setEngravingPosition] = useState("center");
+  const [isCustomizing, setIsCustomizing] = useState(true);
+  const customInputRef = useRef<HTMLInputElement>(null);
 
   // Review Form State
   const [reviewRating, setReviewRating] = useState(5);
@@ -105,28 +123,82 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     }
   };
 
+  const handleStartCustomizing = () => {
+    setIsCustomizing(true);
+    setTimeout(() => {
+      customInputRef.current?.focus();
+      customInputRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 120);
+  };
+
+  const handleOrderCustomized = () => {
+    if (!product) return;
+    const trimmed = customText.trim();
+    if (!trimmed) {
+      setIsCustomizing(true);
+      toast.error("Please enter your name or text to engrave!", {
+        description: "Or select 'Buy Standard Piece' below if you want plain timber."
+      });
+      setTimeout(() => customInputRef.current?.focus(), 100);
+      return;
+    }
+    const pid = product.id || (product as any)._id;
+    const fontObj = ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0];
+    const sizeObj = ENGRAVING_SIZES.find(s => s.id === selectedSize) || ENGRAVING_SIZES[1];
+    const textParam = `&customText=${encodeURIComponent(trimmed)}`;
+    const fontParam = `&customFont=${encodeURIComponent(fontObj.name)}`;
+    const sizeParam = `&customSize=${encodeURIComponent(sizeObj.label)}`;
+    const posParam = `&customPos=${encodeURIComponent(engravingPosition)}`;
+    router.push(`/checkout?buyNow=${pid}${textParam}${fontParam}${sizeParam}${posParam}`);
+  };
+
+  const handleAddCustomizedToCart = () => {
+    if (!product) return;
+    const trimmed = customText.trim();
+    if (!trimmed) {
+      setIsCustomizing(true);
+      toast.error("Please enter your name or text to engrave!", {
+        description: "Or select 'Add Standard to Bag' below if you want plain timber."
+      });
+      setTimeout(() => customInputRef.current?.focus(), 100);
+      return;
+    }
+    const fontObj = ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0];
+    const sizeObj = ENGRAVING_SIZES.find(s => s.id === selectedSize) || ENGRAVING_SIZES[1];
+    addToCart(product, {
+      text: trimmed,
+      font: fontObj.name,
+      size: sizeObj.label,
+      position: engravingPosition
+    });
+    toast.success(`"${product.name}" with custom laser engraving "${trimmed}" added to bag!`);
+  };
+
+  const handleBuyStandard = () => {
+    if (!product) return;
+    const pid = product.id || (product as any)._id;
+    router.push(`/checkout?buyNow=${pid}`);
+  };
+
+  const handleAddStandardToCart = () => {
+    if (!product) return;
+    addToCart(product);
+    toast.success(`"${product.name}" added to bag!`);
+  };
+
   const handleAddToCart = () => {
-    if (product) {
-      const trimmed = customText.trim();
-      const fontObj = ENGRAVING_FONTS.find(f => f.id === selectedFont);
-      const customization = trimmed ? { text: trimmed, font: fontObj?.name || selectedFont } : undefined;
-      addToCart(product, customization);
-      toast.success(
-        trimmed
-          ? `${product.name} with custom engraving "${trimmed}" added to bag!`
-          : `${product.name} added to bag!`
-      );
+    if (customText.trim()) {
+      handleAddCustomizedToCart();
+    } else {
+      handleAddStandardToCart();
     }
   };
 
   const handleBuyNow = () => {
-    if (product) {
-      const pid = product.id || (product as any)._id;
-      const trimmed = customText.trim();
-      const fontObj = ENGRAVING_FONTS.find(f => f.id === selectedFont);
-      const textParam = trimmed ? `&customText=${encodeURIComponent(trimmed)}` : '';
-      const fontParam = trimmed ? `&customFont=${encodeURIComponent(fontObj?.name || selectedFont)}` : '';
-      router.push(`/checkout?buyNow=${pid}${textParam}${fontParam}`);
+    if (customText.trim()) {
+      handleOrderCustomized();
+    } else {
+      handleBuyStandard();
     }
   };
 
@@ -381,6 +453,55 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               onClick={() => setIsMainZoomOpen(true)}
             />
 
+            {/* ═════════════════════════════════════════════════════════════════
+                LIVE REAL-TIME LASER ENGRAVING DIRECTLY ON THE PRODUCT PHOTO
+                ═════════════════════════════════════════════════════════════════ */}
+            {(isCustomizing || customText.trim()) && (
+              <div
+                className="absolute z-20 pointer-events-none select-none transition-all duration-300 ease-out flex flex-col items-center justify-center px-4"
+                style={{
+                  top: engravingPosition === "top" ? "30%" : engravingPosition === "bottom" ? "68%" : "50%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                  width: "84%",
+                  maxWidth: "400px"
+                }}
+              >
+                <div className="relative text-center w-full px-3 py-2.5 rounded-2xl border-2 border-dashed border-[#8B5A2B]/60 bg-black/10 dark:bg-black/40 backdrop-blur-[0.5px] shadow-sm animate-in fade-in duration-200">
+                  
+                  {/* Floating Laser Badge */}
+                  <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#241812] text-[#E0D3BE] text-[8px] sm:text-[9px] font-black uppercase tracking-widest px-3 py-0.5 rounded-full shadow-md whitespace-nowrap border border-[#C49A50]/60 flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block" />
+                    <span>Live Carved Preview on Wood</span>
+                  </div>
+
+                  {/* Real-time carved text on the wood */}
+                  <p
+                    className={`leading-tight break-words select-none transition-all duration-150 ${
+                      (ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).fontClass
+                    }`}
+                    style={{
+                      fontSize: `clamp(${Math.max(14, (ENGRAVING_SIZES.find(s => s.id === selectedSize)?.sizePx || 26) - 8)}px, 4.2vw, ${(ENGRAVING_SIZES.find(s => s.id === selectedSize)?.sizePx || 26)}px)`,
+                      color: "#221109",
+                      textShadow: "0 1px 1px rgba(255,255,255,0.45), 0 -1px 1px rgba(0,0,0,0.85), 0 0 2px rgba(45,22,12,0.7)",
+                      filter: "drop-shadow(0 1px 2px rgba(15,7,3,0.7))",
+                      letterSpacing: (ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).letterSpacing || "normal",
+                    }}
+                  >
+                    {customText.trim() || "Your Name Here"}
+                  </p>
+
+                  <div className="flex items-center justify-center gap-2 mt-1 pt-1 border-t border-[#8B5A2B]/20 text-[8px] sm:text-[9px] font-bold text-[#3D2214] dark:text-[#E0D3BE]/90">
+                    <span>{(ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).name}</span>
+                    <span>•</span>
+                    <span>{(ENGRAVING_SIZES.find(s => s.id === selectedSize) || ENGRAVING_SIZES[1]).label}</span>
+                    <span>•</span>
+                    <span>{(ENGRAVING_POSITIONS.find(p => p.id === engravingPosition) || ENGRAVING_POSITIONS[1]).label}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Amazon-Style Prev & Next Arrow Buttons */}
             {allProductImages.length > 1 && (
               <>
@@ -561,66 +682,98 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             </div>
           </div>
 
-          {/* ══════════════════════════════════════════════
-              BESPOKE LASER ENGRAVING & PERSONALIZATION SUITE
-              ══════════════════════════════════════════════ */}
-          <div className="bg-gradient-to-br from-[#FCFAF6] via-[#F8F3EC] to-[#F2EAE0] dark:from-[#1E1510] dark:via-[#18110C] dark:to-[#120D09] p-4 sm:p-5 rounded-2xl border-2 border-[#C49A50]/40 shadow-sm mb-6 transition-all">
+          {/* ═════════════════════════════════════════════════════════
+              BESPOKE LASER ENGRAVING & PERSONALIZATION STUDIO
+              ═════════════════════════════════════════════════════════ */}
+          <div className="bg-gradient-to-br from-[#FCFAF6] via-[#F8F3EC] to-[#F2EAE0] dark:from-[#1E1510] dark:via-[#18110C] dark:to-[#120D09] p-4 sm:p-5 rounded-3xl border-2 border-[#C49A50]/50 shadow-md mb-6 transition-all">
+            
+            {/* Header */}
             <div className="flex items-center justify-between gap-2 mb-2.5">
               <div className="flex items-center gap-2">
-                <span className="w-6 h-6 rounded-full bg-[#C49A50] text-[#241812] flex items-center justify-center text-xs font-black shadow-xs">
-                  ✒️
+                <span className="w-7 h-7 rounded-full bg-[#C49A50] text-[#241812] flex items-center justify-center text-sm font-black shadow-xs">
+                  ✨
                 </span>
-                <h3 className="font-playfair font-bold text-sm sm:text-base text-[#241812] dark:text-[#F7F5F0]">
-                  Bespoke Laser Name Engraving
-                </h3>
+                <div>
+                  <h3 className="font-playfair font-bold text-base sm:text-lg text-[#241812] dark:text-[#F7F5F0] leading-tight">
+                    Custom Laser Engraving Studio
+                  </h3>
+                  <span className="text-[10px] text-[#8B5A2B] dark:text-[#E6C477] font-semibold">
+                    Etched directly on solid timber
+                  </span>
+                </div>
               </div>
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/25 px-2.5 py-0.5 rounded-full">
-                Free Personalization
+              <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-1 rounded-full shrink-0">
+                100% Free
               </span>
             </div>
 
-            <p className="text-xs text-[#82786E] dark:text-[#A39A90] mb-3 leading-relaxed">
-              Make this heirloom piece uniquely yours. Enter your name, couple names, or gift message to be precision laser-etched into the solid timber:
+            <p className="text-xs text-[#6B5A4E] dark:text-[#B3A698] mb-4 leading-relaxed bg-[#EDE4D5]/40 dark:bg-black/20 p-2.5 rounded-xl border border-[#DFCDB7]/60 dark:border-[#38261C]">
+              💡 <span className="font-bold text-[#241812] dark:text-[#F7F5F0]">Real-time Live Preview:</span> Type your custom name and choose font & size below. Watch it appear <span className="font-bold text-[#8B5A2B] dark:text-[#E6C477]">carved directly on the product photo</span> on the left!
             </p>
 
-            {/* Name/Text Input */}
-            <div className="relative mb-3.5">
-              <input
-                type="text"
-                maxLength={35}
-                value={customText}
-                onChange={(e) => setCustomText(e.target.value)}
-                placeholder="Type name here (e.g. Amma's Kitchen / Siva & Ganesh)"
-                className="w-full pl-3.5 pr-14 py-2.5 rounded-xl border-2 border-[#DFCDB7] dark:border-[#38261C] bg-white dark:bg-[#14100E] text-[#241812] dark:text-[#F7F5F0] placeholder:text-[#82786E]/60 text-xs sm:text-sm font-semibold focus:outline-none focus:border-[#C49A50] focus:ring-2 focus:ring-[#C49A50]/20 transition-all shadow-xs"
-              />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-stone-400 font-semibold select-none">
-                {customText.length}/35
-              </span>
+            {/* Step 1: Name / Text Input */}
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-[11px] font-bold uppercase tracking-wider text-[#C49A50] flex items-center gap-1.5">
+                  <span className="w-4 h-4 rounded-full bg-[#241812] text-[#F7F5F0] text-[10px] flex items-center justify-center font-bold">1</span>
+                  <span>Enter Custom Name / Message:</span>
+                </label>
+                <span className="text-[10px] text-stone-400 font-semibold select-none">
+                  {customText.length}/35
+                </span>
+              </div>
+              <div className="relative">
+                <input
+                  ref={customInputRef}
+                  type="text"
+                  maxLength={35}
+                  value={customText}
+                  onChange={(e) => {
+                    setCustomText(e.target.value);
+                    if (!isCustomizing) setIsCustomizing(true);
+                  }}
+                  placeholder="Type here (e.g. Amma's Kitchen / Vignesh & Divya)"
+                  className="w-full pl-3.5 pr-20 py-3 rounded-xl border-2 border-[#DFCDB7] dark:border-[#38261C] bg-white dark:bg-[#14100E] text-[#241812] dark:text-[#F7F5F0] placeholder:text-[#82786E]/60 text-xs sm:text-sm font-semibold focus:outline-none focus:border-[#C49A50] focus:ring-2 focus:ring-[#C49A50]/20 transition-all shadow-xs"
+                />
+                {customText && (
+                  <button
+                    type="button"
+                    onClick={() => setCustomText("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 text-xs bg-stone-100 dark:bg-stone-800 px-2 py-0.5 rounded-md font-bold cursor-pointer"
+                  >
+                    Clear
+                  </button>
+                )}
+              </div>
             </div>
 
-            {/* Font Selector */}
-            <div className="mb-2">
-              <label className="block text-[11px] font-bold uppercase tracking-wider text-[#C49A50] mb-1.5">
-                Choose Engraving Font Style:
+            {/* Step 2: Font Style Selection (6 artisanal fonts) */}
+            <div className="mb-4">
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-[#C49A50] mb-2 flex items-center gap-1.5">
+                <span className="w-4 h-4 rounded-full bg-[#241812] text-[#F7F5F0] text-[10px] flex items-center justify-center font-bold">2</span>
+                <span>Choose Font Style:</span>
               </label>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {ENGRAVING_FONTS.map((f) => {
                   const isSelected = selectedFont === f.id;
                   return (
                     <button
                       key={f.id}
                       type="button"
-                      onClick={() => setSelectedFont(f.id)}
-                      className={`px-2 py-2 rounded-xl border text-center transition-all cursor-pointer ${
+                      onClick={() => {
+                        setSelectedFont(f.id);
+                        if (!isCustomizing) setIsCustomizing(true);
+                      }}
+                      className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
                         isSelected
-                          ? 'bg-[#241812] text-[#F7F5F0] dark:bg-[#C49A50] dark:text-[#241812] border-[#C49A50] shadow-sm ring-1 ring-[#C49A50]/50'
+                          ? 'bg-[#241812] text-[#F7F5F0] dark:bg-[#C49A50] dark:text-[#241812] border-[#C49A50] shadow-sm ring-2 ring-[#C49A50]/40 scale-[1.02]'
                           : 'bg-white/80 dark:bg-[#1A120E] text-[#241812] dark:text-[#E2D8CC] border-[#DFCDB7] dark:border-[#38261C] hover:border-[#C49A50]'
                       }`}
                     >
-                      <span className={`block text-xs leading-tight ${f.fontClass}`}>
-                        {f.sampleText}
+                      <span className={`block text-xs truncate leading-tight ${f.fontClass}`}>
+                        {customText.trim() ? customText : f.sampleText}
                       </span>
-                      <span className="text-[9px] opacity-75 font-sans block mt-1">
+                      <span className="text-[9px] opacity-75 font-sans font-medium block mt-1">
                         {f.name}
                       </span>
                     </button>
@@ -629,44 +782,115 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </div>
             </div>
 
-            {/* Live Timber Engraving Simulation */}
-            {customText.trim() ? (
-              <div className="mt-3.5 pt-3 border-t border-[#DFCDB7]/60 dark:border-[#38261C] flex flex-col items-center justify-center bg-gradient-to-b from-[#E7D6C0] to-[#D8C2A7] dark:from-[#2B1C14] dark:to-[#1E130D] rounded-xl p-3.5 border border-[#C49A50]/50 shadow-inner animate-in fade-in duration-200">
-                <span className="text-[10px] uppercase tracking-wider font-extrabold text-[#6D4C33] dark:text-[#DEB96A] mb-1.5 flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-[#C49A50]" />
-                  Live Timber Engraving Simulation
-                </span>
-                <div className="py-2 px-6 text-center bg-black/10 dark:bg-black/30 rounded-lg w-full max-w-sm border border-[#C49A50]/20">
-                  <span className={`text-lg sm:text-xl text-[#2E1A11] dark:text-[#F3DFC8] drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)] ${ENGRAVING_FONTS.find(f => f.id === selectedFont)?.fontClass || 'font-serif italic font-bold'}`}>
-                    {customText}
-                  </span>
-                </div>
-                <span className="text-[9px] text-[#825C3E] dark:text-[#AA9380] italic mt-1">
-                  (Deep laser-burned directly into seasoned hardwood grain)
-                </span>
+            {/* Step 3: Engraving Size Selection (4 sizes) */}
+            <div className="mb-4">
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-[#C49A50] mb-2 flex items-center gap-1.5">
+                <span className="w-4 h-4 rounded-full bg-[#241812] text-[#F7F5F0] text-[10px] flex items-center justify-center font-bold">3</span>
+                <span>Choose Engraving Size:</span>
+              </label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {ENGRAVING_SIZES.map((s) => {
+                  const isSelected = selectedSize === s.id;
+                  return (
+                    <button
+                      key={s.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedSize(s.id);
+                        if (!isCustomizing) setIsCustomizing(true);
+                      }}
+                      className={`p-2 rounded-xl border text-center transition-all cursor-pointer ${
+                        isSelected
+                          ? 'bg-[#241812] text-[#F7F5F0] dark:bg-[#C49A50] dark:text-[#241812] border-[#C49A50] shadow-sm ring-2 ring-[#C49A50]/40 scale-[1.02]'
+                          : 'bg-white/80 dark:bg-[#1A120E] text-[#241812] dark:text-[#E2D8CC] border-[#DFCDB7] dark:border-[#38261C] hover:border-[#C49A50]'
+                      }`}
+                    >
+                      <span className="block text-xs font-bold leading-tight">
+                        {s.label}
+                      </span>
+                      <span className="text-[9px] opacity-75 block mt-0.5">
+                        {s.sub}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
-            ) : (
-              <p className="text-[10px] text-stone-400 dark:text-stone-500 italic mt-1">
-                Tip: Leave blank if you prefer a classic, un-engraved natural timber piece.
-              </p>
-            )}
+            </div>
+
+            {/* Step 4: Placement on Wood (Top, Center, Lower) */}
+            <div className="mb-4">
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-[#C49A50] mb-2 flex items-center gap-1.5">
+                <span className="w-4 h-4 rounded-full bg-[#241812] text-[#F7F5F0] text-[10px] flex items-center justify-center font-bold">4</span>
+                <span>Choose Placement on Wood:</span>
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                {ENGRAVING_POSITIONS.map((p) => {
+                  const isSelected = engravingPosition === p.id;
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => {
+                        setEngravingPosition(p.id);
+                        if (!isCustomizing) setIsCustomizing(true);
+                      }}
+                      className={`py-2 px-1 rounded-xl border text-center transition-all cursor-pointer ${
+                        isSelected
+                          ? 'bg-[#241812] text-[#F7F5F0] dark:bg-[#C49A50] dark:text-[#241812] border-[#C49A50] shadow-sm ring-2 ring-[#C49A50]/40'
+                          : 'bg-white/80 dark:bg-[#1A120E] text-[#241812] dark:text-[#E2D8CC] border-[#DFCDB7] dark:border-[#38261C] hover:border-[#C49A50]'
+                      }`}
+                    >
+                      <span className="block text-xs font-bold">
+                        {p.icon} {p.label}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Primary Order Buttons (Inside Customizer) */}
+            <div className="pt-2 border-t border-[#DFCDB7]/80 dark:border-[#38261C] flex flex-col sm:flex-row gap-2.5">
+              <button 
+                onClick={handleAddCustomizedToCart}
+                className="flex-1 bg-[#241812] hover:bg-[#38261C] text-[#F7F5F0] py-3.5 rounded-full font-bold text-xs uppercase tracking-wider transition-all shadow-xs hover:shadow-md cursor-pointer flex items-center justify-center gap-2 active:scale-95"
+              >
+                <ShoppingBag className="w-4 h-4 text-[#C49A50]" />
+                <span>Add Customized to Bag</span>
+              </button>
+              <button 
+                onClick={handleOrderCustomized}
+                className="flex-1 bg-gradient-to-r from-[#C49A50] via-[#D4AF37] to-[#C49A50] hover:brightness-105 text-[#241812] py-3.5 rounded-full font-black text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2 active:scale-95"
+              >
+                <Sparkles className="w-4 h-4" />
+                <span>Order Customized ₹{product.price}</span>
+              </button>
+            </div>
+
           </div>
 
-          {/* Desktop Action Buttons */}
-          <div className="hidden md:flex gap-3 mt-auto pt-4 border-t border-[#EAE1D2] dark:border-[#2E241E]">
-            <button 
-              onClick={handleAddToCart}
-              className="flex-1 bg-[#241812] hover:bg-[#38261C] text-[#F7F5F0] py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-xs hover:shadow-md cursor-pointer flex items-center justify-center gap-2"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              <span>{customText.trim() ? "Add Engraved Piece" : "Add to Bag"}</span>
-            </button>
-            <button 
-              onClick={handleBuyNow}
-              className="flex-1 bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
-            >
-              <span>{customText.trim() ? `Order Engraved ₹${product.price}` : `Buy Now ₹${product.price}`}</span>
-            </button>
+          {/* Standard / Un-Engraved Purchase Option */}
+          <div className="bg-white/60 dark:bg-[#1A120E]/60 p-3.5 rounded-2xl border border-[#EAE1D2] dark:border-[#2E241E] mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <div>
+              <span className="font-bold text-[#241812] dark:text-[#F7F5F0] block">Prefer plain natural timber?</span>
+              <span className="text-[#82786E]">Order standard piece without any custom engraving.</span>
+            </div>
+            <div className="flex gap-2 w-full sm:w-auto">
+              <button
+                type="button"
+                onClick={handleAddStandardToCart}
+                className="flex-1 sm:flex-none px-3.5 py-2 rounded-full border border-[#DFCDB7] dark:border-[#38261C] text-[#241812] dark:text-[#F7F5F0] hover:border-[#C49A50] font-bold text-[11px] uppercase tracking-wider transition-all cursor-pointer"
+              >
+                Add Plain
+              </button>
+              <button
+                type="button"
+                onClick={handleBuyStandard}
+                className="flex-1 sm:flex-none px-4 py-2 rounded-full bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-[#241812] dark:text-[#F7F5F0] font-bold text-[11px] uppercase tracking-wider transition-all cursor-pointer"
+              >
+                Buy Plain ₹{product.price}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -838,27 +1062,53 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       </div>
 
       {/* Mobile Fixed Bottom Actions */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#F7F5F0]/95 dark:bg-[#14100E]/95 backdrop-blur-md border-t border-[#EAE1D2] dark:border-[#2E241E] p-3 flex flex-col gap-1.5 z-40 shadow-lg">
-        {customText.trim() && (
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#F7F5F0]/95 dark:bg-[#14100E]/95 backdrop-blur-md border-t border-[#EAE1D2] dark:border-[#2E241E] p-3 flex flex-col gap-1.5 z-40 shadow-xl">
+        {customText.trim() ? (
           <div className="flex items-center justify-between px-2 text-[10px] font-bold text-[#8B5A2B] dark:text-[#E6C477]">
-            <span>✒️ Custom: "{customText}"</span>
-            <span className="text-emerald-700 dark:text-emerald-400">Free Laser Engraving</span>
+            <span className="truncate max-w-[200px]">✒️ Engraving: "{customText}"</span>
+            <span className="text-emerald-700 dark:text-emerald-400 font-extrabold uppercase">Free Laser Etch</span>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between px-2 text-[10px] text-[#82786E]">
+            <span>✨ 100% Solid Seasoned Wood</span>
+            <span className="text-emerald-700 dark:text-emerald-400 font-semibold">Free Cushioned Shipping</span>
           </div>
         )}
-        <div className="flex gap-2.5">
-          <button 
-            onClick={handleAddToCart}
-            className="flex-1 bg-[#241812] text-[#F7F5F0] py-3 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5"
-          >
-            <ShoppingBag className="w-3.5 h-3.5" />
-            <span>{customText.trim() ? "Add Engraved" : "Add to Bag"}</span>
-          </button>
-          <button 
-            onClick={handleBuyNow}
-            className="flex-1 bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] py-3 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md"
-          >
-            <span>{customText.trim() ? `Buy Engraved ₹${product.price}` : `Buy Now ₹${product.price}`}</span>
-          </button>
+        <div className="flex gap-2">
+          {customText.trim() ? (
+            <>
+              <button 
+                onClick={handleAddCustomizedToCart}
+                className="flex-1 bg-[#241812] text-[#F7F5F0] py-3 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-xs"
+              >
+                <ShoppingBag className="w-3.5 h-3.5 text-[#C49A50]" />
+                <span>Add Engraved</span>
+              </button>
+              <button 
+                onClick={handleOrderCustomized}
+                className="flex-1 bg-gradient-to-r from-[#C49A50] via-[#D4AF37] to-[#C49A50] text-[#241812] py-3 rounded-full font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Order Engraved ₹{product.price}</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button 
+                onClick={handleStartCustomizing}
+                className="flex-1 bg-gradient-to-r from-[#C49A50] via-[#D4AF37] to-[#C49A50] text-[#241812] py-3 rounded-full font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>Customize Order</span>
+              </button>
+              <button 
+                onClick={handleBuyStandard}
+                className="flex-1 bg-[#241812] text-[#F7F5F0] py-3 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+              >
+                <span>Buy Plain ₹{product.price}</span>
+              </button>
+            </>
+          )}
         </div>
       </div>
 

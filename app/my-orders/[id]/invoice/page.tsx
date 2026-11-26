@@ -119,7 +119,7 @@ export default function InvoicePage() {
                     <p className="font-medium text-sm text-[#241812]">{item.name}</p>
                     {item.customization?.text && (
                       <p className="text-[11px] font-semibold text-[#8B5A2B] mt-0.5">
-                        ✒️ Laser Engraving: "{item.customization.text}" ({item.customization.font || 'Royal Calligraphy'})
+                        ✒️ Laser Engraving: "{item.customization.text}" ({[item.customization.font, item.customization.size].filter(Boolean).join(" • ") || 'Royal Calligraphy'})
                       </p>
                     )}
                     <p className="text-[10px] font-mono text-[#82786E] mt-0.5">SKU: {item.productId.slice(-8)}</p>

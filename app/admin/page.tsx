@@ -1479,9 +1479,7 @@ export default function AdminPage() {
                                 <div className="mt-1 inline-flex items-center gap-1.5 bg-amber-50 text-amber-950 border border-amber-200 px-2.5 py-1 rounded-lg text-xs font-semibold w-fit">
                                   <span>✒️ Laser Engrave:</span>
                                   <span className="font-bold text-amber-900">"{item.customization.text}"</span>
-                                  {item.customization.font && (
-                                    <span className="text-[10px] text-amber-700 font-medium">({item.customization.font})</span>
-                                  )}
+                                  <span className="text-[10px] text-amber-700 font-medium">({[item.customization.font, item.customization.size, item.customization.position].filter(Boolean).join(" • ")})</span>
                                 </div>
                               )}
                             </li>
