@@ -79,6 +79,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [selectedSize1, setSelectedSize1] = useState("md");
   const [selectedColor1, setSelectedColor1] = useState("charred");
   const [textPos1, setTextPos1] = useState<{ x: number; y: number }>({ x: 50, y: 38 });
+  const [engravingPosition, setEngravingPosition] = useState("center");
 
   // Line 2 styles (independent)
   const [selectedFont2, setSelectedFont2] = useState("calligraphy");
@@ -566,8 +567,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               <div
                 className="absolute z-20 pointer-events-none select-none transition-all duration-300 ease-out flex flex-col items-center justify-center px-4"
                 style={{
-                  top: engravingPosition === "top" ? "30%" : engravingPosition === "bottom" ? "68%" : "50%",
-                  left: "50%",
+                  top: `${textPos1?.y ?? (engravingPosition === "top" ? 30 : engravingPosition === "bottom" ? 68 : 50)}%`,
+                  left: `${textPos1?.x ?? 50}%`,
                   transform: "translate(-50%, -50%)",
                   width: "84%",
                   maxWidth: "400px"
