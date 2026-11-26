@@ -223,8 +223,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         </button>
 
         <Link href="/" className="flex items-center gap-1.5">
-          <div className="w-6 h-6 rounded-full overflow-hidden ring-1 ring-[#C49A50]/60 bg-[#2E1A11] shrink-0">
-            <Image src="/logo-circle.png" alt="Kaashta Crafts" width={24} height={24} className="object-cover" />
+          <div className="w-8 h-8 rounded-lg overflow-hidden ring-1 ring-[#C49A50]/60 bg-[#2E1A11] shrink-0 relative">
+            <Image src="/logo.jpg" alt="Kaashta Crafts" fill className="object-contain" />
           </div>
           <span className="font-playfair font-bold text-xs tracking-wider text-[#241812] dark:text-[#F7F5F0]">
             Kaashta Crafts

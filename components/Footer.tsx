@@ -98,8 +98,8 @@ export default function Footer() {
           {/* Brand Manifesto */}
           <div className="lg:col-span-2 flex flex-col">
             <Link href="/" className="flex items-center gap-3.5 mb-4 group w-fit">
-              <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-[#C69A4B]/60 shadow-lg group-hover:scale-105 transition-transform bg-[#241710]">
-                <Image src="/logo-circle.png" alt="Kaashta Crafts Logo" fill className="object-cover" />
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden ring-2 ring-[#C69A4B]/60 shadow-lg group-hover:scale-105 transition-transform bg-[#241710]">
+                <Image src="/logo.jpg" alt="Kaashta Crafts Logo" fill className="object-contain" />
               </div>
               <div>
                 <span className="text-2xl font-bold font-playfair tracking-tight text-[#F8F5EF] group-hover:text-[#C69A4B] transition-colors">

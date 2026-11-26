@@ -60,6 +60,21 @@ export default function AdminPage() {
 
   useEffect(() => {
     setIsCheckingAuth(false);
+    fetch("/api/categories")
+      .then(r => r.json())
+      .then(data => {
+        const catList = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.categories)
+          ? data.categories
+          : Array.isArray(data?.raw)
+          ? data.raw.map((c: any) => c.name)
+          : [];
+        if (catList.length > 0) {
+          setCategoriesList(catList);
+        }
+      })
+      .catch(console.error);
   }, []);
 
   const handleAdminLogin = async (e: React.FormEvent) => {
@@ -107,8 +122,15 @@ export default function AdminPage() {
       
       if (Array.isArray(ordersData)) setOrders(ordersData);
       if (Array.isArray(productsData)) setProducts(productsData);
-      if (Array.isArray(categoriesData) && categoriesData.length > 0) {
-        setCategoriesList(categoriesData.map((c: any) => c.name));
+      const catList = Array.isArray(categoriesData)
+        ? categoriesData
+        : Array.isArray(categoriesData?.categories)
+        ? categoriesData.categories
+        : Array.isArray(categoriesData?.raw)
+        ? categoriesData.raw.map((c: any) => c.name)
+        : [];
+      if (catList.length > 0) {
+        setCategoriesList(catList);
       }
     } catch (error) {
       console.error("Failed to fetch dashboard data:", error);

@@ -83,21 +83,21 @@ export default function Navbar() {
           : "bg-white/98 dark:bg-[#12100E]/98 backdrop-blur-md border-b border-stone-200/60 dark:border-[#2C2018]/40"
       }`}>
         <div className="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-10">
-          <div className="flex items-center justify-between h-14 sm:h-16 gap-2 sm:gap-4">
+          <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
 
             {/* ── BRAND (CLASSY ULTRA-PREMIUM HERITAGE WOODCRAFT BADGE) ── */}
             <Link
               href="/"
               className="group flex items-center gap-2.5 sm:gap-3.5 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-xl sm:rounded-2xl bg-[#FCFAF6] dark:bg-[#1A130E] border border-[#E5D7C4] dark:border-[#3A271C] shadow-[0_2px_10px_rgba(42,22,13,0.05)] hover:border-[#C69A4B]/80 hover:shadow-[0_4px_18px_rgba(198,154,75,0.2)] hover:scale-102 active:scale-98 transition-all duration-300 shrink-0 cursor-pointer"
             >
-              {/* Logo Avatar - Prominent, Crisp Circular Wood Medallion */}
-              <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-full overflow-hidden ring-1.5 ring-[#C69A4B]/60 shadow-md shrink-0 bg-[#2E1A11]">
+              {/* Logo Avatar - Prominent Full Artisan Workshop Badge (Tools on Left & Right Uncropped) */}
+              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden ring-1.5 ring-[#C69A4B]/70 shadow-md shrink-0 bg-[#2E1A11]">
                 <Image
-                  src="/logo-circle.png"
+                  src="/logo.jpg"
                   alt="Kaashta Crafts"
                   fill
                   priority
-                  className="object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
+                  className="object-contain group-hover:scale-105 transition-transform duration-500 ease-out"
                 />
               </div>
 

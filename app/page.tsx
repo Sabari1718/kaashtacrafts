@@ -104,8 +104,15 @@ export default function Home() {
     fetch("/api/categories")
       .then(r => r.json())
       .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setCustomCategories(data.map((c: any) => c.name));
+        const list = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.categories)
+          ? data.categories
+          : Array.isArray(data?.raw)
+          ? data.raw.map((c: any) => c.name)
+          : [];
+        if (list.length > 0) {
+          setCustomCategories(list);
         }
       })
       .catch(console.error);
@@ -139,6 +146,24 @@ export default function Home() {
     ? allProducts
     : allProducts.filter(p => p.category?.toLowerCase() === selectedFilter.toLowerCase());
 
+  // Dynamic order of top categories matching customCategories
+  const sortedTopCategories = [
+    categories[0], // Top Offers stays first
+    ...customCategories.map(cName => {
+      return categories.find(c =>
+        c.href.toLowerCase().includes(cName.toLowerCase()) ||
+        c.name.toLowerCase().includes(cName.toLowerCase())
+      );
+    }).filter(Boolean),
+    ...categories.filter(c => 
+      c.name !== "Top Offers" && 
+      !customCategories.some(cName => 
+        c.href.toLowerCase().includes(cName.toLowerCase()) || 
+        c.name.toLowerCase().includes(cName.toLowerCase())
+      )
+    )
+  ];
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-paper">
@@ -162,7 +187,7 @@ export default function Home() {
       <section className="w-full bg-white dark:bg-[#1A1410]/95 backdrop-blur-md border-b border-stone-200/80 dark:border-[#C99A45]/20 shadow-2xs">
         <div className="max-w-[1440px] mx-auto px-2 sm:px-6 py-2 sm:py-2.5 overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-2 sm:gap-3.5 min-w-max mx-auto justify-start sm:justify-center">
-            {categories.map((cat, idx) => (
+            {sortedTopCategories.map((cat: any, idx) => (
               <Link
                 href={cat.href}
                 key={idx}

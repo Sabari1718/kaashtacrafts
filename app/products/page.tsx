@@ -114,8 +114,15 @@ function ProductsContent() {
       try {
         const res = await fetch("/api/categories");
         const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          setDbCategories(data.map((c: any) => c.name));
+        const list = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.categories)
+          ? data.categories
+          : Array.isArray(data?.raw)
+          ? data.raw.map((c: any) => c.name)
+          : [];
+        if (list.length > 0) {
+          setDbCategories(list);
         }
       } catch (err) {
         console.error("Failed to fetch categories:", err);
