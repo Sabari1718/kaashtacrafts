@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Heart, Send, ArrowLeft, Loader2, Star, ShieldCheck, Trash2, ShoppingBag, Truck, Award, Sparkles, Check } from "lucide-react";
+import { Heart, Send, ArrowLeft, Loader2, Star, ShieldCheck, Trash2, ShoppingBag, Truck, Award, Sparkles, Check, Eye, X, ChevronLeft, ChevronRight, Layers } from "lucide-react";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { useCart } from "../../context/CartContext";
@@ -21,6 +21,7 @@ interface Product extends BaseProduct {
   rating?: number;
   numReviews?: number;
   images?: string[];
+  usageImages?: string[];
 }
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -33,6 +34,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [isLoading, setIsLoading] = useState(true);
   const [resolvedParams, setResolvedParams] = useState<{ id: string } | null>(null);
   const [activeImage, setActiveImage] = useState<string>("");
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   // Review Form State
   const [reviewRating, setReviewRating] = useState(5);
@@ -195,6 +197,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   
   // Combine single image and images array safely
   const galleryImages = product.images && product.images.length > 0 ? product.images : [product.image];
+  const usageImages = product.usageImages && product.usageImages.length > 0 ? product.usageImages : [];
 
   return (
     <main className="flex flex-col w-full min-h-screen bg-[#F7F5F0] dark:bg-[#14100E] text-[#241812] dark:text-[#F7F5F0] font-sans pb-24 md:pb-16 transition-colors duration-300">
@@ -357,6 +360,114 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           </div>
         </div>
       </div>
+
+      {/* Ways to Style & Use Gallery (Lifestyle Inspiration) */}
+      {usageImages.length > 0 && (
+        <section className="max-w-[1300px] mx-auto w-full px-4 sm:px-8 mt-12 sm:mt-16 pt-10 border-t border-[#EAE1D2] dark:border-[#2E241E]">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-7">
+            <div>
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-[#C49A50] mb-2">
+                <Sparkles className="w-3.5 h-3.5 text-[#C49A50]" />
+                Ways to Style & Use • Lifestyle Inspiration
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold font-playfair text-[#241812] dark:text-[#F7F5F0]">
+                See How to Use & Style This Piece
+              </h2>
+              <p className="text-xs sm:text-sm text-[#82786E] dark:text-[#A39A90] mt-1.5 max-w-2xl leading-relaxed">
+                Explore real setups and aesthetic inspiration on how you can place and use this handcrafted piece in your home, desk, kitchen, or study space.
+              </p>
+            </div>
+            <div className="shrink-0 flex items-center gap-2 bg-white/80 dark:bg-[#1E1713]/80 border border-[#EAE1D2] dark:border-[#2E241E] px-4 py-2 rounded-full text-xs font-bold text-[#65452F] dark:text-[#C49A50] shadow-2xs">
+              <Layers className="w-3.5 h-3.5 text-[#C49A50]" />
+              <span>{usageImages.length} Styling {usageImages.length === 1 ? 'Idea' : 'Ideas'}</span>
+            </div>
+          </div>
+
+          {/* Cards Grid (Responsive up to 10 photos) */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-4 md:gap-5">
+            {usageImages.map((img: string, idx: number) => (
+              <div
+                key={idx}
+                onClick={() => setLightboxIndex(idx)}
+                className="group relative aspect-4/5 rounded-2xl sm:rounded-3xl overflow-hidden bg-[#EAE1D2]/30 dark:bg-[#2E241E]/30 border border-[#EAE1D2] dark:border-[#2E241E] cursor-pointer shadow-2xs hover:shadow-xl hover:border-[#C49A50] transition-all duration-300"
+              >
+                <Image
+                  src={img}
+                  alt={`${product.name} styling idea ${idx + 1}`}
+                  fill
+                  className="object-cover group-hover:scale-108 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent opacity-40 group-hover:opacity-85 transition-opacity duration-300" />
+                
+                <span className="absolute top-2.5 left-2.5 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/10 shadow-xs">
+                  Style {String(idx + 1).padStart(2, '0')}
+                </span>
+
+                <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                  <span className="text-[11px] font-semibold tracking-wide">View Full Photo</span>
+                  <div className="w-6 h-6 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center">
+                    <Eye className="w-3.5 h-3.5 text-white" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Lightbox / Zoom Modal */}
+          {lightboxIndex !== null && (
+            <div 
+              className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center p-4 sm:p-6"
+              onClick={() => setLightboxIndex(null)}
+            >
+              <div 
+                className="relative max-w-4xl w-full h-[75vh] flex items-center justify-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => setLightboxIndex(null)}
+                  className="absolute top-2 right-2 sm:top-4 sm:right-4 z-30 w-10 h-10 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center border border-white/20 transition-all cursor-pointer shadow-lg"
+                  aria-label="Close Preview"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                {usageImages.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => setLightboxIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : usageImages.length - 1))}
+                      className="absolute left-2 sm:left-4 z-30 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center border border-white/20 transition-all cursor-pointer shadow-lg"
+                      aria-label="Previous Photo"
+                    >
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+                    <button
+                      onClick={() => setLightboxIndex((prev) => (prev !== null && prev < usageImages.length - 1 ? prev + 1 : 0))}
+                      className="absolute right-2 sm:right-4 z-30 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center border border-white/20 transition-all cursor-pointer shadow-lg"
+                      aria-label="Next Photo"
+                    >
+                      <ChevronRight className="w-6 h-6" />
+                    </button>
+                  </>
+                )}
+
+                <div className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden">
+                  <Image
+                    src={usageImages[lightboxIndex]}
+                    alt={`Styling view ${lightboxIndex + 1}`}
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/75 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-semibold text-white/90 border border-white/10 shadow-lg">
+                  Styling Idea {lightboxIndex + 1} of {usageImages.length}
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
+      )}
 
       {/* Related Products Carousel */}
       {relatedProducts.length > 0 && (

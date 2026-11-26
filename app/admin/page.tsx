@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Package, PlusCircle, LayoutDashboard, Settings, LogOut, UploadCloud, TrendingUp, ShoppingBag, Clock, ShieldAlert, MessageSquare, Trash2, Star, Lock, Search, Edit2, X, Check, RefreshCw } from "lucide-react";
+import { Package, PlusCircle, LayoutDashboard, Settings, LogOut, UploadCloud, TrendingUp, ShoppingBag, Clock, ShieldAlert, MessageSquare, Trash2, Star, Lock, Search, Edit2, X, Check, RefreshCw, ExternalLink } from "lucide-react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, Legend } from 'recharts';
 export default function AdminPage() {
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
@@ -18,6 +18,8 @@ export default function AdminPage() {
   const [productCategory, setProductCategory] = useState("Desk Accessories");
   const [productImage, setProductImage] = useState<File | null>(null);
   const [galleryImages, setGalleryImages] = useState<File[]>([]);
+  const [usageImages, setUsageImages] = useState<File[]>([]);
+  const [usagePreviews, setUsagePreviews] = useState<string[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -43,6 +45,9 @@ export default function AdminPage() {
   const [editCategory, setEditCategory] = useState("Desk Accessories");
   const [editInStock, setEditInStock] = useState(true);
   const [editImage, setEditImage] = useState("");
+  const [editUsageImages, setEditUsageImages] = useState<string[]>([]);
+  const [isUploadingEditUsage, setIsUploadingEditUsage] = useState(false);
+  const [newUsageUrlInput, setNewUsageUrlInput] = useState("");
   const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   useEffect(() => {
@@ -190,6 +195,8 @@ export default function AdminPage() {
     setEditCategory(product.category || "Desk Accessories");
     setEditInStock(product.inStock !== false);
     setEditImage(product.image || "");
+    setEditUsageImages(product.usageImages || []);
+    setNewUsageUrlInput("");
   };
 
   const handleSaveEdit = async (e: React.FormEvent) => {
@@ -209,6 +216,7 @@ export default function AdminPage() {
           category: editCategory,
           inStock: editInStock,
           image: editImage,
+          usageImages: editUsageImages,
         }),
       });
 
@@ -224,6 +232,7 @@ export default function AdminPage() {
                   category: editCategory,
                   inStock: editInStock,
                   image: editImage,
+                  usageImages: editUsageImages,
                 }
               : p
           )
@@ -289,6 +298,10 @@ export default function AdminPage() {
         formData.append("galleryImages", file);
       });
 
+      usageImages.forEach(file => {
+        formData.append("usageImages", file);
+      });
+
       const response = await fetch("/api/products", {
         method: "POST",
         body: formData,
@@ -302,6 +315,8 @@ export default function AdminPage() {
         setProductPrice("");
         setProductImage(null);
         setGalleryImages([]);
+        setUsageImages([]);
+        setUsagePreviews([]);
         fetchDashboardData();
       } else {
         alert(`Error: ${data.error}`);
@@ -693,6 +708,22 @@ export default function AdminPage() {
                                 <span>{product.rating ? product.rating.toFixed(1) : "0"} ({product.numReviews || product.reviews.length} reviews)</span>
                               </div>
                             )}
+                            <div className="flex items-center justify-between gap-2 mt-2 pt-2 border-t border-stone-100">
+                              <span className="text-[11px] font-semibold text-stone-500">
+                                {product.usageImages && product.usageImages.length > 0
+                                  ? `📷 ${product.usageImages.length} Styling Photos`
+                                  : "No styling photos"}
+                              </span>
+                              <a
+                                href={`/products/${productId}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-[11px] font-bold text-amber-800 hover:text-amber-900 inline-flex items-center gap-1 hover:underline"
+                                title="View live page"
+                              >
+                                View Page <ExternalLink className="w-3 h-3" />
+                              </a>
+                            </div>
                           </div>
                         </div>
 
@@ -808,6 +839,114 @@ export default function AdminPage() {
                           />
                         </div>
                       )}
+                    </div>
+
+                    {/* How to Style & Use Photos in Edit Modal */}
+                    <div className="pt-3 border-t border-stone-200">
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                          How to Style & Use Photos (Up to 10 Photos)
+                        </label>
+                        <span className="text-xs font-bold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                          {editUsageImages.length} / 10 photos
+                        </span>
+                      </div>
+                      <p className="text-xs text-stone-500 mb-3">
+                        Photos showing how customers can use and style this piece. Shown below product details on customer page.
+                      </p>
+
+                      {/* Existing Usage Photos Grid */}
+                      {editUsageImages.length > 0 && (
+                        <div className="grid grid-cols-4 sm:grid-cols-5 gap-2.5 mb-3.5">
+                          {editUsageImages.map((imgUrl, idx) => (
+                            <div key={idx} className="relative aspect-square rounded-xl overflow-hidden border border-stone-200 bg-stone-100 group shadow-2xs">
+                              <img src={imgUrl} alt={`Usage ${idx + 1}`} className="w-full h-full object-cover" />
+                              <button
+                                type="button"
+                                onClick={() => setEditUsageImages(prev => prev.filter((_, i) => i !== idx))}
+                                className="absolute top-1 right-1 w-5 h-5 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center text-xs shadow-md transition-all cursor-pointer"
+                                title="Remove this photo"
+                              >
+                                ×
+                              </button>
+                              <span className="absolute bottom-1 left-1 bg-black/70 text-[9px] text-white px-1.5 py-0.2 rounded font-bold">
+                                #{idx + 1}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Add more photos via file upload or URL */}
+                      <div className="flex flex-col sm:flex-row gap-2.5">
+                        <label className="flex-1 bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-300 py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer transition-colors shadow-2xs">
+                          <UploadCloud className="w-4 h-4 text-amber-700" />
+                          <span>{isUploadingEditUsage ? "Uploading..." : "Upload Photos (up to 10)"}</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            disabled={isUploadingEditUsage || editUsageImages.length >= 10}
+                            onChange={async (e) => {
+                              if (e.target.files && e.target.files.length > 0) {
+                                setIsUploadingEditUsage(true);
+                                try {
+                                  const fd = new FormData();
+                                  Array.from(e.target.files).slice(0, 10 - editUsageImages.length).forEach(f => fd.append('files', f));
+                                  const uploadRes = await fetch('/api/upload', { method: 'POST', body: fd });
+                                  const uploadData = await uploadRes.json();
+                                  if (uploadRes.ok && uploadData.urls) {
+                                    setEditUsageImages(prev => [...prev, ...uploadData.urls].slice(0, 10));
+                                  } else {
+                                    alert(uploadData.error || "Upload failed");
+                                  }
+                                } catch (err) {
+                                  alert("Error uploading photos");
+                                } finally {
+                                  setIsUploadingEditUsage(false);
+                                }
+                              }
+                            }}
+                            className="hidden"
+                          />
+                        </label>
+
+                        {/* Add via image URL */}
+                        <div className="flex-1 flex gap-1.5">
+                          <input
+                            type="text"
+                            placeholder="Paste image URL..."
+                            value={newUsageUrlInput}
+                            onChange={(e) => setNewUsageUrlInput(e.target.value)}
+                            className="flex-1 px-3 py-2 text-xs rounded-xl border border-stone-300 bg-stone-50 focus:outline-none focus:ring-2 focus:ring-amber-700/50"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (!newUsageUrlInput.trim()) return;
+                              setEditUsageImages(prev => [...prev, newUsageUrlInput.trim()].slice(0, 10));
+                              setNewUsageUrlInput("");
+                            }}
+                            disabled={!newUsageUrlInput.trim() || editUsageImages.length >= 10}
+                            className="px-3 py-2 bg-stone-800 hover:bg-stone-900 disabled:bg-stone-300 text-white rounded-xl text-xs font-semibold cursor-pointer transition-colors"
+                          >
+                            Add
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Quick link to view live product */}
+                      <div className="mt-2.5 flex items-center justify-between text-xs">
+                        <span className="text-stone-400">Preview live on website:</span>
+                        <a
+                          href={`/products/${editingProduct._id || editingProduct.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-amber-800 hover:text-amber-900 font-bold hover:underline"
+                        >
+                          View Live Product Page <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
                     </div>
 
                     <div className="flex items-center gap-3 p-3 bg-stone-50 rounded-xl border border-stone-200">
@@ -948,6 +1087,66 @@ export default function AdminPage() {
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
                     />
                   </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-sm font-medium text-stone-700">
+                      How to Style & Use Photos (Up to 10 Lifestyle Photos)
+                    </label>
+                    <span className="text-xs font-semibold text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
+                      {usageImages.length} / 10 selected
+                    </span>
+                  </div>
+                  <p className="text-xs text-stone-500 mb-2.5">
+                    Upload photos showing how customers can use and style this piece (e.g. study desk, kitchen, bedside, dining, living room). These appear right below product details on the website!
+                  </p>
+
+                  <div className="border-2 border-dashed border-stone-300 rounded-2xl p-7 flex flex-col items-center justify-center text-stone-500 bg-stone-50 hover:bg-stone-100 transition-colors cursor-pointer relative overflow-hidden">
+                    <UploadCloud className="w-9 h-9 mb-2 text-stone-400" />
+                    <p className="font-medium text-stone-700 text-sm mb-1">Click to select up to 10 photos</p>
+                    <p className="text-xs text-stone-400">JPG, PNG up to 5MB each (multiple photos allowed)</p>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      multiple
+                      onChange={(e) => {
+                        if (e.target.files) {
+                          const selected = Array.from(e.target.files).slice(0, 10);
+                          setUsageImages(selected);
+                          setUsagePreviews(selected.map(f => URL.createObjectURL(f)));
+                        }
+                      }}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" 
+                    />
+                  </div>
+
+                  {/* Thumbnail Previews with Remove Button */}
+                  {usagePreviews.length > 0 && (
+                    <div className="mt-3 grid grid-cols-5 gap-2.5">
+                      {usagePreviews.map((preview, i) => (
+                        <div key={i} className="relative aspect-square rounded-xl overflow-hidden border border-stone-200 bg-stone-100 group shadow-2xs">
+                          <img src={preview} alt={`Usage preview ${i + 1}`} className="w-full h-full object-cover" />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const newFiles = usageImages.filter((_, idx) => idx !== i);
+                              const newPreviews = usagePreviews.filter((_, idx) => idx !== i);
+                              setUsageImages(newFiles);
+                              setUsagePreviews(newPreviews);
+                            }}
+                            className="absolute top-1 right-1 w-5 h-5 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center text-xs shadow-md transition-transform group-hover:scale-110 cursor-pointer"
+                            title="Remove"
+                          >
+                            ×
+                          </button>
+                          <span className="absolute bottom-1 left-1 bg-black/70 text-[9px] text-white px-1.5 py-0.2 rounded font-bold">
+                            #{i + 1}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <button 

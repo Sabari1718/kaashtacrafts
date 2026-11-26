@@ -29,6 +29,8 @@ export async function GET(
       description: product.description || "Premium handcrafted wooden product.",
       category: product.category,
       image: product.image,
+      images: product.images && product.images.length > 0 ? product.images : [product.image],
+      usageImages: product.usageImages || [],
       inStock: product.inStock,
       featured: product.featured,
       originalPrice: product.originalPrice || Math.floor(product.price * 1.5),
@@ -93,7 +95,7 @@ export async function PUT(
     await connectToDatabase();
     const resolvedParams = await params;
     const body = await request.json();
-    const { name, price, category, inStock, image, description } = body;
+    const { name, price, category, inStock, image, description, images, usageImages } = body;
 
     const updateData: any = {};
     if (name !== undefined) updateData.name = name;
@@ -102,6 +104,8 @@ export async function PUT(
     if (inStock !== undefined) updateData.inStock = Boolean(inStock);
     if (image !== undefined) updateData.image = image;
     if (description !== undefined) updateData.description = description;
+    if (images !== undefined) updateData.images = images;
+    if (usageImages !== undefined) updateData.usageImages = usageImages;
 
     const updatedProduct = await Product.findByIdAndUpdate(
       resolvedParams.id,
@@ -122,6 +126,8 @@ export async function PUT(
         price: updatedProduct.price,
         category: updatedProduct.category,
         image: updatedProduct.image,
+        images: updatedProduct.images || [updatedProduct.image],
+        usageImages: updatedProduct.usageImages || [],
         inStock: updatedProduct.inStock,
         featured: updatedProduct.featured,
         description: updatedProduct.description,

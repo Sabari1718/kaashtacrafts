@@ -21,6 +21,8 @@ export async function GET() {
       price: p.price,
       category: p.category,
       image: p.image,
+      images: p.images && p.images.length > 0 ? p.images : [p.image],
+      usageImages: p.usageImages || [],
       inStock: p.inStock,
       featured: p.featured,
       reviews: p.reviews || [],
@@ -43,6 +45,8 @@ export async function POST(req: Request) {
     const price = formData.get('price') as string;
     const category = formData.get('category') as string;
     const galleryFiles = formData.getAll('galleryImages') as File[];
+    const usageFiles = formData.getAll('usageImages') as File[];
+    const usageUrlsRaw = formData.get('usageUrls') as string | null;
 
     if (!file || !name || !price || !category) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -69,6 +73,25 @@ export async function POST(req: Request) {
     const galleryResults = await Promise.all(galleryUploadPromises);
     const galleryUrls = galleryResults.map(res => res.secure_url);
 
+    // Upload usage / how-to-use lifestyle images concurrently
+    const usageUploadPromises = usageFiles.map(f => uploadToCloudinary(f));
+    const usageResults = await Promise.all(usageUploadPromises);
+    let allUsageUrls = usageResults.map(res => res.secure_url);
+
+    // If string URLs were passed in addition
+    if (usageUrlsRaw) {
+      try {
+        const parsedUrls = JSON.parse(usageUrlsRaw);
+        if (Array.isArray(parsedUrls)) {
+          allUsageUrls = [...allUsageUrls, ...parsedUrls.filter((u: any) => typeof u === 'string' && u.trim().length > 0)];
+        }
+      } catch {
+        // comma or newline separated fallback
+        const splitUrls = usageUrlsRaw.split(/[\n,]+/).map(s => s.trim()).filter(Boolean);
+        allUsageUrls = [...allUsageUrls, ...splitUrls];
+      }
+    }
+
     await connectToDatabase();
     
     const newProduct = await Product.create({
@@ -77,6 +100,7 @@ export async function POST(req: Request) {
       category,
       image: mainUploadResult.secure_url,
       images: [mainUploadResult.secure_url, ...galleryUrls], // Main image is always first in the gallery array
+      usageImages: allUsageUrls,
       inStock: true,
       featured: false
     });
