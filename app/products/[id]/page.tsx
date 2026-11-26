@@ -143,94 +143,58 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     }
   }
 
-  // Restore customization if arriving from Bag/Cart or if already in Bag
+  // Restore customization ONLY when arriving explicitly from Bag/Cart (?fromCart=true)
   useEffect(() => {
     if (!product || typeof window === "undefined") return;
 
     const sp = new URLSearchParams(window.location.search);
+    const isFromCart = sp.get("fromCart") === "true";
     const qText = sp.get("customText");
     const qSecondary = sp.get("secondaryText") || sp.get("customSecondaryText");
-    const qFont = sp.get("customFont");
-    const qSize = sp.get("customSize");
-    const qColor = sp.get("customColor");
-    const qSecondaryFont = sp.get("customSecondaryFont");
-    const qSecondarySize = sp.get("customSecondarySize");
-    const qSecondaryColor = sp.get("customSecondaryColor");
-    const qPos = sp.get("customPos") || sp.get("position");
 
-    let sourceCustom: {
-      text?: string;
-      secondaryText?: string;
-      font?: string;
-      size?: string;
-      color?: string;
-      secondaryFont?: string;
-      secondarySize?: string;
-      secondaryColor?: string;
-      position?: string;
-    } | null = null;
+    if (isFromCart && (qText || qSecondary)) {
+      const qFont = sp.get("customFont");
+      const qSize = sp.get("customSize");
+      const qColor = sp.get("customColor");
+      const qSecondaryFont = sp.get("customSecondaryFont");
+      const qSecondarySize = sp.get("customSecondarySize");
+      const qSecondaryColor = sp.get("customSecondaryColor");
+      const qPos = sp.get("customPos") || sp.get("position");
 
-    if (qText || qSecondary) {
-      sourceCustom = {
-        text: qText || "",
-        secondaryText: qSecondary || "",
-        font: qFont || "",
-        size: qSize || "",
-        color: qColor || "",
-        secondaryFont: qSecondaryFont || "",
-        secondarySize: qSecondarySize || "",
-        secondaryColor: qSecondaryColor || "",
-        position: qPos || ""
-      };
       setIsLoadedFromCart(true);
-    } else {
-      const pId = product.id || (product as any)._id;
-      const cartMatch = cartItems?.find(item => 
-        (item.id === pId || (item as any)._id === pId) && 
-        (item.customization?.text || item.customization?.secondaryText)
-      );
-      if (cartMatch?.customization) {
-        sourceCustom = cartMatch.customization;
-        setIsLoadedFromCart(true);
-      }
-    }
-
-    if (sourceCustom) {
-      if (sourceCustom.text) {
-        setCustomText(sourceCustom.text);
-      }
-      if (sourceCustom.secondaryText) {
-        setSecondaryText(sourceCustom.secondaryText);
+      if (qText) setCustomText(qText);
+      if (qSecondary) {
+        setSecondaryText(qSecondary);
         setShowSecondaryLine(true);
       }
-      if (sourceCustom.font) {
-        const found = ENGRAVING_FONTS.find(f => f.id === sourceCustom?.font || f.name.toLowerCase() === sourceCustom?.font?.toLowerCase());
+      if (qFont) {
+        const found = ENGRAVING_FONTS.find(f => f.id === qFont || f.name.toLowerCase() === qFont.toLowerCase());
         if (found) setSelectedFont1(found.id);
       }
-      if (sourceCustom.size) {
-        const found = ENGRAVING_SIZES.find(s => s.id === sourceCustom?.size || s.label.toLowerCase() === sourceCustom?.size?.toLowerCase());
+      if (qSize) {
+        const found = ENGRAVING_SIZES.find(s => s.id === qSize || s.label.toLowerCase() === qSize.toLowerCase());
         if (found) setSelectedSize1(found.id);
       }
-      if (sourceCustom.color) {
-        const found = ENGRAVING_COLORS.find(c => c.id === sourceCustom?.color || c.name.toLowerCase() === sourceCustom?.color?.toLowerCase());
+      if (qColor) {
+        const found = ENGRAVING_COLORS.find(c => c.id === qColor || c.name.toLowerCase() === qColor.toLowerCase());
         if (found) setSelectedColor1(found.id);
       }
-      if (sourceCustom.secondaryFont) {
-        const found = ENGRAVING_FONTS.find(f => f.id === sourceCustom?.secondaryFont || f.name.toLowerCase() === sourceCustom?.secondaryFont?.toLowerCase());
+      if (qSecondaryFont) {
+        const found = ENGRAVING_FONTS.find(f => f.id === qSecondaryFont || f.name.toLowerCase() === qSecondaryFont.toLowerCase());
         if (found) setSelectedFont2(found.id);
       }
-      if (sourceCustom.secondarySize) {
-        const found = ENGRAVING_SIZES.find(s => s.id === sourceCustom?.secondarySize || s.label.toLowerCase() === sourceCustom?.secondarySize?.toLowerCase());
+      if (qSecondarySize) {
+        const found = ENGRAVING_SIZES.find(s => s.id === qSecondarySize || s.label.toLowerCase() === qSecondarySize.toLowerCase());
         if (found) setSelectedSize2(found.id);
       }
-      if (sourceCustom.secondaryColor) {
-        const found = ENGRAVING_COLORS.find(c => c.id === sourceCustom?.secondaryColor || c.name.toLowerCase() === sourceCustom?.secondaryColor?.toLowerCase());
+      if (qSecondaryColor) {
+        const found = ENGRAVING_COLORS.find(c => c.id === qSecondaryColor || c.name.toLowerCase() === qSecondaryColor.toLowerCase());
         if (found) setSelectedColor2(found.id);
       }
-      if (sourceCustom.position) {
-        const m1 = sourceCustom.position.match(/L1:x:(\d+)%,y:(\d+)%/);
+      if (qPos) {
+        const m1 = qPos.match(/L1:x:(\d+)%,y:(\d+)%/);
         if (m1) setTextPos1({ x: Number(m1[1]), y: Number(m1[2]) });
-        const m2 = sourceCustom.position.match(/L2:x:(\d+)%,y:(\d+)%/);
+        const m2 = qPos.match(/L2:x:(\d+)%,y:(\d+)%/);
         if (m2) setTextPos2({ x: Number(m2[1]), y: Number(m2[2]) });
       }
 
@@ -239,8 +203,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         setActiveImageIndex(1);
         setModalImageIndex(1);
       }
+    } else {
+      // Normal visit from Home / Shop All / Search -> Reset to fresh standard product!
+      setIsLoadedFromCart(false);
+      setCustomText("");
+      setSecondaryText("");
+      setShowSecondaryLine(false);
+      setActiveImageIndex(0);
+      setModalImageIndex(0);
     }
-  }, [product, cartItems]);
+  }, [product]);
 
   const handleGoBack = () => {
     if (typeof window !== "undefined" && window.history.length > 1 && document.referrer.includes(window.location.host)) {
