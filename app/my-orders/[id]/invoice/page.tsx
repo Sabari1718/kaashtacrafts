@@ -69,10 +69,10 @@ export default function InvoicePage() {
         {/* Header */}
         <div className="flex justify-between items-start border-b border-[#EAE1D2] pb-8 mb-8">
           <div className="flex items-center gap-4">
-            <Image src="/logo.jpeg" alt="Logo" width={60} height={60} className="rounded-2xl border border-[#EAE1D2]" />
+            <Image src="/logo-circle.png" alt="Logo" width={60} height={60} className="rounded-full shadow-sm border border-[#EAE1D2]" />
             <div>
               <h1 className="text-2xl font-serif font-bold tracking-tight text-[#241812]">Kaashta Crafts</h1>
-              <p className="text-xs uppercase tracking-widest text-[#82786E] mt-0.5">Handcrafted Wooden Artefacts</p>
+              <p className="text-xs uppercase tracking-widest text-[#82786E] mt-0.5">Crafting Memories in Wood</p>
             </div>
           </div>
           <div className="text-right">

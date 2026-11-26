@@ -96,11 +96,14 @@ function LoginContent() {
         <div className="absolute inset-0 bg-gradient-to-t from-[#241812] via-[#241812]/50 to-transparent" />
         
         <div className="absolute inset-0 flex flex-col justify-between p-14 z-10">
-          <Link href="/" className="flex items-center gap-3 w-fit group">
-            <div className="relative w-11 h-11 rounded-xl overflow-hidden ring-1 ring-[#C49A50]/40">
-              <Image src="/logo.jpeg" alt="Logo" fill className="object-cover" />
+          <Link href="/" className="flex items-center gap-3.5 w-fit group">
+            <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-[#C49A50]/60 shadow-md bg-[#241812]">
+              <Image src="/logo-circle.png" alt="Logo" fill className="object-cover" />
             </div>
-            <span className="text-2xl font-bold font-playfair text-[#F7F5F0] tracking-tight">Kaashta Crafts</span>
+            <div>
+              <span className="text-2xl font-bold font-playfair text-[#F7F5F0] tracking-tight">Kaashta Crafts</span>
+              <p className="text-[10px] text-[#C49A50] tracking-[0.2em] uppercase font-sans font-semibold -mt-0.5">Crafting Memories in Wood</p>
+            </div>
           </Link>
           
           <div className="max-w-md">
@@ -120,11 +123,14 @@ function LoginContent() {
 
       {/* Right Column: Clean Minimalist Auth Form */}
       <div className="flex-1 flex flex-col justify-center px-6 sm:px-12 md:px-20 lg:px-20 xl:px-28 relative">
-        <Link href="/" className="lg:hidden absolute top-8 left-6 flex items-center gap-2.5">
-          <div className="relative w-9 h-9 rounded-xl overflow-hidden ring-1 ring-[#EAE1D2]">
-            <Image src="/logo.jpeg" alt="Logo" fill className="object-cover" />
+        <Link href="/" className="lg:hidden absolute top-8 left-6 flex items-center gap-3">
+          <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-[#C49A50]/50 bg-[#241812]">
+            <Image src="/logo-circle.png" alt="Logo" fill className="object-cover" />
           </div>
-          <span className="text-xl font-bold font-playfair text-[#241812] dark:text-[#F7F5F0]">Kaashta Crafts</span>
+          <div>
+            <span className="text-xl font-bold font-playfair text-[#241812] dark:text-[#F7F5F0]">Kaashta Crafts</span>
+            <p className="text-[9px] text-[#C49A50] tracking-wider uppercase font-semibold">Crafting Memories in Wood</p>
+          </div>
         </Link>
 
         <div className="w-full max-w-sm mx-auto mt-20 lg:mt-0">

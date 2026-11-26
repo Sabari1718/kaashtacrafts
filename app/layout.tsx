@@ -29,6 +29,10 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "KaashtaCrafts | Premium Handcrafted Wooden Creations",
   description: "Artisanal wooden living, executive office suites, and heirloom dining sculptures handcrafted with pride in Tamil Nadu.",
+  icons: {
+    icon: "/logo-circle.png",
+    apple: "/logo-circle.png",
+  },
 };
 
 export default function RootLayout({

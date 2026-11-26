@@ -97,15 +97,15 @@ export default function Footer() {
           
           {/* Brand Manifesto */}
           <div className="lg:col-span-2 flex flex-col">
-            <Link href="/" className="flex items-center gap-3 mb-4 group w-fit">
-              <div className="relative w-11 h-11 rounded-xl overflow-hidden ring-1 ring-[#C69A4B]/50 shadow-md group-hover:scale-105 transition-transform">
-                <Image src="/logo.jpeg" alt="Kaashta Crafts Logo" fill className="object-cover" />
+            <Link href="/" className="flex items-center gap-3.5 mb-4 group w-fit">
+              <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-[#C69A4B]/60 shadow-lg group-hover:scale-105 transition-transform bg-[#241710]">
+                <Image src="/logo-circle.png" alt="Kaashta Crafts Logo" fill className="object-cover" />
               </div>
               <div>
                 <span className="text-2xl font-bold font-playfair tracking-tight text-[#F8F5EF] group-hover:text-[#C69A4B] transition-colors">
                   Kaashta Crafts
                 </span>
-                <p className="text-[10px] text-[#C69A4B] tracking-[0.24em] uppercase font-sans font-semibold -mt-0.5">Artisanal Woodcraft</p>
+                <p className="text-[10px] text-[#C69A4B] tracking-[0.22em] uppercase font-sans font-semibold -mt-0.5">Crafting Memories in Wood</p>
               </div>
             </Link>
             

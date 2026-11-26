@@ -84,23 +84,24 @@ export default function Navbar() {
         <div className="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-10">
           <div className="flex items-center justify-between h-14 sm:h-16 gap-2 sm:gap-4">
 
-            {/* ── BRAND (FLIPKART-STYLE LUXURY GOLD PILL BADGE) ── */}
+            {/* ── BRAND (FLIPKART-STYLE LUXURY GOLD PILL BADGE WITH NEW WOOD LOGO) ── */}
             <Link
               href="/"
-              className="group flex items-center gap-2 sm:gap-3 px-2.5 py-1 sm:px-4 sm:py-2 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#FFD269] via-[#E8B038] to-[#C99220] shadow-[0_3px_12px_rgba(201,146,32,0.35),inset_0_1px_1px_rgba(255,255,255,0.7)] hover:shadow-[0_6px_22px_rgba(201,146,32,0.6),inset_0_1px_1px_rgba(255,255,255,0.85)] border border-[#F3C555] hover:scale-105 active:scale-95 transition-all duration-300 shrink-0 cursor-pointer"
+              className="group flex items-center gap-2 sm:gap-3 px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#FFD269] via-[#E8B038] to-[#C99220] shadow-[0_3px_12px_rgba(201,146,32,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.75)] hover:shadow-[0_6px_22px_rgba(201,146,32,0.6),inset_0_1px_2px_rgba(255,255,255,0.9)] border border-[#F3C555] hover:scale-105 active:scale-95 transition-all duration-300 shrink-0 cursor-pointer"
             >
-              {/* Logo Avatar - Large & Crisp so logo icon + text are clearly readable */}
-              <div className="relative w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl overflow-hidden ring-1.5 sm:ring-2 ring-white/95 shadow-md shrink-0 bg-white p-0.5">
+              {/* Logo Avatar - Circular Wood Medallion with clean white/gold ring */}
+              <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden ring-2 ring-white/95 shadow-md shrink-0 bg-[#3A2216]">
                 <Image
-                  src="/logo.jpeg"
+                  src="/logo-circle.png"
                   alt="Kaashta Crafts"
                   fill
-                  className="object-contain p-0.5 scale-125 group-hover:scale-135 transition-transform duration-500 ease-out"
+                  priority
+                  className="object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
                 />
               </div>
 
               {/* Brand Name - Bold, Fancy Italic Luxury Serif */}
-              <span className="font-playfair font-black italic tracking-wide text-[#21130E] text-[15px] sm:text-[23px] leading-none drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
+              <span className="font-playfair font-black italic tracking-wide text-[#21130E] text-[15px] sm:text-[22px] leading-none drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
                 Kaashta<span className="text-[#3D1E0B] font-bold not-italic ml-0.5 sm:ml-1">Crafts</span>
               </span>
             </Link>
