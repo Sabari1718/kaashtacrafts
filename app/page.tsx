@@ -69,18 +69,6 @@ const promoBanners = [
   },
 ];
 
-/* ─── MARQUEE ITEMS ─── */
-const marqueeItems = [
-  "Sustainably Harvested Teak",
-  "Master Tamil Woodcarvers",
-  "Natural Beeswax Finish",
-  "Zero Chemical Dyes",
-  "Heirloom Grade Quality",
-  "Ethical Forest Stewardship",
-  "Pan-India Delivery",
-  "2,500+ Homes Adorned",
-];
-
 export default function Home() {
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
@@ -182,42 +170,7 @@ export default function Home() {
     <main className="flex flex-col w-full overflow-x-hidden bg-white dark:bg-[#0C0A09]">
 
       {/* ══════════════════════════════════════════════
-          1. CATEGORY NAVIGATION BAR (MAJOR LUXURY REDESIGN)
-          ══════════════════════════════════════════════ */}
-      <section className="w-full bg-white dark:bg-[#0C0A09]/95 backdrop-blur-md border-b border-stone-200/80 dark:border-[#D4AF37]/20 shadow-2xs">
-        <div className="max-w-[1800px] w-full mx-auto px-4 sm:px-6 lg:px-10 py-2 sm:py-2.5 overflow-x-auto scrollbar-hide">
-          <div className="flex items-center gap-2 sm:gap-3.5 min-w-max mx-auto justify-start sm:justify-center">
-            {sortedTopCategories.map((cat: any, idx) => (
-              <Link
-                href={cat.href}
-                key={idx}
-                className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl bg-[#FAF7F2] dark:bg-[#14100D] border border-[#E0D3BE] dark:border-[#D4AF37]/25 hover:border-[#C99A45] hover:dark:border-[#D4AF37] hover:bg-white dark:hover:bg-[#1C1612] shadow-xs hover:shadow-[0_10px_25px_-3px_rgba(0,0,0,0.5),0_0_15px_rgba(212,175,55,0.3)] hover:-translate-y-1 active:translate-y-0 transition-all duration-250 ease-out cursor-pointer overflow-hidden"
-              >
-                {/* Active/Hover Gold Accent Bar on Bottom */}
-                <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] opacity-0 group-hover:opacity-100 transition-opacity duration-250 shadow-[0_0_8px_#D4AF37]" />
-
-                {/* Scaled Icon Image */}
-                <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl overflow-hidden ring-1.5 sm:ring-2 ring-[#E0D3BE] dark:ring-[#D4AF37]/35 group-hover:ring-[#D4AF37] group-hover:scale-110 transition-all duration-250 shrink-0 shadow-xs">
-                  <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-120 transition-transform duration-500 ease-out" />
-                </div>
-
-                {/* Text Content */}
-                <div className="flex flex-col leading-none">
-                  <span className="text-[11.5px] sm:text-[12.5px] font-black text-[#21130E] dark:text-[#FAF6EE] group-hover:text-[#8C5819] dark:group-hover:text-[#D4AF37] transition-colors tracking-tight font-sans">
-                    {cat.name}
-                  </span>
-                  <span className="text-[8px] sm:text-[8.5px] text-[#7A6E63] dark:text-[#A3988C] group-hover:text-[#D4AF37] dark:group-hover:text-[#D4AF37] tracking-wider uppercase mt-0.5 sm:mt-1 font-extrabold transition-colors font-sans">
-                    {cat.tag}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════
-          2. PROMOTIONAL BANNER CAROUSEL (SPLIT LAYOUT: LEFT TEXT, RIGHT PHOTO)
+          1. PROMOTIONAL BANNER CAROUSEL (SPLIT LAYOUT: LEFT TEXT, RIGHT PHOTO)
              Single full-width rich banner with smooth transitions
           ══════════════════════════════════════════════ */}
       <section className="w-full py-3 sm:py-6 bg-white dark:bg-[#0C0A09] border-b border-stone-200/70 dark:border-[#C49A50]/20">
@@ -338,21 +291,42 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════
-          3. MARQUEE TRUST STRIP
+          2. CATEGORY NAVIGATION BAR (PLACED BELOW BANNER)
           ══════════════════════════════════════════════ */}
-      <section className="w-full bg-[#0A0807] border-y border-[#D4AF37]/25 py-3 overflow-hidden shadow-inner">
-        <div className="marquee-track gap-0">
-          {[...marqueeItems, ...marqueeItems].map((item, i) => (
-            <div key={i} className="flex items-center gap-6 px-6 shrink-0">
-              <span className="label-luxury text-[#F3E5AB] font-bold tracking-[0.22em] text-[9.5px] uppercase whitespace-nowrap">{item}</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] shadow-[0_0_6px_#D4AF37] shrink-0" />
-            </div>
-          ))}
+      <section className="w-full bg-white dark:bg-[#0C0A09]/95 backdrop-blur-md border-b border-stone-200/80 dark:border-[#D4AF37]/20 shadow-2xs">
+        <div className="max-w-[1800px] w-full mx-auto px-4 sm:px-6 lg:px-10 py-2 sm:py-2.5 overflow-x-auto scrollbar-hide">
+          <div className="flex items-center gap-2 sm:gap-3.5 min-w-max mx-auto justify-start sm:justify-center">
+            {sortedTopCategories.map((cat: any, idx) => (
+              <Link
+                href={cat.href}
+                key={idx}
+                className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl bg-[#FAF7F2] dark:bg-[#14100D] border border-[#E0D3BE] dark:border-[#D4AF37]/25 hover:border-[#C99A45] hover:dark:border-[#D4AF37] hover:bg-white dark:hover:bg-[#1C1612] shadow-xs hover:shadow-[0_10px_25px_-3px_rgba(0,0,0,0.5),0_0_15px_rgba(212,175,55,0.3)] hover:-translate-y-1 active:translate-y-0 transition-all duration-250 ease-out cursor-pointer overflow-hidden"
+              >
+                {/* Active/Hover Gold Accent Bar on Bottom */}
+                <div className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] opacity-0 group-hover:opacity-100 transition-opacity duration-250 shadow-[0_0_8px_#D4AF37]" />
+
+                {/* Scaled Icon Image */}
+                <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl overflow-hidden ring-1.5 sm:ring-2 ring-[#E0D3BE] dark:ring-[#D4AF37]/35 group-hover:ring-[#D4AF37] group-hover:scale-110 transition-all duration-250 shrink-0 shadow-xs">
+                  <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-120 transition-transform duration-500 ease-out" />
+                </div>
+
+                {/* Text Content */}
+                <div className="flex flex-col leading-none">
+                  <span className="text-[11.5px] sm:text-[12.5px] font-black text-[#21130E] dark:text-[#FAF6EE] group-hover:text-[#8C5819] dark:group-hover:text-[#D4AF37] transition-colors tracking-tight font-sans">
+                    {cat.name}
+                  </span>
+                  <span className="text-[8px] sm:text-[8.5px] text-[#7A6E63] dark:text-[#A3988C] group-hover:text-[#D4AF37] dark:group-hover:text-[#D4AF37] tracking-wider uppercase mt-0.5 sm:mt-1 font-extrabold transition-colors font-sans">
+                    {cat.tag}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════
-          4. PRODUCT SHOWCASE — "BEST OF KAASHTA CRAFTS"
+          3. PRODUCT SHOWCASE — "BEST OF KAASHTA CRAFTS"
              Editorial Asymmetric Luxury Grid
           ══════════════════════════════════════════════ */}
       <section className="w-full bg-white dark:bg-[#12100E] py-8 sm:py-14 md:py-16">

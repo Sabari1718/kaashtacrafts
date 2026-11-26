@@ -11,6 +11,17 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
+const marqueeItems = [
+  "Master Tamil Woodcarvers",
+  "Natural Beeswax Finish",
+  "Zero Chemical Dyes",
+  "Heirloom Grade Quality",
+  "Ethical Forest Stewardship",
+  "Pan-India Delivery",
+  "2,500+ Homes Adorned",
+  "Sustainably Harvested Teak",
+];
+
 export default function Navbar() {
   const { cartCount } = useCart();
   const { wishlistCount } = useWishlist();
@@ -76,6 +87,18 @@ export default function Navbar() {
 
   return (
     <>
+      {/* ── TOP ANNOUNCEMENT / MARQUEE TRUST STRIP (ABOVE NAVBAR) ── */}
+      <div className="w-full bg-[#0A0807] border-b border-[#D4AF37]/25 py-2 overflow-hidden shadow-xs relative z-50">
+        <div className="marquee-track gap-0">
+          {[...marqueeItems, ...marqueeItems].map((item, i) => (
+            <div key={i} className="flex items-center gap-5 sm:gap-6 px-4 sm:px-6 shrink-0">
+              <span className="label-luxury text-[#F3E5AB] font-bold tracking-[0.2em] sm:tracking-[0.22em] text-[9px] sm:text-[9.5px] uppercase whitespace-nowrap">{item}</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] shadow-[0_0_6px_#D4AF37] shrink-0" />
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ── MAIN NAVBAR ── */}
       <nav className={`sticky top-0 z-50 w-full transition-all duration-500 ${
         isScrolled
@@ -112,24 +135,30 @@ export default function Navbar() {
               </div>
             </Link>
 
-            {/* ── DESKTOP NAV LINKS (NOW ON LEFT, WITH 3D ICONS) ── */}
-            <div className="hidden lg:flex items-center bg-[#F2ECE1]/90 dark:bg-[#14100D]/90 rounded-full p-1.5 gap-1 border border-[#C99A45]/30 dark:border-[#C49A50]/25 shadow-[0_4px_12px_rgba(33,19,14,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)] dark:shadow-[0_4px_15px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.08)]">
+            {/* ── DESKTOP NAV LINKS (CLEAN ICON BUTTONS - NO BEIGE BACKGROUND BUBBLE) ── */}
+            <div className="hidden lg:flex items-center gap-1 xl:gap-2">
               {navLinks.map(link => {
                 const Icon = link.icon;
                 return (
                   <Link
                     key={link.name}
                     href={link.href}
-                    className={`relative px-3.5 xl:px-4.5 py-1.5 xl:py-2 rounded-full text-[11px] xl:text-[12px] font-black tracking-wider uppercase transition-all duration-200 flex items-center gap-1.5 font-sans cursor-pointer ${
+                    className={`group relative px-2.5 xl:px-3 py-1.5 rounded-xl text-[12px] xl:text-[13px] font-bold tracking-wider uppercase transition-all duration-200 flex items-center gap-2 font-sans cursor-pointer ${
                       link.isActive
-                        ? "bg-[#21130E] text-[#F7F3EB] dark:bg-gradient-to-r dark:from-[#C49A50] dark:via-[#D4AF37] dark:to-[#B88636] dark:text-[#0C0A09] dark:border-transparent font-black shadow-[0_4px_14px_rgba(33,19,14,0.35),0_0_15px_rgba(212,175,55,0.4),inset_0_1px_1px_rgba(255,255,255,0.25)] hover:-translate-y-0.5 active:translate-y-0"
-                        : "text-[#38251A] dark:text-[#D8CFBF] hover:text-[#21130E] dark:hover:text-[#FAF6EE] hover:bg-white/80 dark:hover:bg-[#1E1712] hover:shadow-[0_4px_10px_rgba(33,19,14,0.08),inset_0_1px_1px_rgba(255,255,255,0.9)] hover:-translate-y-0.5 active:translate-y-0"
+                        ? "text-[#21130E] dark:text-[#FAF6EE] font-black"
+                        : "text-[#5C4838] dark:text-[#D8CFBF] hover:text-[#21130E] dark:hover:text-[#FAF6EE]"
                     }`}
                   >
-                    <Icon className={`w-3.5 h-3.5 shrink-0 transition-transform duration-200 ${link.isActive ? "text-[#E6C477] dark:text-[#0C0A09] scale-110" : "text-[#8C6D4A] dark:text-[#C49A50]"}`} />
+                    <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                      link.isActive
+                        ? "bg-[#21130E] text-[#E6C477] dark:bg-gradient-to-r dark:from-[#C49A50] dark:to-[#D4AF37] dark:text-[#0C0A09] shadow-sm scale-105"
+                        : "text-[#8C6D4A] dark:text-[#C49A50] group-hover:bg-[#21130E]/8 dark:group-hover:bg-white/8 group-hover:scale-105"
+                    }`}>
+                      <Icon className="w-4 h-4 shrink-0" />
+                    </div>
                     <span>{link.name}</span>
                     {link.isActive && (
-                      <span className="absolute bottom-1 w-3.5 h-[2px] rounded-full bg-gradient-to-r from-[#E6C477] to-[#C99A45] shadow-[0_0_6px_#C99A45]" />
+                      <span className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full bg-gradient-to-r from-[#C99A45] via-[#E6C477] to-[#C99A45] shadow-[0_0_6px_#C99A45]" />
                     )}
                   </Link>
                 );
