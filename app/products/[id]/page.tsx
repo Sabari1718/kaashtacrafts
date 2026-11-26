@@ -217,9 +217,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         
         {/* Left Column: Product Image & Gallery */}
         <div className="flex flex-col gap-4">
-          <div className="relative w-full aspect-[4/5] sm:aspect-square md:aspect-[4/5] max-h-[620px] bg-white/80 dark:bg-[#1E1713]/80 rounded-3xl overflow-hidden border border-[#EAE1D2] dark:border-[#2E241E] shadow-sm group flex items-center justify-center">
-            {/* Ambient subtle warm glow */}
-            <div className="absolute inset-0 bg-radial from-[#C49A50]/5 via-transparent to-transparent pointer-events-none" />
+          <div className="relative w-full aspect-[4/5] sm:aspect-square md:aspect-[4/5] max-h-[620px] bg-gradient-to-b from-[#EDE5D8] via-[#F4EFE6] to-[#E5DAC8] dark:from-[#211712] dark:via-[#1A120E] dark:to-[#140E0A] rounded-3xl overflow-hidden border-2 border-[#DFCDB7] dark:border-[#38261C] shadow-md group flex items-center justify-center">
+            {/* Ambient subtle warm gold glow */}
+            <div className="absolute inset-0 bg-radial from-[#C49A50]/10 via-transparent to-transparent pointer-events-none" />
 
             <Image 
               src={activeImage || product.image} 
@@ -233,15 +233,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             {/* Click to zoom badge at bottom left */}
             <button
               onClick={() => setIsMainZoomOpen(true)}
-              className="absolute bottom-3 left-3 bg-black/60 hover:bg-black/80 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full border border-white/10 flex items-center gap-1.5 transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-md"
+              className="absolute bottom-3.5 left-3.5 bg-[#241812]/85 hover:bg-[#241812] backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1.5 rounded-full border border-white/20 flex items-center gap-1.5 transition-all cursor-pointer shadow-lg z-10"
               title="Click to view full image"
             >
-              <Eye className="w-3.5 h-3.5" />
+              <Eye className="w-3.5 h-3.5 text-[#C49A50]" />
               <span>Tap to Zoom</span>
             </button>
             
             {/* Wishlist & Share Floating Icons */}
-            <div className="absolute top-4 right-4 flex flex-col gap-2.5 z-10">
+            <div className="absolute top-4 right-4 flex flex-col gap-2.5 z-20">
               <button 
                 onClick={() => {
                   if (product) {
@@ -254,17 +254,23 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     }
                   }
                 }}
-                className="w-10 h-10 bg-white/90 dark:bg-[#1E1713]/90 backdrop-blur-md rounded-full flex items-center justify-center shadow-xs hover:scale-110 transition-all cursor-pointer"
+                className={`w-11 h-11 rounded-full flex items-center justify-center shadow-md hover:scale-110 active:scale-95 transition-all cursor-pointer border-2 ${
+                  product && isInWishlist(product.id || (product as any)._id)
+                    ? 'bg-red-50 border-red-300 text-red-500 shadow-red-200/50'
+                    : 'bg-white/95 dark:bg-[#1E1713]/95 border-[#DFCDB7] dark:border-[#38261C] text-[#241812] dark:text-[#F7F5F0] hover:border-[#C49A50] hover:text-[#C49A50]'
+                }`}
                 aria-label="Wishlist Toggle"
+                title="Save to Wishlist"
               >
-                <Heart className={`w-4 h-4 ${product && isInWishlist(product.id || (product as any)._id) ? 'fill-red-500 text-red-500' : 'text-[#82786E]'}`} />
+                <Heart className={`w-5 h-5 ${product && isInWishlist(product.id || (product as any)._id) ? 'fill-red-500 text-red-500' : 'stroke-[2.2]'}`} />
               </button>
               <button 
                 onClick={handleShare}
-                className="hidden md:flex w-10 h-10 bg-white/90 dark:bg-[#1E1713]/90 backdrop-blur-md rounded-full items-center justify-center shadow-xs hover:scale-110 transition-all cursor-pointer"
+                className="w-11 h-11 bg-white/95 dark:bg-[#1E1713]/95 border-2 border-[#DFCDB7] dark:border-[#38261C] text-[#241812] dark:text-[#F7F5F0] hover:border-[#C49A50] hover:text-[#C49A50] rounded-full flex items-center justify-center shadow-md hover:scale-110 active:scale-95 transition-all cursor-pointer"
                 aria-label="Share Piece"
+                title="Share this creation"
               >
-                <Send className="w-4 h-4 text-[#82786E]" />
+                <Send className="w-5 h-5 stroke-[2.2]" />
               </button>
             </div>
           </div>
@@ -276,8 +282,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 <button
                   key={idx}
                   onClick={() => setActiveImage(img)}
-                  className={`relative w-20 h-20 shrink-0 rounded-2xl overflow-hidden border-2 transition-all cursor-pointer bg-white/70 dark:bg-[#1E1713]/70 ${
-                    activeImage === img ? 'border-[#C49A50] ring-2 ring-[#C49A50]/20 scale-102' : 'border-[#EAE1D2] dark:border-[#2E241E] opacity-75 hover:opacity-100'
+                  className={`relative w-20 h-20 shrink-0 rounded-2xl overflow-hidden border-2 transition-all cursor-pointer bg-gradient-to-b from-[#EDE5D8] to-[#E0D3BE] dark:from-[#261D15] dark:to-[#1E1510] ${
+                    activeImage === img ? 'border-[#C49A50] ring-2 ring-[#C49A50]/30 scale-102 shadow-sm' : 'border-[#DFCDB7] dark:border-[#38261C] opacity-80 hover:opacity-100 hover:border-[#C49A50]'
                   }`}
                 >
                   <Image src={img} alt={`Gallery image ${idx + 1}`} fill className="object-contain p-1" />
