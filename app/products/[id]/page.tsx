@@ -478,6 +478,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   // Calculate discount percentage
   const originalPrice = product.originalPrice || Math.floor(product.price * 1.4);
   const discountPercentage = Math.round(((originalPrice - product.price) / originalPrice) * 100);
+  const isCustomizableProduct = product.isCustomizable !== false;
   
   // Combine primary image, extra images, and all styling/usage images into a single Amazon-style gallery
   const allProductImages: string[] = Array.from(
@@ -635,7 +636,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 LIVE REAL-TIME LASER ENGRAVING DIRECTLY ON THE PRODUCT PHOTO
                 (Shown when personalized or loaded from Bag)
                 ═════════════════════════════════════════════════════════════════ */}
-            {customText.trim() && (
+            {isCustomizableProduct && customText.trim() && (
               <div
                 className="absolute z-20 pointer-events-none select-none transition-all duration-300 ease-out flex flex-col items-center justify-center px-2"
                 style={{
@@ -667,7 +668,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               </div>
             )}
 
-            {secondaryText.trim() && (
+            {isCustomizableProduct && secondaryText.trim() && (
               <div
                 className="absolute z-20 pointer-events-none select-none transition-all duration-300 ease-out flex flex-col items-center justify-center px-2"
                 style={{
@@ -824,7 +825,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           </div>
 
           {/* Active Personalized Laser Engraving Banner */}
-          {(customText.trim() || secondaryText.trim()) && (
+          {isCustomizableProduct && (customText.trim() || secondaryText.trim()) && (
             <div className="bg-[#FAF6EE] dark:bg-[#1E1713] border-2 border-[#C49A50]/60 rounded-2xl p-3 sm:p-3.5 mb-3 shadow-xs flex items-center justify-between gap-3 animate-in fade-in">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-full bg-[#C49A50]/20 flex items-center justify-center shrink-0 text-[#C49A50]">
@@ -906,64 +907,86 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           </div>
 
           {/* ═════════════════════════════════════════════════════════
-              BESPOKE LASER ENGRAVING CALLOUT CARD
+              BESPOKE LASER ENGRAVING CALLOUT CARD (ONLY FOR CUSTOMIZABLE PIECES)
               ═════════════════════════════════════════════════════════ */}
-          <div className="bg-gradient-to-br from-[#FAF6EE] to-[#F2EAE0] dark:from-[#211712] dark:to-[#18110C] p-4 sm:p-5 rounded-2xl border-2 border-[#C49A50]/40 shadow-xs mb-6 transition-all">
-            <div className="flex items-center justify-between gap-2 mb-2">
-              <div className="flex items-center gap-2">
-                <span className="w-8 h-8 rounded-full bg-[#C49A50] text-[#241812] flex items-center justify-center text-sm font-black shadow-xs">
-                  ✒️
-                </span>
-                <h3 className="font-playfair font-bold text-sm sm:text-base text-[#241812] dark:text-[#F7F5F0]">
-                  Personalize With Custom Laser Engraving
-                </h3>
-              </div>
-              <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full shrink-0">
-                100% Free
-              </span>
-            </div>
-
-            <p className="text-xs text-[#82786E] dark:text-[#A39A90] mb-4 leading-relaxed">
-              {(customText.trim() || secondaryText.trim()) ? (
-                <span className="font-semibold text-[#8B5A2B] dark:text-[#E6C477] flex items-center gap-1.5 flex-wrap">
-                  <span>✒️ Selected Engraving: "{[customText.trim(), secondaryText.trim()].filter(Boolean).join(" • ")}"</span>
-                  <span>
-                    ({[
-                      customText.trim() ? `${(ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0]).name} • ${(ENGRAVING_SIZES.find(s => s.id === selectedSize1) || ENGRAVING_SIZES[1]).label} • ${(ENGRAVING_COLORS.find(c => c.id === selectedColor1) || ENGRAVING_COLORS[0]).name}` : null,
-                      secondaryText.trim() ? `L2: ${(ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0]).name} • ${(ENGRAVING_SIZES.find(s => s.id === selectedSize2) || ENGRAVING_SIZES[0]).label} • ${(ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0]).name}` : null,
-                    ].filter(Boolean).join(" | ")})
+          {isCustomizableProduct && (
+            <div className="bg-gradient-to-br from-[#FAF6EE] to-[#F2EAE0] dark:from-[#211712] dark:to-[#18110C] p-4 sm:p-5 rounded-2xl border-2 border-[#C49A50]/40 shadow-xs mb-6 transition-all">
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="w-8 h-8 rounded-full bg-[#C49A50] text-[#241812] flex items-center justify-center text-sm font-black shadow-xs">
+                    ✒️
                   </span>
+                  <h3 className="font-playfair font-bold text-sm sm:text-base text-[#241812] dark:text-[#F7F5F0]">
+                    Personalize With Custom Laser Engraving
+                  </h3>
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-wider text-emerald-800 dark:text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full shrink-0">
+                  100% Free
                 </span>
-              ) : (
-                "Add your custom name, couple names, or gift message. Choose font styles, sizes, and colors with real-time live preview on the piece before ordering!"
-              )}
-            </p>
+              </div>
 
-            <button
-              type="button"
-              onClick={handleStartCustomizing}
-              className="w-full bg-gradient-to-r from-[#C49A50] via-[#D4AF37] to-[#C49A50] hover:brightness-105 text-[#241812] py-3.5 rounded-xl font-black text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <Sparkles className="w-4 h-4" />
-              <span>{(customText.trim() || secondaryText.trim()) ? "Edit / Change Customization" : "Customize Order (Free Laser Engraving)"}</span>
-            </button>
-          </div>
+              <p className="text-xs text-[#82786E] dark:text-[#A39A90] mb-4 leading-relaxed">
+                {(customText.trim() || secondaryText.trim()) ? (
+                  <span className="font-semibold text-[#8B5A2B] dark:text-[#E6C477] flex items-center gap-1.5 flex-wrap">
+                    <span>✒️ Selected Engraving: "{[customText.trim(), secondaryText.trim()].filter(Boolean).join(" • ")}"</span>
+                    <span>
+                      ({[
+                        customText.trim() ? `${(ENGRAVING_FONTS.find(f => f.id === selectedFont1) || ENGRAVING_FONTS[0]).name} • ${(ENGRAVING_SIZES.find(s => s.id === selectedSize1) || ENGRAVING_SIZES[1]).label} • ${(ENGRAVING_COLORS.find(c => c.id === selectedColor1) || ENGRAVING_COLORS[0]).name}` : null,
+                        secondaryText.trim() ? `L2: ${(ENGRAVING_FONTS.find(f => f.id === selectedFont2) || ENGRAVING_FONTS[0]).name} • ${(ENGRAVING_SIZES.find(s => s.id === selectedSize2) || ENGRAVING_SIZES[0]).label} • ${(ENGRAVING_COLORS.find(c => c.id === selectedColor2) || ENGRAVING_COLORS[0]).name}` : null,
+                      ].filter(Boolean).join(" | ")})
+                    </span>
+                  </span>
+                ) : (
+                  "Add your custom name, couple names, or gift message. Choose font styles, sizes, and colors with real-time live preview on the piece before ordering!"
+                )}
+              </p>
+
+              <button
+                type="button"
+                onClick={handleStartCustomizing}
+                className="w-full bg-gradient-to-r from-[#C49A50] via-[#D4AF37] to-[#C49A50] hover:brightness-105 text-[#241812] py-3.5 rounded-xl font-black text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Sparkles className="w-4 h-4" />
+                <span>{(customText.trim() || secondaryText.trim()) ? "Edit / Change Customization" : "Customize Order (Free Laser Engraving)"}</span>
+              </button>
+            </div>
+          )}
 
           {/* Main Desktop Action Buttons */}
           <div className="hidden md:flex gap-3 mt-auto pt-4 border-t border-[#EAE1D2] dark:border-[#2E241E]">
-            <button 
-              onClick={(customText.trim() || secondaryText.trim()) ? handleAddCustomizedToCart : handleAddStandardToCart}
-              className="flex-1 bg-[#241812] hover:bg-[#38261C] text-[#F7F5F0] py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-xs hover:shadow-md cursor-pointer flex items-center justify-center gap-2"
-            >
-              <ShoppingBag className="w-4 h-4 text-[#C49A50]" />
-              <span>{(customText.trim() || secondaryText.trim()) ? "Add Customized to Bag" : "Add to Bag"}</span>
-            </button>
-            <button 
-              onClick={(customText.trim() || secondaryText.trim()) ? handleOrderCustomized : handleBuyStandard}
-              className="flex-1 bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
-            >
-              <span>{(customText.trim() || secondaryText.trim()) ? `Order Customized ₹${product.price}` : `Buy Now ₹${product.price}`}</span>
-            </button>
+            {isCustomizableProduct ? (
+              <>
+                <button 
+                  onClick={(customText.trim() || secondaryText.trim()) ? handleAddCustomizedToCart : handleAddStandardToCart}
+                  className="flex-1 bg-[#241812] hover:bg-[#38261C] text-[#F7F5F0] py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-xs hover:shadow-md cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <ShoppingBag className="w-4 h-4 text-[#C49A50]" />
+                  <span>{(customText.trim() || secondaryText.trim()) ? "Add Customized to Bag" : "Add to Bag"}</span>
+                </button>
+                <button 
+                  onClick={(customText.trim() || secondaryText.trim()) ? handleOrderCustomized : handleBuyStandard}
+                  className="flex-1 bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <span>{(customText.trim() || secondaryText.trim()) ? `Order Customized ₹${product.price}` : `Buy Now ₹${product.price}`}</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <button 
+                  onClick={handleAddStandardToCart}
+                  className="flex-1 bg-[#241812] hover:bg-[#38261C] text-[#F7F5F0] py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-xs hover:shadow-md cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <ShoppingBag className="w-4 h-4 text-[#C49A50]" />
+                  <span>Add to Bag</span>
+                </button>
+                <button 
+                  onClick={handleBuyStandard}
+                  className="flex-1 bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] py-3.5 rounded-full font-bold text-sm tracking-wider uppercase transition-all shadow-md hover:shadow-lg cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <span>Buy Now ₹{product.price}</span>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -1136,7 +1159,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
       {/* Mobile Fixed Bottom Actions */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-[#F7F5F0]/95 dark:bg-[#14100E]/95 backdrop-blur-md border-t border-[#EAE1D2] dark:border-[#2E241E] p-3 flex flex-col gap-1.5 z-40 shadow-xl">
-        {customText.trim() ? (
+        {isCustomizableProduct && customText.trim() ? (
           <div className="flex items-center justify-between px-2 text-[10px] font-bold text-[#8B5A2B] dark:text-[#E6C477]">
             <span className="truncate max-w-[200px]">✒️ Engraving: "{customText}"</span>
             <span className="text-emerald-700 dark:text-emerald-400 font-extrabold uppercase">Free Laser Etch</span>
@@ -1148,37 +1171,55 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           </div>
         )}
         <div className="flex gap-2">
-          {(customText.trim() || secondaryText.trim()) ? (
-            <>
-              <button 
-                onClick={handleAddCustomizedToCart}
-                className="flex-1 bg-[#241812] text-[#F7F5F0] py-3 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-xs"
-              >
-                <ShoppingBag className="w-3.5 h-3.5 text-[#C49A50]" />
-                <span>Add Engraved</span>
-              </button>
-              <button 
-                onClick={handleOrderCustomized}
-                className="flex-1 bg-gradient-to-r from-[#C49A50] via-[#D4AF37] to-[#C49A50] text-[#241812] py-3 rounded-full font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Order Engraved ₹{product.price}</span>
-              </button>
-            </>
+          {isCustomizableProduct ? (
+            (customText.trim() || secondaryText.trim()) ? (
+              <>
+                <button 
+                  onClick={handleAddCustomizedToCart}
+                  className="flex-1 bg-[#241812] text-[#F7F5F0] py-3 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-xs"
+                >
+                  <ShoppingBag className="w-3.5 h-3.5 text-[#C49A50]" />
+                  <span>Add Engraved</span>
+                </button>
+                <button 
+                  onClick={handleOrderCustomized}
+                  className="flex-1 bg-gradient-to-r from-[#C49A50] via-[#D4AF37] to-[#C49A50] text-[#241812] py-3 rounded-full font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Order Engraved ₹{product.price}</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <button 
+                  onClick={handleStartCustomizing}
+                  className="flex-1 bg-gradient-to-r from-[#C49A50] via-[#D4AF37] to-[#C49A50] text-[#241812] py-3 rounded-full font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>Customize Order</span>
+                </button>
+                <button 
+                  onClick={handleBuyStandard}
+                  className="flex-1 bg-[#241812] text-[#F7F5F0] py-3 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+                >
+                  <span>Buy Plain ₹{product.price}</span>
+                </button>
+              </>
+            )
           ) : (
             <>
               <button 
-                onClick={handleStartCustomizing}
-                className="flex-1 bg-gradient-to-r from-[#C49A50] via-[#D4AF37] to-[#C49A50] text-[#241812] py-3 rounded-full font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
+                onClick={handleAddStandardToCart}
+                className="flex-1 bg-[#241812] text-[#F7F5F0] py-3 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-xs"
               >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Customize Order</span>
+                <ShoppingBag className="w-3.5 h-3.5 text-[#C49A50]" />
+                <span>Add to Bag</span>
               </button>
               <button 
                 onClick={handleBuyStandard}
-                className="flex-1 bg-[#241812] text-[#F7F5F0] py-3 rounded-full font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 active:scale-95 transition-all"
+                className="flex-1 bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] py-3 rounded-full font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all"
               >
-                <span>Buy Plain ₹{product.price}</span>
+                <span>Buy Now ₹{product.price}</span>
               </button>
             </>
           )}
@@ -1242,9 +1283,9 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       )}
 
       {/* ═════════════════════════════════════════════════════════════════
-          DEDICATED INTERACTIVE CUSTOMIZATION STUDIO MODAL
+          DEDICATED INTERACTIVE CUSTOMIZATION STUDIO MODAL (ONLY FOR CUSTOMIZABLE PRODUCTS)
           ═════════════════════════════════════════════════════════════════ */}
-      {isCustomizeModalOpen && (
+      {isCustomizableProduct && isCustomizeModalOpen && (
         <div 
           className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto"
           onClick={() => setIsCustomizeModalOpen(false)}

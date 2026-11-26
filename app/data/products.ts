@@ -12,6 +12,8 @@ export interface Product {
   description?: string;
   inStock: boolean;
   featured?: boolean;
+  isCustomizable?: boolean;
+  customizationPlaceholder?: string;
   rating?: number;
   numReviews?: number;
   reviews?: any[];

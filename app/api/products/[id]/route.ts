@@ -33,6 +33,7 @@ export async function GET(
       usageImages: product.usageImages || [],
       inStock: product.inStock,
       featured: product.featured,
+      isCustomizable: product.isCustomizable !== false,
       originalPrice: product.originalPrice || Math.floor(product.price * 1.5),
       reviews: product.reviews || [],
       rating: product.rating || 0,
@@ -95,13 +96,14 @@ export async function PUT(
     await connectToDatabase();
     const resolvedParams = await params;
     const body = await request.json();
-    const { name, price, category, inStock, image, description, images, usageImages, order } = body;
+    const { name, price, category, inStock, image, description, images, usageImages, order, isCustomizable } = body;
 
     const updateData: any = {};
     if (name !== undefined) updateData.name = name;
     if (price !== undefined) updateData.price = Number(price);
     if (category !== undefined) updateData.category = category;
     if (inStock !== undefined) updateData.inStock = Boolean(inStock);
+    if (isCustomizable !== undefined) updateData.isCustomizable = Boolean(isCustomizable);
     if (image !== undefined) updateData.image = image;
     if (description !== undefined) updateData.description = description;
     if (images !== undefined) updateData.images = images;

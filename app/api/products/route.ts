@@ -26,6 +26,7 @@ export async function GET() {
       order: p.order ?? 0,
       inStock: p.inStock,
       featured: p.featured,
+      isCustomizable: p.isCustomizable !== false,
       reviews: p.reviews || [],
       rating: p.rating || 0,
       numReviews: p.numReviews || 0
@@ -48,6 +49,8 @@ export async function POST(req: Request) {
     const galleryFiles = formData.getAll('galleryImages') as File[];
     const usageFiles = formData.getAll('usageImages') as File[];
     const usageUrlsRaw = formData.get('usageUrls') as string | null;
+    const isCustomizableRaw = formData.get('isCustomizable');
+    const isCustomizable = isCustomizableRaw === null ? true : (isCustomizableRaw === 'true' || isCustomizableRaw === 'on' || isCustomizableRaw === '1');
 
     if (!file || !name || !price || !category) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -103,7 +106,8 @@ export async function POST(req: Request) {
       images: [mainUploadResult.secure_url, ...galleryUrls], // Main image is always first in the gallery array
       usageImages: allUsageUrls,
       inStock: true,
-      featured: false
+      featured: false,
+      isCustomizable
     });
 
     return NextResponse.json({ success: true, product: newProduct });

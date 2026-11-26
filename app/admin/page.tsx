@@ -16,6 +16,7 @@ export default function AdminPage() {
   const [productName, setProductName] = useState("");
   const [productPrice, setProductPrice] = useState("");
   const [productCategory, setProductCategory] = useState("Desk Accessories");
+  const [isCustomizable, setIsCustomizable] = useState(true);
   const [productImage, setProductImage] = useState<File | null>(null);
   const [galleryImages, setGalleryImages] = useState<File[]>([]);
   const [usageImages, setUsageImages] = useState<File[]>([]);
@@ -52,6 +53,7 @@ export default function AdminPage() {
   const [editPrice, setEditPrice] = useState("");
   const [editCategory, setEditCategory] = useState("Desk Accessories");
   const [editInStock, setEditInStock] = useState(true);
+  const [editIsCustomizable, setEditIsCustomizable] = useState(true);
   const [editImage, setEditImage] = useState("");
   const [editUsageImages, setEditUsageImages] = useState<string[]>([]);
   const [isUploadingEditUsage, setIsUploadingEditUsage] = useState(false);
@@ -310,6 +312,7 @@ export default function AdminPage() {
     setEditPrice((product.price || "").toString());
     setEditCategory(product.category || "Desk Accessories");
     setEditInStock(product.inStock !== false);
+    setEditIsCustomizable(product.isCustomizable !== false);
     setEditImage(product.image || "");
     setEditUsageImages(product.usageImages || []);
     setNewUsageUrlInput("");
@@ -331,6 +334,7 @@ export default function AdminPage() {
           price: Number(editPrice),
           category: editCategory,
           inStock: editInStock,
+          isCustomizable: editIsCustomizable,
           image: editImage,
           usageImages: editUsageImages,
         }),
@@ -347,6 +351,7 @@ export default function AdminPage() {
                   price: Number(editPrice),
                   category: editCategory,
                   inStock: editInStock,
+                  isCustomizable: editIsCustomizable,
                   image: editImage,
                   usageImages: editUsageImages,
                 }
@@ -408,6 +413,7 @@ export default function AdminPage() {
       formData.append("name", productName);
       formData.append("price", productPrice);
       formData.append("category", productCategory);
+      formData.append("isCustomizable", isCustomizable ? "true" : "false");
       formData.append("image", productImage);
       
       galleryImages.forEach(file => {
@@ -429,6 +435,7 @@ export default function AdminPage() {
         alert(`Success! Product "${productName}" is now live on the website.`);
         setProductName("");
         setProductPrice("");
+        setIsCustomizable(true);
         setProductImage(null);
         setGalleryImages([]);
         setUsageImages([]);
@@ -935,13 +942,18 @@ export default function AdminPage() {
                             <h3 className="font-bold text-stone-900 text-base mb-1 line-clamp-1" title={product.name}>
                               {product.name}
                             </h3>
-                            <div className="flex items-center justify-between mt-2">
+                            <div className="flex items-center justify-between mt-2 flex-wrap gap-1.5">
                               <span className="text-xl font-extrabold text-amber-800">
                                 ₹{product.price}
                               </span>
-                              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${product.inStock !== false ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-red-50 text-red-600 border border-red-200"}`}>
-                                {product.inStock !== false ? "In Stock" : "Out of Stock"}
-                              </span>
+                              <div className="flex items-center gap-1.5">
+                                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${product.isCustomizable !== false ? "bg-amber-100 text-amber-800 border border-amber-300" : "bg-stone-100 text-stone-600 border border-stone-200"}`}>
+                                  {product.isCustomizable !== false ? "✨ Customizable" : "📦 Standard"}
+                                </span>
+                                <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${product.inStock !== false ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-red-50 text-red-600 border border-red-200"}`}>
+                                  {product.inStock !== false ? "In Stock" : "Out of Stock"}
+                                </span>
+                              </div>
                             </div>
                             {product.reviews && product.reviews.length > 0 && (
                               <div className="flex items-center gap-1 mt-2 text-xs text-stone-500">
@@ -1190,6 +1202,44 @@ export default function AdminPage() {
                       </div>
                     </div>
 
+                    <div className="p-3.5 bg-stone-50 rounded-2xl border border-stone-200 flex flex-col gap-2">
+                      <label className="text-xs font-bold uppercase tracking-wider text-stone-700">
+                        Product Order Type
+                      </label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => setEditIsCustomizable(true)}
+                          className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex items-center gap-2 ${
+                            editIsCustomizable
+                              ? 'border-amber-600 bg-amber-50 text-amber-900 font-bold ring-2 ring-amber-500/30'
+                              : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300 text-xs'
+                          }`}
+                        >
+                          <span className="text-base">✨</span>
+                          <div>
+                            <span className="block text-xs font-bold">Customizable</span>
+                            <span className="block text-[10px] text-stone-500">Free Laser Engraving</span>
+                          </div>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setEditIsCustomizable(false)}
+                          className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex items-center gap-2 ${
+                            !editIsCustomizable
+                              ? 'border-stone-800 bg-stone-900 text-white font-bold ring-2 ring-stone-900/30'
+                              : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300 text-xs'
+                          }`}
+                        >
+                          <span className="text-base">📦</span>
+                          <div>
+                            <span className="block text-xs font-bold">Normal Product</span>
+                            <span className="block text-[10px] opacity-75">Standard Buy Now</span>
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+
                     <div className="flex items-center gap-3 p-3 bg-stone-50 rounded-xl border border-stone-200">
                       <input
                         type="checkbox"
@@ -1269,6 +1319,52 @@ export default function AdminPage() {
                       <option>Kitchen</option>
                       <option>Stationery</option>
                     </select>
+                  </div>
+                </div>
+
+                {/* Product Customization Type Selection */}
+                <div className="p-4 rounded-2xl border-2 border-stone-200 bg-stone-50">
+                  <label className="block text-sm font-bold text-stone-800 mb-1">
+                    Product Order Type
+                  </label>
+                  <p className="text-xs text-stone-500 mb-3">
+                    Choose whether customers can personalize this piece with free custom laser wood engraving.
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setIsCustomizable(true)}
+                      className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex items-start gap-3 ${
+                        isCustomizable
+                          ? 'border-amber-600 bg-amber-50/90 text-amber-900 ring-2 ring-amber-500/30'
+                          : 'border-stone-200 bg-white text-stone-700 hover:border-stone-300'
+                      }`}
+                    >
+                      <span className="text-xl shrink-0">✨</span>
+                      <div>
+                        <span className="block text-sm font-bold">Customizable Product</span>
+                        <span className="block text-xs opacity-75 mt-0.5">
+                          Shows "Customize Order" with live wood laser engraving (name, font, size & colors)
+                        </span>
+                      </div>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsCustomizable(false)}
+                      className={`p-3.5 rounded-xl border text-left transition-all cursor-pointer flex items-start gap-3 ${
+                        !isCustomizable
+                          ? 'border-stone-800 bg-stone-900 text-white ring-2 ring-stone-900/30'
+                          : 'border-stone-200 bg-white text-stone-700 hover:border-stone-300'
+                      }`}
+                    >
+                      <span className="text-xl shrink-0">📦</span>
+                      <div>
+                        <span className="block text-sm font-bold">Standard / Normal Product</span>
+                        <span className="block text-xs opacity-75 mt-0.5">
+                          Standard e-commerce piece without laser engraving ("Add to Bag" & "Buy Now" only)
+                        </span>
+                      </div>
+                    </button>
                   </div>
                 </div>
 
