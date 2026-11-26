@@ -166,6 +166,10 @@ export default function Footer() {
             <span className="text-xs uppercase tracking-[0.2em] font-bold text-[#C69A4B] mb-1">
               Collector Care
             </span>
+            <Link href="/contact" className="text-sm text-[#C69A4B] hover:text-[#E2B462] hover:translate-x-1 transition-all font-semibold flex items-center gap-1.5">
+              <span>Contact & Bulk Orders</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#C69A4B]" />
+            </Link>
             <Link href="/my-orders" className="text-sm text-[#EFE7DA]/80 hover:text-[#C69A4B] hover:translate-x-1 transition-all">Track Your Order</Link>
             <Link href="/wishlist" className="text-sm text-[#EFE7DA]/80 hover:text-[#C69A4B] hover:translate-x-1 transition-all">Saved Wishlist</Link>
             <Link href="/cart" className="text-sm text-[#EFE7DA]/80 hover:text-[#C69A4B] hover:translate-x-1 transition-all">Shopping Bag</Link>
@@ -178,42 +182,31 @@ export default function Footer() {
               Connect With Us
             </span>
             
-            {/* Location */}
-            <div className="flex items-start gap-2.5 text-xs text-[#EFE7DA]/90">
-              <div className="w-7 h-7 rounded-lg bg-[#C69A4B]/15 flex items-center justify-center shrink-0 mt-0.5 text-[#C69A4B] border border-[#C69A4B]/30">
-                <MapPin className="w-3.5 h-3.5" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-semibold text-[#F8F5EF]">Coimbatore</span>
-                <span className="text-[#A3968A] text-[11px]">Tamil Nadu, India</span>
-              </div>
-            </div>
-
             {/* Phone */}
             <a 
-              href="tel:8838098116" 
+              href="tel:+919092014442" 
               className="flex items-center gap-2.5 text-xs text-[#EFE7DA]/90 hover:text-[#C69A4B] transition-colors group"
             >
               <div className="w-7 h-7 rounded-lg bg-[#C69A4B]/15 group-hover:bg-[#C69A4B] group-hover:text-[#1A110B] flex items-center justify-center shrink-0 text-[#C69A4B] transition-colors border border-[#C69A4B]/30">
                 <Phone className="w-3.5 h-3.5" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] text-[#A3968A]">Call / WhatsApp</span>
-                <span className="font-mono font-medium text-xs text-[#F8F5EF] group-hover:text-[#C69A4B] transition-colors">+91 88380 98116</span>
+                <span className="text-[10px] text-[#A3968A]">Direct Line / WhatsApp</span>
+                <span className="font-mono font-medium text-xs text-[#F8F5EF] group-hover:text-[#C69A4B] transition-colors">+91 90920 14442</span>
               </div>
             </a>
 
             {/* Email */}
             <a 
-              href="mailto:kaashtacrafts@gmail.com" 
+              href="mailto:kalaivanissd@gmail.com" 
               className="flex items-center gap-2.5 text-xs text-[#EFE7DA]/90 hover:text-[#C69A4B] transition-colors group"
             >
               <div className="w-7 h-7 rounded-lg bg-[#C69A4B]/15 group-hover:bg-[#C69A4B] group-hover:text-[#1A110B] flex items-center justify-center shrink-0 text-[#C69A4B] transition-colors border border-[#C69A4B]/30">
                 <Mail className="w-3.5 h-3.5" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] text-[#A3968A]">Official Inquiries</span>
-                <span className="font-medium text-xs text-[#F8F5EF] group-hover:text-[#C69A4B] transition-colors truncate max-w-[170px]">kaashtacrafts@gmail.com</span>
+                <span className="text-[10px] text-[#A3968A]">Official Email</span>
+                <span className="font-sans font-medium text-xs text-[#F8F5EF] group-hover:text-[#C69A4B] transition-colors">kalaivanissd@gmail.com</span>
               </div>
             </a>
 

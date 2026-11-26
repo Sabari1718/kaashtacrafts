@@ -70,6 +70,7 @@ export default function Navbar() {
   const navLinks = [
     { name: "Home", href: "/", isActive: pathname === "/" },
     { name: "Shop All", href: "/products", isActive: pathname.startsWith("/products") },
+    { name: "Contact Us", href: "/contact", isActive: pathname.startsWith("/contact") },
     { name: "My Orders", href: "/my-orders", isActive: pathname.startsWith("/my-orders") },
   ];
 
@@ -84,26 +85,31 @@ export default function Navbar() {
         <div className="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-10">
           <div className="flex items-center justify-between h-14 sm:h-16 gap-2 sm:gap-4">
 
-            {/* ── BRAND (FLIPKART-STYLE LUXURY GOLD PILL BADGE WITH NEW WOOD LOGO) ── */}
+            {/* ── BRAND (CLASSY ULTRA-PREMIUM HERITAGE WOODCRAFT BADGE) ── */}
             <Link
               href="/"
-              className="group flex items-center gap-2 sm:gap-3 px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-xl sm:rounded-2xl bg-gradient-to-r from-[#FFD269] via-[#E8B038] to-[#C99220] shadow-[0_3px_12px_rgba(201,146,32,0.35),inset_0_1px_1.5px_rgba(255,255,255,0.75)] hover:shadow-[0_6px_22px_rgba(201,146,32,0.6),inset_0_1px_2px_rgba(255,255,255,0.9)] border border-[#F3C555] hover:scale-105 active:scale-95 transition-all duration-300 shrink-0 cursor-pointer"
+              className="group flex items-center gap-2.5 sm:gap-3.5 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-xl sm:rounded-2xl bg-[#FCFAF6] dark:bg-[#1A130E] border border-[#E5D7C4] dark:border-[#3A271C] shadow-[0_2px_10px_rgba(42,22,13,0.05)] hover:border-[#C69A4B]/80 hover:shadow-[0_4px_18px_rgba(198,154,75,0.2)] hover:scale-102 active:scale-98 transition-all duration-300 shrink-0 cursor-pointer"
             >
-              {/* Logo Avatar - Circular Wood Medallion with clean white/gold ring */}
-              <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden ring-2 ring-white/95 shadow-md shrink-0 bg-[#3A2216]">
+              {/* Logo Avatar - Prominent, Crisp Circular Wood Medallion */}
+              <div className="relative w-9 h-9 sm:w-11 sm:h-11 rounded-full overflow-hidden ring-1.5 ring-[#C69A4B]/60 shadow-md shrink-0 bg-[#2E1A11]">
                 <Image
                   src="/logo-circle.png"
                   alt="Kaashta Crafts"
                   fill
                   priority
-                  className="object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
+                  className="object-cover group-hover:scale-108 transition-transform duration-500 ease-out"
                 />
               </div>
 
-              {/* Brand Name - Bold, Fancy Italic Luxury Serif */}
-              <span className="font-playfair font-black italic tracking-wide text-[#21130E] text-[15px] sm:text-[22px] leading-none drop-shadow-[0_1px_1px_rgba(255,255,255,0.6)]">
-                Kaashta<span className="text-[#3D1E0B] font-bold not-italic ml-0.5 sm:ml-1">Crafts</span>
-              </span>
+              {/* Brand Name - Refined, High-End Luxury Typography */}
+              <div className="flex flex-col justify-center">
+                <span className="font-playfair font-extrabold tracking-tight text-[#22130D] dark:text-[#F8F5EF] text-[16px] sm:text-[21px] leading-tight">
+                  Kaashta<span className="text-[#A27223] dark:text-[#E2B462] font-bold ml-0.5 sm:ml-1">Crafts</span>
+                </span>
+                <span className="hidden sm:block text-[8px] text-[#8C7B6D] dark:text-[#AA998C] tracking-[0.22em] uppercase font-sans font-semibold -mt-0.5">
+                  Crafting Memories in Wood
+                </span>
+              </div>
             </Link>
 
             {/* ── DESKTOP SEARCH ── */}
@@ -144,12 +150,12 @@ export default function Navbar() {
             </div>
 
             {/* ── DESKTOP NAV LINKS (HIGH CONTRAST BOLD HOVER) ── */}
-            <div className="hidden lg:flex items-center bg-[#EDE4D6]/70 dark:bg-[#1E130E]/80 rounded-full p-1.5 gap-1.5 border border-[#C99A45]/30 dark:border-[#C99A45]/20 shadow-xs">
+            <div className="hidden lg:flex items-center bg-[#EDE4D6]/70 dark:bg-[#1E130E]/80 rounded-full p-1.5 gap-1 border border-[#C99A45]/30 dark:border-[#C99A45]/20 shadow-xs">
               {navLinks.map(link => (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`relative px-5 py-2 rounded-full text-[12px] font-black tracking-[0.14em] uppercase transition-all duration-200 flex items-center justify-center font-sans ${
+                  className={`relative px-3.5 xl:px-4.5 py-1.5 xl:py-2 rounded-full text-[11px] xl:text-[12px] font-black tracking-[0.12em] uppercase transition-all duration-200 flex items-center justify-center font-sans ${
                     link.isActive
                       ? "bg-[#21130E] text-[#F7F3EB] dark:bg-[#21130E] dark:text-[#E6C477] border border-[#C99A45] shadow-[0_4px_14px_rgba(33,19,14,0.35),0_0_12px_rgba(201,154,69,0.35)]"
                       : "text-[#38251A] dark:text-[#EDE4D6] hover:text-white dark:hover:text-[#E6C477] hover:bg-[#21130E] dark:hover:bg-[#21130E] hover:shadow-[0_4px_14px_rgba(33,19,14,0.3),0_0_8px_rgba(201,154,69,0.25)] hover:scale-105 active:scale-95"
