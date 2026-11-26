@@ -259,14 +259,14 @@ export default function Home() {
                     </Link>
                   </div>
 
-                  {/* PRODUCT SHOWCASE: Bottom on Mobile, Right on Desktop — 100% VISIBLE */}
-                  <div className="relative z-10 w-full md:w-[50%] lg:w-[52%] flex-1 md:h-full flex items-center justify-center px-4 pb-5 sm:pb-6 md:p-8 lg:pr-12 pointer-events-none">
-                    <div className="relative w-full max-w-[340px] sm:max-w-[400px] md:max-w-[500px] h-[190px] sm:h-[220px] md:h-[340px] flex items-center justify-center">
+                  {/* PRODUCT SHOWCASE: Bottom on Mobile, Right on Desktop — 100% VISIBLE 4K HD */}
+                  <div className="relative z-10 w-full md:w-[50%] lg:w-[52%] flex-1 md:h-full flex items-center justify-center md:justify-end px-4 pb-5 sm:pb-6 md:p-6 lg:pr-12 pointer-events-none">
+                    <div className="relative w-full max-w-[340px] sm:max-w-[420px] md:max-w-[520px] lg:max-w-[560px] h-[200px] sm:h-[230px] md:h-[350px] lg:h-[370px] flex items-center justify-center md:justify-end">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={banner.cutoutImage}
                         alt={banner.title}
-                        className="max-h-full max-w-full w-auto h-auto object-contain filter drop-shadow-[0_12px_28px_rgba(0,0,0,0.55)] group-hover:scale-105 transition-transform duration-700 ease-out"
+                        className="max-h-full max-w-full w-auto h-auto object-contain filter drop-shadow-[0_16px_36px_rgba(0,0,0,0.65)] group-hover:scale-105 transition-transform duration-700 ease-out"
                         loading={index === 0 ? "eager" : "lazy"}
                       />
                     </div>
