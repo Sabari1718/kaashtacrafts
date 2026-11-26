@@ -29,7 +29,7 @@ const categories = [
   { name: "Gifts & Curios",   tag: "Bespoke Tokens",   image: "/gifts.jpg",             href: "/products" },
 ];
 
-/* ─── PROMOTIONAL BANNERS DATA (3 VIBRANT LUXURY SPLIT BANNERS) ─── */
+/* ─── PROMOTIONAL BANNERS DATA (3 VIBRANT LUXURY PANORAMIC BANNERS) ─── */
 const promoBanners = [
   {
     tag: "✨ ARTISANAL HERITAGE • UP TO 40% OFF",
@@ -38,9 +38,10 @@ const promoBanners = [
     btnText: "Explore Desk Suite",
     href: "/products?category=Desk Accessories",
     image: "/desk-accessories.jpg",
-    bgGradient: "from-[#2A150C] via-[#3D1E10] to-[#1A0B06]",
+    overlayGradient: "from-[#190C06] from-15% via-[#190C06]/90 via-48% to-transparent to-85%",
+    mobileOverlayGradient: "from-[#190C06] from-35% via-[#190C06]/85 via-65% to-transparent",
     badgeBg: "bg-[#C99A45]/20 text-[#E6C477] border-[#C99A45]/40",
-    btnGradient: "from-[#E6C477] via-[#C99A45] to-[#B88528]",
+    btnGradient: "from-[#E6C477] via-[#C99A45] to-[#B88528] text-stone-900",
     glowColor: "rgba(201,154,69,0.35)",
   },
   {
@@ -50,7 +51,8 @@ const promoBanners = [
     btnText: "Shop Home Decor",
     href: "/products?category=Home Decor",
     image: "/home-decor.jpg",
-    bgGradient: "from-[#1B281E] via-[#2A3D2D] to-[#121B14]",
+    overlayGradient: "from-[#0D1610] from-15% via-[#0D1610]/90 via-48% to-transparent to-85%",
+    mobileOverlayGradient: "from-[#0D1610] from-35% via-[#0D1610]/85 via-65% to-transparent",
     badgeBg: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
     btnGradient: "from-[#52B788] via-[#2D6A4F] to-[#1B4332] text-white",
     glowColor: "rgba(82,183,136,0.35)",
@@ -62,7 +64,8 @@ const promoBanners = [
     btnText: "Explore Culinary Art",
     href: "/products?category=Kitchen",
     image: "/kitchen.jpg",
-    bgGradient: "from-[#3B1713] via-[#521C16] to-[#240A07]",
+    overlayGradient: "from-[#1D0907] from-15% via-[#1D0907]/90 via-48% to-transparent to-85%",
+    mobileOverlayGradient: "from-[#1D0907] from-35% via-[#1D0907]/85 via-65% to-transparent",
     badgeBg: "bg-amber-500/20 text-amber-300 border-amber-500/40",
     btnGradient: "from-[#F4A261] via-[#E76F51] to-[#C84B31] text-white",
     glowColor: "rgba(231,111,81,0.35)",
@@ -206,62 +209,56 @@ export default function Home() {
             {promoBanners.map((banner, index) => (
               <SwiperSlide key={index}>
                 <div
-                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-[#E0D3BE]/60 dark:border-[#2C2018]/80 bg-gradient-to-r ${banner.bgGradient} flex flex-col md:flex-row items-center justify-between min-h-[360px] md:min-h-[390px]`}
+                  className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-[#E0D3BE]/60 dark:border-[#2C2018]/80 min-h-[360px] sm:min-h-[390px] md:h-[410px] flex items-center group"
                 >
-                  {/* Subtle decorative glow circles */}
-                  <div
-                    className="absolute -top-20 -left-20 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-40"
-                    style={{ background: banner.glowColor }}
-                  />
-                  <div
-                    className="absolute -bottom-20 right-1/3 w-80 h-80 rounded-full blur-3xl pointer-events-none opacity-30"
-                    style={{ background: banner.glowColor }}
-                  />
+                  {/* FULL-BLEED BACKGROUND PHOTO (Spans across entire banner, product on right) */}
+                  <div className="absolute inset-0 w-full h-full">
+                    <Image
+                      src={banner.image}
+                      alt={banner.title}
+                      fill
+                      sizes="100vw"
+                      priority={index === 0}
+                      className="object-cover object-right md:object-right group-hover:scale-105 transition-transform duration-1000 ease-out"
+                    />
+                  </div>
+
+                  {/* DESKTOP GRADIENT: Dark shadow on left where text sits -> smooth fade -> vibrant full-color photo on right */}
+                  <div className={`absolute inset-0 hidden md:block bg-gradient-to-r ${banner.overlayGradient}`} />
+
+                  {/* MOBILE GRADIENT: Dark on top where text sits -> fades down to show photo */}
+                  <div className={`absolute inset-0 md:hidden bg-gradient-to-b ${banner.mobileOverlayGradient}`} />
+
+                  {/* Subtle edge vignette */}
+                  <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/25 pointer-events-none" />
 
                   {/* LEFT CONTENT AREA */}
-                  <div className="relative z-10 w-full md:w-[54%] lg:w-[52%] p-5 sm:p-8 md:p-10 lg:p-12 flex flex-col justify-center items-start text-left">
+                  <div className="relative z-10 w-full md:w-[62%] lg:w-[56%] p-6 sm:p-10 md:p-12 lg:p-14 flex flex-col justify-center items-start text-left">
                     {/* Badge */}
                     <div className="mb-2.5 sm:mb-4">
-                      <span className={`inline-flex items-center gap-1.5 backdrop-blur-md text-[9px] sm:text-[11px] font-extrabold tracking-widest uppercase px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border shadow-sm ${banner.badgeBg}`}>
+                      <span className={`inline-flex items-center gap-1.5 backdrop-blur-md text-[9px] sm:text-[11px] font-extrabold tracking-widest uppercase px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border shadow-md ${banner.badgeBg}`}>
                         {banner.tag}
                       </span>
                     </div>
 
                     {/* Headline */}
-                    <h2 className="heading-display text-xl sm:text-3xl md:text-[34px] lg:text-[40px] text-white font-extrabold leading-[1.14] mb-2 sm:mb-3 drop-shadow-sm tracking-tight">
+                    <h2 className="heading-display text-xl sm:text-3xl md:text-[34px] lg:text-[40px] text-white font-extrabold leading-[1.14] mb-2 sm:mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)] tracking-tight">
                       {banner.title}
                     </h2>
 
                     {/* Subtitle / Description */}
-                    <p className="text-xs sm:text-[14px] text-stone-200/90 leading-relaxed mb-4 sm:mb-6 font-sans font-normal max-w-lg line-clamp-2 sm:line-clamp-none">
+                    <p className="text-xs sm:text-[14px] text-stone-200/95 leading-relaxed mb-4 sm:mb-6 font-sans font-normal max-w-lg line-clamp-2 sm:line-clamp-none drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]">
                       {banner.subtitle}
                     </p>
 
                     {/* CTA Button */}
                     <Link
                       href={banner.href}
-                      className={`inline-flex items-center gap-2 sm:gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full bg-gradient-to-r ${banner.btnGradient} text-stone-900 font-extrabold text-[11px] sm:text-[13px] tracking-wider uppercase transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 hover:shadow-2xl`}
+                      className={`inline-flex items-center gap-2 sm:gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-full bg-gradient-to-r ${banner.btnGradient} font-extrabold text-[11px] sm:text-[13px] tracking-wider uppercase transition-all duration-300 shadow-xl hover:scale-105 active:scale-95 hover:shadow-2xl`}
                     >
                       <span>{banner.btnText}</span>
                       <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </Link>
-                  </div>
-
-                  {/* RIGHT PHOTO AREA (Card with explicit height and clean shadow) */}
-                  <div className="relative z-10 w-full md:w-[46%] lg:w-[48%] p-4 sm:p-6 md:p-8 flex items-center justify-center shrink-0">
-                    <div className="relative w-full h-[220px] sm:h-[280px] md:h-[320px] lg:h-[340px] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 ring-1 ring-black/40 group/photo">
-                      <Image
-                        src={banner.image}
-                        alt={banner.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        priority={index === 0}
-                        className="object-cover object-center group-hover/photo:scale-108 transition-transform duration-700 ease-out"
-                      />
-                      {/* Soft vignette to blend inside banner */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-transparent hidden md:block" />
-                    </div>
                   </div>
                 </div>
               </SwiperSlide>
