@@ -448,7 +448,7 @@ export default function Home() {
           </div>
 
           {/* View All CTA */}
-          <div className="mt-14 flex flex-col items-center gap-3">
+          <div className="mt-7 sm:mt-8 flex flex-col items-center gap-2">
             <Link
               href="/products"
               className="btn-luxury-primary text-sm"
@@ -463,15 +463,15 @@ export default function Home() {
       {/* ══════════════════════════════════════════════
           6. CURATED LIVING — ASYMMETRIC BENTO GRID
           ══════════════════════════════════════════════ */}
-      <section className="w-full bg-white dark:bg-[#1A1410] py-10 sm:py-20 md:py-28 border-t border-stone-100 dark:border-[#2C2018]">
+      <section className="w-full bg-white dark:bg-[#1A1410] pt-6 pb-8 sm:pt-8 sm:pb-10 md:pt-9 md:pb-12 border-t border-stone-100 dark:border-[#2C2018]">
         <div className="max-w-[1400px] mx-auto px-3 sm:px-8">
 
-          <div className="text-center mb-8 sm:mb-14">
-            <p className="label-luxury text-[#7A4513] dark:text-[#DEB96A] font-extrabold mb-2 sm:mb-3">Curated Living Concept</p>
+          <div className="text-center mb-6 sm:mb-8">
+            <p className="label-luxury text-[#7A4513] dark:text-[#DEB96A] font-extrabold mb-1.5 sm:mb-2">Curated Living Concept</p>
             <h2 className="heading-display text-2xl sm:text-4xl md:text-5xl text-[#21150F] dark:text-[#F7F3EB]">
               Elevate Every Corner
             </h2>
-            <p className="text-[#5C4D42] dark:text-[#A09285] text-xs sm:text-sm mt-2 sm:mt-3 max-w-md mx-auto font-medium">
+            <p className="text-[#5C4D42] dark:text-[#A09285] text-xs sm:text-sm mt-1 sm:mt-2 max-w-md mx-auto font-medium">
               Signature artisan series tailored for the contemporary home and executive workspace.
             </p>
           </div>
@@ -529,7 +529,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════
           7. TRUST PILLARS — DARK LUXURY STRIP
           ══════════════════════════════════════════════ */}
-      <section className="w-full bg-[#21150F] py-8 sm:py-14 border-y border-[#38251C]">
+      <section className="w-full bg-[#21150F] py-5 sm:py-7 border-y border-[#38251C]">
         <div className="max-w-[1200px] mx-auto px-4 sm:px-10">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
             {[
@@ -555,7 +555,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════
           8. ARTISAN STORY — SPLIT EDITORIAL SECTION
           ══════════════════════════════════════════════ */}
-      <section className="w-full bg-white dark:bg-[#12100E] py-10 sm:py-20 md:py-28 border-t border-stone-100 dark:border-[#2C2018]">
+      <section className="w-full bg-white dark:bg-[#12100E] pt-6 pb-8 sm:pt-8 sm:pb-12 md:pt-10 md:pb-14 border-t border-stone-100 dark:border-[#2C2018]">
         <div className="max-w-[1400px] mx-auto px-3 sm:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
 

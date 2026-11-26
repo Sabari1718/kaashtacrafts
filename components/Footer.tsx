@@ -184,7 +184,7 @@ export default function Footer() {
             
             {/* Phone */}
             <a 
-              href="tel:+919092014442" 
+              href="tel:+918838098116" 
               className="flex items-center gap-2.5 text-xs text-[#EFE7DA]/90 hover:text-[#C69A4B] transition-colors group"
             >
               <div className="w-7 h-7 rounded-lg bg-[#C69A4B]/15 group-hover:bg-[#C69A4B] group-hover:text-[#1A110B] flex items-center justify-center shrink-0 text-[#C69A4B] transition-colors border border-[#C69A4B]/30">
@@ -192,13 +192,13 @@ export default function Footer() {
               </div>
               <div className="flex flex-col">
                 <span className="text-[10px] text-[#A3968A]">Direct Line / WhatsApp</span>
-                <span className="font-mono font-medium text-xs text-[#F8F5EF] group-hover:text-[#C69A4B] transition-colors">+91 90920 14442</span>
+                <span className="font-mono font-medium text-xs text-[#F8F5EF] group-hover:text-[#C69A4B] transition-colors">+91 88380 98116</span>
               </div>
             </a>
 
             {/* Email */}
             <a 
-              href="mailto:kalaivanissd@gmail.com" 
+              href="mailto:kaashtacrafts@gmail.com" 
               className="flex items-center gap-2.5 text-xs text-[#EFE7DA]/90 hover:text-[#C69A4B] transition-colors group"
             >
               <div className="w-7 h-7 rounded-lg bg-[#C69A4B]/15 group-hover:bg-[#C69A4B] group-hover:text-[#1A110B] flex items-center justify-center shrink-0 text-[#C69A4B] transition-colors border border-[#C69A4B]/30">
@@ -206,7 +206,7 @@ export default function Footer() {
               </div>
               <div className="flex flex-col">
                 <span className="text-[10px] text-[#A3968A]">Official Email</span>
-                <span className="font-sans font-medium text-xs text-[#F8F5EF] group-hover:text-[#C69A4B] transition-colors">kalaivanissd@gmail.com</span>
+                <span className="font-sans font-medium text-xs text-[#F8F5EF] group-hover:text-[#C69A4B] transition-colors">kaashtacrafts@gmail.com</span>
               </div>
             </a>
 

@@ -87,10 +87,10 @@ export default function ContactPage() {
       
       toast.success("Connecting with our woodcraft team on WhatsApp...");
       setIsSubmitted(true);
-      window.open(`https://wa.me/919092014442?text=${waText}`, "_blank");
+      window.open(`https://wa.me/918838098116?text=${waText}`, "_blank");
     } catch (err) {
       toast.error("Failed to submit inquiry, opening WhatsApp directly.");
-      window.open(`https://wa.me/919092014442`, "_blank");
+      window.open(`https://wa.me/918838098116`, "_blank");
     } finally {
       setIsSubmitting(false);
     }
@@ -130,10 +130,10 @@ export default function ContactPage() {
 
       toast.success("Connecting your bulk inquiry with our artisan studio on WhatsApp!");
       setIsSubmitted(true);
-      window.open(`https://wa.me/919092014442?text=${waText}`, "_blank");
+      window.open(`https://wa.me/918838098116?text=${waText}`, "_blank");
     } catch (err) {
       toast.error("Failed to submit inquiry, opening WhatsApp directly.");
-      window.open(`https://wa.me/919092014442`, "_blank");
+      window.open(`https://wa.me/918838098116`, "_blank");
     } finally {
       setIsSubmitting(false);
     }
@@ -172,14 +172,14 @@ export default function ContactPage() {
                 Direct Phone Line
               </span>
               <h3 className="text-lg sm:text-xl font-bold font-mono text-[#21130E] dark:text-[#F8F5EF] mt-1 mb-2">
-                +91 90920 14442
+                +91 88380 98116
               </h3>
               <p className="text-xs text-[#7A695C] dark:text-[#9E8E81] leading-relaxed">
                 Instant calling for order assistance, bespoke woodcraft queries, and corporate gifting.
               </p>
             </div>
             <a
-              href="tel:+919092014442"
+              href="tel:+918838098116"
               className="mt-6 w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 active:scale-95 text-white font-bold text-xs uppercase tracking-wider text-center shadow-md shadow-blue-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <PhoneCall className="w-4 h-4" />
@@ -197,14 +197,14 @@ export default function ContactPage() {
                 WhatsApp Support
               </span>
               <h3 className="text-lg sm:text-xl font-bold font-mono text-[#21130E] dark:text-[#F8F5EF] mt-1 mb-2">
-                +91 90920 14442
+                +91 88380 98116
               </h3>
               <p className="text-xs text-[#7A695C] dark:text-[#9E8E81] leading-relaxed">
                 Fast chat, live artisan carving photos, custom engraving previews, and instant price quotes.
               </p>
             </div>
             <a
-              href="https://wa.me/919092014442?text=Hi%20Kaashta%20Crafts,%20I%20would%20like%20to%20inquire%20about%20your%20handcrafted%20wooden%20products."
+              href="https://wa.me/918838098116?text=Hi%20Kaashta%20Crafts,%20I%20would%20like%20to%20inquire%20about%20your%20handcrafted%20wooden%20products."
               target="_blank"
               rel="noopener noreferrer"
               className="mt-6 w-full py-2.5 px-4 rounded-xl bg-[#25D366] hover:bg-[#20BA5A] active:scale-95 text-white font-bold text-xs uppercase tracking-wider text-center shadow-md shadow-emerald-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
@@ -224,14 +224,14 @@ export default function ContactPage() {
                 Official Email
               </span>
               <h3 className="text-base sm:text-lg font-bold text-[#21130E] dark:text-[#F8F5EF] mt-1 mb-2 truncate">
-                kalaivanissd@gmail.com
+                kaashtacrafts@gmail.com
               </h3>
               <p className="text-xs text-[#7A695C] dark:text-[#9E8E81] leading-relaxed">
                 For formal purchase orders, institutional procurement, and custom design briefs.
               </p>
             </div>
             <a
-              href="mailto:kalaivanissd@gmail.com"
+              href="mailto:kaashtacrafts@gmail.com"
               className="mt-6 w-full py-2.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 active:scale-95 text-white font-bold text-xs uppercase tracking-wider text-center shadow-md shadow-purple-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <Mail className="w-4 h-4" />
