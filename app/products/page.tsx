@@ -209,25 +209,8 @@ function ProductsContent() {
             </p>
           </div>
           
-          {/* Controls: Search, Filter Button & Sort */}
-          <div className="flex flex-wrap w-full md:w-auto items-center gap-2.5 sm:gap-3">
-            {/* Search Input */}
-            <div className="relative flex-grow sm:flex-grow-0 sm:w-64 lg:w-72">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7A6E63] dark:text-[#A3988C] w-4 h-4" />
-              <input 
-                type="text" 
-                placeholder="Search pieces..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    router.push(`/products?search=${encodeURIComponent(searchQuery)}${selectedCategory !== 'All' ? `&category=${selectedCategory}` : ''}`);
-                  }
-                }}
-                className="w-full pl-10 pr-4 py-2 rounded-full border-2 border-stone-200 dark:border-[#C49A50]/25 bg-white dark:bg-[#14100D] focus:outline-none focus:border-[#C99A45] focus:dark:border-[#E2BA69] focus:ring-2 focus:ring-[#C99A45]/20 text-[#21150F] dark:text-[#FAF6EE] placeholder:text-[#7A6E63]/70 dark:placeholder:text-[#A3988C]/60 text-xs sm:text-sm transition-all shadow-xs"
-              />
-            </div>
-
+          {/* Controls: Filter Button & Sort */}
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
             {/* Filter & Sort Trigger Button */}
             <button 
               onClick={() => setIsFilterDrawerOpen(true)}
