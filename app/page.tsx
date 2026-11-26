@@ -179,34 +179,34 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-col w-full overflow-x-hidden bg-white dark:bg-[#12100E]">
+    <main className="flex flex-col w-full overflow-x-hidden bg-white dark:bg-[#0C0A09]">
 
       {/* ══════════════════════════════════════════════
           1. CATEGORY NAVIGATION BAR (MAJOR LUXURY REDESIGN)
           ══════════════════════════════════════════════ */}
-      <section className="w-full bg-white dark:bg-[#1A1410]/95 backdrop-blur-md border-b border-stone-200/80 dark:border-[#C99A45]/20 shadow-2xs">
+      <section className="w-full bg-white dark:bg-[#120F0D]/95 backdrop-blur-md border-b border-stone-200/80 dark:border-[#C49A50]/20 shadow-2xs">
         <div className="max-w-[1440px] mx-auto px-2 sm:px-6 py-2 sm:py-2.5 overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-2 sm:gap-3.5 min-w-max mx-auto justify-start sm:justify-center">
             {sortedTopCategories.map((cat: any, idx) => (
               <Link
                 href={cat.href}
                 key={idx}
-                className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl bg-white dark:bg-[#1E130E] border-2 border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-[#21130E] dark:hover:bg-[#21130E] shadow-sm hover:shadow-[0_10px_25px_-3px_rgba(33,19,14,0.4),0_0_15px_rgba(201,154,69,0.4)] hover:-translate-y-1.5 active:translate-y-0 transition-all duration-250 ease-out cursor-pointer overflow-hidden"
+                className="group relative flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl bg-white dark:bg-[#14100D] border-2 border-[#E0D3BE] dark:border-[#C49A50]/25 hover:border-[#C99A45] hover:dark:border-[#D4AF37] hover:bg-[#21130E] dark:hover:bg-[#1E1712] shadow-sm hover:shadow-[0_10px_25px_-3px_rgba(0,0,0,0.6),0_0_15px_rgba(212,175,55,0.35)] hover:-translate-y-1.5 active:translate-y-0 transition-all duration-250 ease-out cursor-pointer overflow-hidden"
               >
                 {/* Active/Hover Gold Accent Bar on Bottom */}
                 <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[#E6C477] via-[#C99A45] to-[#E6C477] opacity-0 group-hover:opacity-100 transition-opacity duration-250 shadow-[0_0_8px_#C99A45]" />
 
                 {/* Scaled Icon Image */}
-                <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl overflow-hidden ring-1.5 sm:ring-2 ring-[#E0D3BE] dark:ring-[#38251A] group-hover:ring-[#E6C477] group-hover:scale-115 transition-all duration-250 shrink-0 shadow-xs">
+                <div className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl overflow-hidden ring-1.5 sm:ring-2 ring-[#E0D3BE] dark:ring-[#C49A50]/30 group-hover:ring-[#E6C477] group-hover:dark:ring-[#D4AF37] group-hover:scale-115 transition-all duration-250 shrink-0 shadow-xs">
                   <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-125 transition-transform duration-500 ease-out" />
                 </div>
 
                 {/* Text Content */}
                 <div className="flex flex-col leading-none">
-                  <span className="text-[11.5px] sm:text-[12.5px] font-black text-[#21130E] dark:text-[#F7F3EB] group-hover:text-[#F7F3EB] dark:group-hover:text-[#E6C477] transition-colors tracking-tight font-sans">
+                  <span className="text-[11.5px] sm:text-[12.5px] font-black text-[#21130E] dark:text-[#FAF6EE] group-hover:text-[#F7F3EB] dark:group-hover:text-[#D4AF37] transition-colors tracking-tight font-sans">
                     {cat.name}
                   </span>
-                  <span className="text-[8px] sm:text-[8.5px] text-[#7A6E63] dark:text-[#A09285] group-hover:text-[#E6C477] dark:group-hover:text-[#E6C477] tracking-wider uppercase mt-0.5 sm:mt-1 font-extrabold transition-colors font-sans">
+                  <span className="text-[8px] sm:text-[8.5px] text-[#7A6E63] dark:text-[#A3988C] group-hover:text-[#E6C477] dark:group-hover:text-[#D4AF37] tracking-wider uppercase mt-0.5 sm:mt-1 font-extrabold transition-colors font-sans">
                     {cat.tag}
                   </span>
                 </div>
@@ -220,7 +220,7 @@ export default function Home() {
           2. PROMOTIONAL BANNER CAROUSEL (SPLIT LAYOUT: LEFT TEXT, RIGHT PHOTO)
              Single full-width rich banner with smooth transitions
           ══════════════════════════════════════════════ */}
-      <section className="w-full py-3 sm:py-6 bg-white dark:bg-[#12100E] border-b border-stone-200/70 dark:border-[#2C2018]/40">
+      <section className="w-full py-3 sm:py-6 bg-white dark:bg-[#0C0A09] border-b border-stone-200/70 dark:border-[#C49A50]/20">
         <div className="max-w-[1440px] mx-auto px-3 sm:px-6 relative group">
           <Swiper
             modules={[Autoplay, Navigation]}
@@ -243,7 +243,7 @@ export default function Home() {
             {promoBanners.map((banner, index) => (
               <SwiperSlide key={index}>
                 <div
-                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-[#E0D3BE]/60 dark:border-[#2C2018]/80 bg-gradient-to-r ${banner.bgGradient} flex flex-col md:flex-row items-center justify-between min-h-[360px] md:min-h-[390px]`}
+                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-[#E0D3BE]/60 dark:border-[#C49A50]/30 bg-gradient-to-r ${banner.bgGradient} flex flex-col md:flex-row items-center justify-between min-h-[360px] md:min-h-[390px]`}
                 >
                   {/* Subtle decorative glow circles */}
                   <div

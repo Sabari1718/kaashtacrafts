@@ -191,20 +191,20 @@ function ProductsContent() {
     (searchQuery ? 1 : 0);
 
   return (
-    <main className="flex flex-col w-full min-h-screen bg-paper dark:bg-[#12100E] text-[#21150F] dark:text-[#F7F3EB] pt-6 pb-24 font-sans transition-colors duration-300">
+    <main className="flex flex-col w-full min-h-screen bg-paper dark:bg-[#0C0A09] text-[#21150F] dark:text-[#FAF6EE] pt-6 pb-24 font-sans transition-colors duration-300">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         
         {/* Top Header & Action Bar */}
-        <div className="relative z-30 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 bg-white/80 dark:bg-[#1E1510]/80 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-xs border border-stone-200 dark:border-[#2C2018]">
+        <div className="relative z-30 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 bg-white/80 dark:bg-[#120F0D]/90 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-xs border border-stone-200 dark:border-[#C49A50]/25">
           <div>
             <div className="flex items-center gap-2 text-[#C69A4B] text-[11px] font-bold uppercase tracking-[0.2em] mb-1">
               <Sparkles className="w-3.5 h-3.5 text-[#C69A4B]" />
               <span>Artisan Catalogue</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold font-playfair text-[#21150F] dark:text-[#F7F3EB] tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold font-playfair text-[#21150F] dark:text-[#FAF6EE] tracking-tight">
               Curated Wooden Masterpieces
             </h1>
-            <p className="text-[#7A6E63] dark:text-[#A09285] text-xs sm:text-sm mt-0.5 font-medium">
+            <p className="text-[#7A6E63] dark:text-[#A3988C] text-xs sm:text-sm mt-0.5 font-medium">
               Showing {filteredProducts.length} handcrafted pieces {selectedCategory !== "All" && `in ${selectedCategory}`}
             </p>
           </div>
@@ -213,7 +213,7 @@ function ProductsContent() {
           <div className="flex flex-wrap w-full md:w-auto items-center gap-2.5 sm:gap-3">
             {/* Search Input */}
             <div className="relative flex-grow sm:flex-grow-0 sm:w-64 lg:w-72">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7A6E63] w-4 h-4" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7A6E63] dark:text-[#A3988C] w-4 h-4" />
               <input 
                 type="text" 
                 placeholder="Search pieces..." 
@@ -224,14 +224,14 @@ function ProductsContent() {
                     router.push(`/products?search=${encodeURIComponent(searchQuery)}${selectedCategory !== 'All' ? `&category=${selectedCategory}` : ''}`);
                   }
                 }}
-                className="w-full pl-10 pr-4 py-2 rounded-full border-2 border-stone-200 dark:border-[#38251A] bg-white dark:bg-[#1E130E] focus:outline-none focus:border-[#C99A45] focus:ring-2 focus:ring-[#C99A45]/20 text-[#21150F] dark:text-[#F7F3EB] placeholder:text-[#7A6E63]/70 text-xs sm:text-sm transition-all shadow-xs"
+                className="w-full pl-10 pr-4 py-2 rounded-full border-2 border-stone-200 dark:border-[#C49A50]/25 bg-white dark:bg-[#14100D] focus:outline-none focus:border-[#C99A45] focus:dark:border-[#E2BA69] focus:ring-2 focus:ring-[#C99A45]/20 text-[#21150F] dark:text-[#FAF6EE] placeholder:text-[#7A6E63]/70 dark:placeholder:text-[#A3988C]/60 text-xs sm:text-sm transition-all shadow-xs"
               />
             </div>
 
             {/* Filter & Sort Trigger Button */}
             <button 
               onClick={() => setIsFilterDrawerOpen(true)}
-              className="inline-flex items-center gap-2 px-4.5 py-2 rounded-full bg-[#21130E] hover:bg-[#38251A] dark:bg-[#C99A45] dark:hover:bg-[#DEB96A] text-[#F7F3EB] dark:text-[#21130E] text-xs font-black uppercase tracking-wider transition-all shadow-sm hover:shadow-md cursor-pointer border border-[#C99A45]/30 hover:scale-102 active:scale-95"
+              className="inline-flex items-center gap-2 px-4.5 py-2 rounded-full bg-[#21130E] hover:bg-[#38251A] dark:bg-gradient-to-r dark:from-[#C49A50] dark:to-[#D4AF37] dark:hover:from-[#E2BA69] dark:hover:to-[#C49A50] text-[#F7F3EB] dark:text-[#0C0A09] text-xs font-black uppercase tracking-wider transition-all shadow-sm hover:shadow-md cursor-pointer border border-[#C99A45]/30 hover:scale-102 active:scale-95"
             >
               <SlidersHorizontal className="w-3.5 h-3.5" />
               <span>Filters</span>
@@ -247,16 +247,16 @@ function ProductsContent() {
               <button
                 type="button"
                 onClick={() => setIsSortOpen(!isSortOpen)}
-                className="flex items-center gap-2 bg-white dark:bg-[#1E130E] hover:bg-[#FBF9F6] dark:hover:bg-[#261710] px-4 py-2 rounded-full border-2 border-stone-200 dark:border-[#38251A] hover:border-[#C99A45] shadow-xs hover:shadow-md transition-all text-xs sm:text-sm font-sans cursor-pointer group"
+                className="flex items-center gap-2 bg-white dark:bg-[#14100D] hover:bg-[#FBF9F6] dark:hover:bg-[#1C1612] px-4 py-2 rounded-full border-2 border-stone-200 dark:border-[#C49A50]/25 hover:border-[#C99A45] hover:dark:border-[#D4AF37] shadow-xs hover:shadow-md transition-all text-xs sm:text-sm font-sans cursor-pointer group"
               >
-                <span className="text-[#7A6E63] text-xs font-semibold">Sort:</span>
-                <span className="font-extrabold text-[#21130E] dark:text-[#F7F3EB] tracking-tight">{currentSortLabel}</span>
+                <span className="text-[#7A6E63] dark:text-[#A3988C] text-xs font-semibold">Sort:</span>
+                <span className="font-extrabold text-[#21130E] dark:text-[#FAF6EE] tracking-tight">{currentSortLabel}</span>
                 <ChevronDown className={`w-3.5 h-3.5 text-[#C99A45] transition-transform duration-200 ${isSortOpen ? "rotate-180" : ""}`} />
               </button>
 
               {isSortOpen && (
-                <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-[#1C140F] rounded-2xl shadow-[0_16px_40px_rgba(33,19,14,0.25)] border-2 border-[#C99A45]/40 p-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                  <div className="px-3 py-1.5 border-b border-stone-100 dark:border-[#2C2018] mb-1">
+                <div className="absolute right-0 top-full mt-2 w-56 bg-white dark:bg-[#14100D] rounded-2xl shadow-[0_16px_40px_rgba(0,0,0,0.7)] border-2 border-[#C99A45]/40 dark:border-[#C49A50]/35 p-1.5 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <div className="px-3 py-1.5 border-b border-stone-100 dark:border-[#C49A50]/20 mb-1">
                     <p className="text-[9px] font-black uppercase tracking-widest text-[#8C5819] dark:text-[#DEB96A]">Sort Masterpieces</p>
                   </div>
                   {sortOptions.map((opt) => {
@@ -271,8 +271,8 @@ function ProductsContent() {
                         }}
                         className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
                           isSelected
-                            ? "bg-[#21130E] text-[#F7F3EB] dark:bg-[#261710] dark:text-[#E6C477] shadow-xs"
-                            : "text-[#21130E] dark:text-[#EAE5DD] hover:bg-stone-100 dark:hover:bg-[#2C2018] hover:text-[#8C5819]"
+                            ? "bg-[#21130E] text-[#F7F3EB] dark:bg-[#1E1712] dark:text-[#E2BA69] shadow-xs"
+                            : "text-[#21130E] dark:text-[#D8CFBF] hover:bg-stone-100 dark:hover:bg-[#1E1712] hover:text-[#8C5819] dark:hover:text-[#FAF6EE]"
                         }`}
                       >
                         <span>{opt.label}</span>
@@ -297,12 +297,12 @@ function ProductsContent() {
               }}
               className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider whitespace-nowrap cursor-pointer transition-all duration-200 font-sans shrink-0 flex items-center gap-2 ${
                 selectedCategory === category
-                  ? "bg-[#21130E] text-white dark:text-[#E6C477] border-2 border-[#C99A45] shadow-sm ring-2 ring-[#C99A45]/30"
-                  : "bg-white dark:bg-[#1E130E] text-[#21130E] dark:text-[#EDE4D6] border-2 border-[#E0D3BE] dark:border-[#38251A] hover:border-[#C99A45] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#21130E] dark:hover:text-[#E6C477] hover:shadow-sm"
+                  ? "bg-[#21130E] text-white dark:bg-gradient-to-r dark:from-[#C49A50] dark:via-[#D4AF37] dark:to-[#B88636] dark:text-[#0C0A09] dark:border-transparent font-black shadow-sm ring-2 ring-[#C99A45]/30 dark:ring-[#D4AF37]/50"
+                  : "bg-white dark:bg-[#14100D] text-[#21130E] dark:text-[#D8CFBF] border-2 border-[#E0D3BE] dark:border-[#C49A50]/20 hover:border-[#C99A45] hover:dark:border-[#D4AF37] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#1E1712] dark:hover:text-[#FAF6EE] hover:shadow-sm"
               }`}
             >
               {selectedCategory === category && (
-                <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#E6C477] to-[#C99A45] shadow-[0_0_8px_#C99A45] animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#E6C477] to-[#C99A45] dark:from-[#0C0A09] dark:to-[#1A1410] shadow-[0_0_8px_#C99A45] animate-pulse" />
               )}
               <span>{category}</span>
             </button>
@@ -321,7 +321,7 @@ function ProductsContent() {
         {/* Full-Width Balanced Product Grid (NO PERMANENT SIDEBAR) */}
         <div className="w-full">
           {isLoading ? (
-            <div className="py-32 flex flex-col items-center justify-center bg-white/70 dark:bg-[#1E1510]/70 rounded-3xl border border-[#E0D3BE] dark:border-[#2C2018] shadow-2xs">
+            <div className="py-32 flex flex-col items-center justify-center bg-white/70 dark:bg-[#14100D]/70 rounded-3xl border border-[#E0D3BE] dark:border-[#C49A50]/25 shadow-2xs">
               <Loader2 className="w-10 h-10 text-[#C69A4B] animate-spin mb-4" />
               <p className="text-[#7A6E63] font-medium text-sm">Gathering Masterpieces...</p>
             </div>
@@ -336,12 +336,12 @@ function ProductsContent() {
                 return (
                   <div
                     key={productId}
-                    className="product-card-luxury dark:bg-[#1E1510] group flex flex-col"
+                    className="product-card-luxury group flex flex-col"
                   >
                     {/* Product Image Frame */}
                     <Link
                       href={`/products/${productId}`}
-                      className="block relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-b from-[#EDE5D8] to-[#E0D3BE] dark:from-[#261D15] dark:to-[#1E1510]"
+                      className="block relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-b from-[#EDE5D8] to-[#E0D3BE] dark:from-[#181310] dark:to-[#0D0A08]"
                     >
                       <Image 
                         src={product.image} 
@@ -355,7 +355,7 @@ function ProductsContent() {
 
                       {/* Discount Badge */}
                       {discount > 0 && (
-                        <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 bg-[#21150F] text-[#DEB96A] text-[9px] sm:text-[10px] font-black px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full tracking-wider uppercase shadow-xs">
+                        <div className="absolute top-2.5 left-2.5 sm:top-3 sm:left-3 bg-[#21150F] dark:bg-[#0C0A09] text-[#DEB96A] dark:text-[#E2BA69] border border-transparent dark:border-[#C49A50]/30 text-[9px] sm:text-[10px] font-black px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full tracking-wider uppercase shadow-xs">
                           −{discount}%
                         </div>
                       )}
@@ -368,14 +368,14 @@ function ProductsContent() {
                           toast.success(isInWishlist(productId) ? "Removed from Wishlist" : "Saved to Wishlist");
                         }}
                         aria-label="Toggle Wishlist"
-                        className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 bg-white/90 dark:bg-[#1E1510]/90 backdrop-blur w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center hover:scale-110 shadow-xs transition-all z-10 cursor-pointer border border-[#E0D3BE]/50"
+                        className="absolute top-2.5 right-2.5 sm:top-3 sm:right-3 bg-white/90 dark:bg-[#14100D]/90 backdrop-blur w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center hover:scale-110 shadow-xs transition-all z-10 cursor-pointer border border-[#E0D3BE]/50 dark:border-[#C49A50]/30"
                       >
-                        <Heart className={`w-3.5 h-3.5 transition-colors ${isSaved ? "fill-red-500 text-red-500" : "text-[#21150F] dark:text-[#F7F3EB] hover:text-red-500"}`} />
+                        <Heart className={`w-3.5 h-3.5 transition-colors ${isSaved ? "fill-red-500 text-red-500" : "text-[#21150F] dark:text-[#D8CFBF] hover:text-red-500"}`} />
                       </button>
                       
                       {!product.inStock && (
-                        <div className="absolute inset-0 bg-[#21150F]/65 flex items-center justify-center backdrop-blur-[2px]">
-                          <span className="bg-white dark:bg-[#1E1510] px-4 py-1.5 rounded-full font-bold text-[#21150F] dark:text-[#F7F3EB] tracking-widest text-[10px] uppercase shadow-md">Sold Out</span>
+                        <div className="absolute inset-0 bg-[#21150F]/65 dark:bg-black/75 flex items-center justify-center backdrop-blur-[2px]">
+                          <span className="bg-white dark:bg-[#14100D] dark:border dark:border-[#C49A50]/30 px-4 py-1.5 rounded-full font-bold text-[#21150F] dark:text-[#FAF6EE] tracking-widest text-[10px] uppercase shadow-md">Sold Out</span>
                         </div>
                       )}
                     </Link>
@@ -387,7 +387,7 @@ function ProductsContent() {
                       </div>
 
                       <Link href={`/products/${productId}`}>
-                        <h3 className="font-playfair font-bold text-xs sm:text-[15px] text-[#21150F] dark:text-[#F7F3EB] leading-tight mb-1.5 line-clamp-1 group-hover:text-[#38251C] dark:group-hover:text-[#DEB96A] transition-colors">
+                        <h3 className="font-playfair font-bold text-xs sm:text-[15px] text-[#21150F] dark:text-[#FAF6EE] leading-tight mb-1.5 line-clamp-1 group-hover:text-[#38251C] dark:group-hover:text-[#DEB96A] transition-colors">
                           {product.name}
                         </h3>
                       </Link>
@@ -395,23 +395,23 @@ function ProductsContent() {
                       {/* Rating */}
                       <div className="flex items-center gap-1.5 mb-2.5">
                         <Star className="w-3 h-3 fill-[#C69A4B] text-[#C69A4B]" />
-                        <span className="text-[11px] font-bold text-[#21150F] dark:text-[#F7F3EB]">
+                        <span className="text-[11px] font-bold text-[#21150F] dark:text-[#FAF6EE]">
                           {product.rating || 4.9}
                         </span>
-                        <span className="text-[10px] text-[#7A6E63]">
+                        <span className="text-[10px] text-[#7A6E63] dark:text-[#A3988C]">
                           ({product.numReviews || 24})
                         </span>
                       </div>
                       
                       {/* Price & Add to Cart */}
-                      <div className="mt-auto flex items-center justify-between pt-2.5 border-t border-[#E0D3BE]/60 dark:border-[#2C2018]/60">
+                      <div className="mt-auto flex items-center justify-between pt-2.5 border-t border-[#E0D3BE]/60 dark:border-[#C49A50]/20">
                         <div>
                           <div className="flex items-baseline gap-1.5">
-                            <span className="font-sans font-black text-base sm:text-lg text-[#21130E] dark:text-[#F7F3EB] tracking-tight">
+                            <span className="font-sans font-black text-base sm:text-lg text-[#21130E] dark:text-[#FAF6EE] tracking-tight">
                               ₹{product.price}
                             </span>
                             {origPrice && (
-                              <span className="text-[10px] sm:text-[11px] font-sans font-semibold text-[#7A6E63] line-through">
+                              <span className="text-[10px] sm:text-[11px] font-sans font-semibold text-[#7A6E63] dark:text-[#A3988C] line-through">
                                 ₹{origPrice}
                               </span>
                             )}
@@ -427,7 +427,7 @@ function ProductsContent() {
                           }}
                           disabled={!product.inStock}
                           aria-label="Add to cart"
-                          className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#21130E] hover:bg-[#38251A] dark:bg-[#C99A45] dark:hover:bg-[#E6C477] disabled:bg-stone-200 dark:disabled:bg-stone-800 disabled:text-stone-400 text-[#F7F3EB] dark:text-[#21130E] flex items-center justify-center transition-all shadow-xs hover:shadow-md hover:scale-105 active:scale-95 cursor-pointer"
+                          className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-[#21130E] hover:bg-[#38251A] dark:bg-gradient-to-r dark:from-[#C49A50] dark:to-[#D4AF37] dark:hover:from-[#E2BA69] dark:hover:to-[#C49A50] disabled:bg-stone-200 dark:disabled:bg-stone-800 disabled:text-stone-400 text-[#F7F3EB] dark:text-[#0C0A09] flex items-center justify-center transition-all shadow-xs hover:shadow-md hover:scale-105 active:scale-95 cursor-pointer"
                         >
                           <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         </button>
@@ -438,11 +438,11 @@ function ProductsContent() {
               })}
             </div>
           ) : (
-            <div className="py-24 flex flex-col items-center justify-center text-center bg-white/70 dark:bg-[#1E1510]/70 rounded-3xl border border-[#E0D3BE] dark:border-[#2C2018] shadow-2xs">
-              <div className="w-14 h-14 bg-[#EDE5D8]/60 dark:bg-[#2C2018] rounded-full flex items-center justify-center mb-3">
-                <Search className="w-5 h-5 text-[#7A6E63]" />
+            <div className="py-24 flex flex-col items-center justify-center text-center bg-white/70 dark:bg-[#14100D]/70 rounded-3xl border border-[#E0D3BE] dark:border-[#C49A50]/25 shadow-2xs">
+              <div className="w-14 h-14 bg-[#EDE5D8]/60 dark:bg-[#1E1712] rounded-full flex items-center justify-center mb-3">
+                <Search className="w-5 h-5 text-[#7A6E63] dark:text-[#A3988C]" />
               </div>
-              <h3 className="text-lg font-bold font-playfair text-[#21150F] dark:text-[#F7F3EB] mb-1.5">No matching pieces</h3>
+              <h3 className="text-lg font-bold font-playfair text-[#21150F] dark:text-[#FAF6EE] mb-1.5">No matching pieces</h3>
               <p className="text-[#7A6E63] max-w-sm mb-5 text-xs">
                 Try adjusting your filters or search query to find your desired woodcraft.
               </p>
@@ -469,16 +469,16 @@ function ProductsContent() {
           />
 
           {/* Drawer Body */}
-          <div className="relative w-full max-w-md bg-[#F7F3EB] dark:bg-[#1A1410] h-full shadow-2xl flex flex-col z-50 overflow-hidden border-l border-[#E0D3BE] dark:border-[#2C2018] animate-in slide-in-from-right duration-300">
+          <div className="relative w-full max-w-md bg-[#F7F3EB] dark:bg-[#0C0A09] h-full shadow-2xl flex flex-col z-50 overflow-hidden border-l border-[#E0D3BE] dark:border-[#C49A50]/25 animate-in slide-in-from-right duration-300">
             {/* Drawer Header */}
-            <div className="p-5 border-b border-[#E0D3BE] dark:border-[#2C2018] flex items-center justify-between bg-white/60 dark:bg-[#21150F]/60">
+            <div className="p-5 border-b border-[#E0D3BE] dark:border-[#C49A50]/20 flex items-center justify-between bg-white/60 dark:bg-[#14100D]/90">
               <div className="flex items-center gap-2">
                 <SlidersHorizontal className="w-4 h-4 text-[#C69A4B]" />
-                <h2 className="text-lg font-bold font-playfair text-[#21150F] dark:text-[#F7F3EB]">Filter &amp; Refine</h2>
+                <h2 className="text-lg font-bold font-playfair text-[#21150F] dark:text-[#FAF6EE]">Filter &amp; Refine</h2>
               </div>
               <button 
                 onClick={() => setIsFilterDrawerOpen(false)}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-[#7A6E63] hover:text-[#21150F] hover:bg-[#EDE5D8] dark:hover:bg-[#2C2018] transition-colors"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-[#7A6E63] dark:text-[#A3988C] hover:text-[#21150F] hover:bg-[#EDE5D8] dark:hover:bg-[#1E1712] transition-colors"
                 aria-label="Close Filter Drawer"
               >
                 <X className="w-4 h-4" />
@@ -502,11 +502,11 @@ function ProductsContent() {
                       }}
                       className={`text-left flex items-center gap-3 text-xs sm:text-sm py-2 px-3 rounded-xl transition-all cursor-pointer ${
                         selectedCategory === category 
-                          ? "bg-[#21150F] text-[#F7F3EB] dark:bg-[#C69A4B] dark:text-[#21150F] font-bold" 
-                          : "text-[#7A6E63] dark:text-[#A09285] hover:bg-[#EDE5D8]/50 dark:hover:bg-[#2C2018]/50"
+                          ? "bg-[#21150F] text-[#F7F3EB] dark:bg-gradient-to-r dark:from-[#C49A50] dark:to-[#D4AF37] dark:text-[#0C0A09] font-bold shadow-sm" 
+                          : "text-[#7A6E63] dark:text-[#D8CFBF] hover:bg-[#EDE5D8]/50 dark:hover:bg-[#1E1712]"
                       }`}
                     >
-                      <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${selectedCategory === category ? "border-[#C69A4B] bg-[#C69A4B] text-[#21150F]" : "border-[#E0D3BE] dark:border-[#2C2018]"}`}>
+                      <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${selectedCategory === category ? "border-[#C69A4B] bg-[#C69A4B] text-[#21150F]" : "border-[#E0D3BE] dark:border-[#C49A50]/25"}`}>
                         {selectedCategory === category && <Check className="w-3 h-3 stroke-[3]" />}
                       </div>
                       {category}

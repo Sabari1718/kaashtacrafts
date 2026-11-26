@@ -23,16 +23,16 @@
 }
 
 .dark {
-  --background:  #12100E;
-  --foreground:  #F7F3EB;
-  --ivory:       #1A1410;
-  --cream:       #231C15;
-  --parchment:   #2C2318;
-  --espresso:    #F7F3EB;
-  --walnut:      #C69A4B;
-  --gold:        #DEB96A;
-  --gold-light:  #F0D9A8;
-  --warmgrey:    #A09285;
+  --background:  #0C0A09;
+  --foreground:  #FAF6EE;
+  --ivory:       #14100D;
+  --cream:       #1A1511;
+  --parchment:   #221B16;
+  --espresso:    #FAF6EE;
+  --walnut:      #D4AF37;
+  --gold:        #E2BA69;
+  --gold-light:  #F5E2B3;
+  --warmgrey:    #A3988C;
 }
 
 @theme inline {
@@ -116,7 +116,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible { outline: none;
 }
 
 .dark .text-gold-gradient {
-  background: linear-gradient(135deg, #F0D9A8 0%, #DEB96A 30%, #C69A4B 65%, #A67C2E 100%);
+  background: linear-gradient(135deg, #FFF0D4 0%, #F5E2B3 25%, #E2BA69 50%, #C49A50 80%, #A67C2E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -132,7 +132,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible { outline: none;
 }
 
 .dark .bg-paper {
-  background-color: #12100E;
+  background-color: #0C0A09;
 }
 
 /* Deep espresso with grain */
@@ -148,7 +148,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible { outline: none;
 }
 
 .dark .bg-natural {
-  background-color: #1A1410;
+  background-color: #14100D;
 }
 
 /* ══════════════════════════════════════════
@@ -171,8 +171,15 @@ input:focus, select:focus, textarea:focus, button:focus-visible { outline: none;
 }
 
 .dark .product-card-luxury {
-  background: #1E1510;
-  border-color: rgba(198,154,75,0.1);
+  background: linear-gradient(180deg, #16120E 0%, #0F0C0A 100%);
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.dark .product-card-luxury:hover {
+  border-color: rgba(226, 186, 105, 0.6);
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.75), 0 0 25px rgba(212, 175, 55, 0.22);
+  transform: translateY(-6px);
 }
 
 /* ══════════════════════════════════════════

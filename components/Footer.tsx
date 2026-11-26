@@ -41,7 +41,7 @@ export default function Footer() {
   }
 
   return (
-    <footer className="relative bg-[#1A110B] text-[#F8F5EF] pt-16 pb-12 px-6 sm:px-10 border-t border-[#342217] overflow-hidden transition-colors duration-300">
+    <footer className="relative bg-[#0A0806] text-[#FAF6EE] pt-16 pb-12 px-6 sm:px-10 border-t border-[#C49A50]/20 overflow-hidden transition-colors duration-300">
       
       {/* Subtle Warm Spotlight Effects */}
       <div className="absolute top-0 left-1/4 w-[600px] h-40 bg-[#C69A4B]/8 rounded-full blur-3xl pointer-events-none" />

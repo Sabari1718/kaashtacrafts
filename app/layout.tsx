@@ -60,7 +60,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col font-sans text-[#2B1B14] bg-white dark:bg-[#12100E] dark:text-[#F7F3EB] selection:bg-[#C69A4B] selection:text-[#21150F] transition-colors duration-300">
+      <body className="min-h-full flex flex-col font-sans text-[#2B1B14] bg-white dark:bg-[#0C0A09] dark:text-[#FAF6EE] selection:bg-[#C69A4B] selection:text-[#21150F] transition-colors duration-300">
         <Providers>
           <CartProvider>
             <WishlistProvider>
