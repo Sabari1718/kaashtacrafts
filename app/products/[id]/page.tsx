@@ -67,10 +67,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [selectedFont, setSelectedFont] = useState("calligraphy");
   const [selectedSize, setSelectedSize] = useState("md");
   const [engravingPosition, setEngravingPosition] = useState("center");
-  const [textPos, setTextPos] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
+  const [textPos1, setTextPos1] = useState<{ x: number; y: number }>({ x: 50, y: 38 });
+  const [textPos2, setTextPos2] = useState<{ x: number; y: number }>({ x: 50, y: 64 });
+  const [activeElement, setActiveElement] = useState<"line1" | "line2" | null>("line1");
+  const [draggingTarget, setDraggingTarget] = useState<"line1" | "line2" | null>(null);
   const [modalImageIndex, setModalImageIndex] = useState<number>(0);
   const [isCustomizeModalOpen, setIsCustomizeModalOpen] = useState(false);
-  const [isDraggingText, setIsDraggingText] = useState(false);
   const customInputRef = useRef<HTMLInputElement>(null);
   const secondaryInputRef = useRef<HTMLInputElement>(null);
   const modalPreviewRef = useRef<HTMLDivElement>(null);
@@ -141,41 +143,53 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     }, 150);
   };
 
-  const handlePointerDown = (e: React.PointerEvent) => {
+  const handlePointerDown = (target: "line1" | "line2", e: React.PointerEvent) => {
+    e.stopPropagation();
     e.preventDefault();
-    setIsDraggingText(true);
+    setActiveElement(target);
+    setDraggingTarget(target);
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
   };
 
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!isDraggingText || !modalPreviewRef.current) return;
+  const handlePointerMove = (target: "line1" | "line2", e: React.PointerEvent) => {
+    if (draggingTarget !== target || !modalPreviewRef.current) return;
     const rect = modalPreviewRef.current.getBoundingClientRect();
     const rawX = ((e.clientX - rect.left) / rect.width) * 100;
     const rawY = ((e.clientY - rect.top) / rect.height) * 100;
-    const clampedX = Math.max(16, Math.min(84, Math.round(rawX)));
-    const clampedY = Math.max(12, Math.min(88, Math.round(rawY)));
-    setTextPos({ x: clampedX, y: clampedY });
+    const clampedX = Math.max(12, Math.min(88, Math.round(rawX)));
+    const clampedY = Math.max(8, Math.min(92, Math.round(rawY)));
+    if (target === "line1") {
+      setTextPos1({ x: clampedX, y: clampedY });
+    } else {
+      setTextPos2({ x: clampedX, y: clampedY });
+    }
     setEngravingPosition("custom");
   };
 
   const handlePointerUp = (e: React.PointerEvent) => {
-    if (isDraggingText) {
-      setIsDraggingText(false);
+    if (draggingTarget) {
+      setDraggingTarget(null);
       try {
         (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
       } catch {}
     }
   };
 
-  const handlePreviewContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isDraggingText || !modalPreviewRef.current) return;
-    const rect = modalPreviewRef.current.getBoundingClientRect();
-    const rawX = ((e.clientX - rect.left) / rect.width) * 100;
-    const rawY = ((e.clientY - rect.top) / rect.height) * 100;
-    const clampedX = Math.max(16, Math.min(84, Math.round(rawX)));
-    const clampedY = Math.max(12, Math.min(88, Math.round(rawY)));
-    setTextPos({ x: clampedX, y: clampedY });
-    setEngravingPosition("custom");
+  const handlePreviewCanvasClick = () => {
+    // Clicking outside on the wood background hides the selection boxes and shows finished piece
+    setActiveElement(null);
+  };
+
+  const handleDoubleClickLine1 = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setActiveElement("line1");
+    customInputRef.current?.focus();
+  };
+
+  const handleDoubleClickLine2 = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setActiveElement("line2");
+    secondaryInputRef.current?.focus();
   };
 
   const handleOrderCustomized = () => {
@@ -197,7 +211,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     const secondaryParam = trimmedSecondary && trimmed ? `&customSecondaryText=${encodeURIComponent(trimmedSecondary)}` : '';
     const fontParam = `&customFont=${encodeURIComponent(fontObj.name)}`;
     const sizeParam = `&customSize=${encodeURIComponent(sizeObj.label)}`;
-    const posParam = `&customPos=${encodeURIComponent(`x:${textPos.x}%,y:${textPos.y}%`)}`;
+    const posParam = `&customPos=${encodeURIComponent(`L1:x:${textPos1.x}%,y:${textPos1.y}%${trimmedSecondary ? `|L2:x:${textPos2.x}%,y:${textPos2.y}%` : ''}`)}`;
     setIsCustomizeModalOpen(false);
     router.push(`/checkout?buyNow=${pid}${textParam}${secondaryParam}${fontParam}${sizeParam}${posParam}`);
   };
@@ -221,7 +235,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       secondaryText: trimmedSecondary && trimmed ? trimmedSecondary : undefined,
       font: fontObj.name,
       size: sizeObj.label,
-      position: `x:${textPos.x}%,y:${textPos.y}%`
+      position: `L1:x:${textPos1.x}%,y:${textPos1.y}%${trimmedSecondary ? ` | L2:x:${textPos2.x}%,y:${textPos2.y}%` : ''}`
     });
     setIsCustomizeModalOpen(false);
     const summary = [trimmed, trimmedSecondary].filter(Boolean).join(" & ");
@@ -1114,17 +1128,29 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   <span className="text-[11px] font-bold uppercase tracking-wider text-[#C49A50] flex items-center gap-1.5">
                     <Eye className="w-3.5 h-3.5" /> Live Wood Preview on Piece:
                   </span>
-                  <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-800 flex items-center gap-1">
-                    <span>👆</span> <span>Drag text anywhere</span>
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    {activeElement ? (
+                      <button
+                        type="button"
+                        onClick={() => setActiveElement(null)}
+                        className="text-[10px] bg-stone-200 dark:bg-stone-800 hover:bg-stone-300 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-300 font-bold px-2 py-0.5 rounded-full transition-colors cursor-pointer"
+                        title="Hide edit borders and see realistic finished wood carving"
+                      >
+                        ✓ Done Editing (Preview)
+                      </button>
+                    ) : (
+                      <span className="text-[10px] text-emerald-700 dark:text-emerald-400 font-bold bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-300 dark:border-emerald-800">
+                        ✨ Realistic Finished Look
+                      </span>
+                    )}
+                  </div>
                 </div>
 
-                {/* Wood Preview Box (Interactive Canvas) */}
+                {/* Wood Preview Box (Interactive Canvas - Click background to deselect & save view) */}
                 <div 
                   ref={modalPreviewRef}
-                  onClick={handlePreviewContainerClick}
-                  className="relative w-full aspect-square bg-gradient-to-b from-[#EDE5D8] via-[#F4EFE6] to-[#E5DAC8] dark:from-[#211712] dark:via-[#1A120E] dark:to-[#140E0A] rounded-2xl overflow-hidden border-2 border-[#DFCDB7] dark:border-[#38261C] shadow-inner flex items-center justify-center select-none cursor-crosshair"
-                  title="Click or drag anywhere to place the laser engraving"
+                  onClick={handlePreviewCanvasClick}
+                  className="relative w-full aspect-square bg-[#F5EFEB] dark:bg-[#1A120E] rounded-2xl overflow-hidden border-2 border-[#DFCDB7] dark:border-[#38261C] shadow-inner flex items-center justify-center select-none cursor-default"
                 >
                   <Image 
                     src={allProductImages[modalImageIndex] || product.image} 
@@ -1133,63 +1159,124 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     className="object-contain p-2 pointer-events-none"
                   />
 
-                  {/* Interactive Draggable Laser Engraving Plaque */}
+                  {/* ═══════════ INDEPENDENT LINE 1 (Primary Name) ═══════════ */}
                   <div
-                    onPointerDown={handlePointerDown}
-                    onPointerMove={handlePointerMove}
+                    onPointerDown={(e) => handlePointerDown("line1", e)}
+                    onPointerMove={(e) => handlePointerMove("line1", e)}
                     onPointerUp={handlePointerUp}
-                    className={`absolute z-20 select-none cursor-grab active:cursor-grabbing transition-transform ${isDraggingText ? 'scale-105 shadow-2xl' : ''}`}
+                    onClick={(e) => { e.stopPropagation(); setActiveElement("line1"); }}
+                    onDoubleClick={handleDoubleClickLine1}
+                    className={`absolute z-20 select-none transition-transform ${
+                      activeElement === "line1" 
+                        ? "cursor-grab active:cursor-grabbing z-30" 
+                        : "cursor-pointer hover:ring-1 hover:ring-[#C49A50]/40 rounded-lg"
+                    } ${draggingTarget === "line1" ? "scale-105" : ""}`}
                     style={{
-                      top: `${textPos.y}%`,
-                      left: `${textPos.x}%`,
+                      top: `${textPos1.y}%`,
+                      left: `${textPos1.x}%`,
                       transform: "translate(-50%, -50%)",
-                      width: "82%",
-                      maxWidth: "340px",
                       touchAction: "none"
                     }}
                   >
-                    <div className="relative text-center w-full px-3.5 py-2.5 rounded-xl border-2 border-dashed border-[#8B5A2B]/70 bg-black/15 dark:bg-black/50 backdrop-blur-[0.5px] shadow-md ring-1 ring-white/20">
-                      <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#241812] text-[#E0D3BE] text-[8px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full shadow-md whitespace-nowrap border border-[#C49A50]/70 flex items-center gap-1">
-                        <Sparkles className="w-2.5 h-2.5 text-[#C49A50]" />
-                        <span>Carved on Wood • Drag 👆</span>
-                      </div>
+                    <div className={`relative text-center px-3 py-1.5 rounded-xl transition-all ${
+                      activeElement === "line1"
+                        ? "border-2 border-dashed border-[#C49A50] bg-black/20 dark:bg-black/55 backdrop-blur-[0.5px] shadow-lg ring-2 ring-[#C49A50]/30"
+                        : "border-2 border-transparent bg-transparent"
+                    }`}>
+                      {activeElement === "line1" && (
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#241812] text-[#E0D3BE] text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full shadow-md whitespace-nowrap border border-[#C49A50]/70 flex items-center gap-1 pointer-events-none">
+                          <Sparkles className="w-2.5 h-2.5 text-[#C49A50]" />
+                          <span>Line 1 • Drag 👆</span>
+                        </div>
+                      )}
 
-                      {/* Primary Text Line */}
+                      {/* Primary Laser Engraving Text */}
                       <p
-                        className={`leading-tight break-words select-none transition-all duration-150 ${(ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).fontClass}`}
+                        className={`leading-tight whitespace-nowrap select-none transition-all duration-150 ${(ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).fontClass}`}
                         style={{
-                          fontSize: `clamp(14px, 4vw, ${(ENGRAVING_SIZES.find(s => s.id === selectedSize)?.sizePx || 26)}px)`,
+                          fontSize: `clamp(14px, 4.2vw, ${(ENGRAVING_SIZES.find(s => s.id === selectedSize)?.sizePx || 26)}px)`,
                           color: "#1c0d06",
                           textShadow: "0 1px 1px rgba(255,255,255,0.45), 0 -1px 1px rgba(0,0,0,0.9), 0 0 2px rgba(45,22,12,0.8)",
                           filter: "drop-shadow(0 1px 2px rgba(15,7,3,0.8))",
                           letterSpacing: (ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).letterSpacing || "normal",
                         }}
                       >
-                        {customText.trim() || (secondaryText.trim() ? "" : "Your Name Here")}
+                        {customText.trim() || (activeElement === "line1" ? "Type Name Here" : "Your Name Here")}
                       </p>
 
-                      {/* Secondary / Additional Text Line */}
-                      {secondaryText.trim() && (
+                      {activeElement === "line1" && (
+                        <span className="text-[7.5px] font-bold text-[#3D2214] dark:text-[#E0D3BE]/90 block mt-0.5 whitespace-nowrap pointer-events-none">
+                          {(ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).name} • Double-tap to edit
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* ═══════════ INDEPENDENT LINE 2 (Separate 2nd Name / Date) ═══════════ */}
+                  {(showSecondaryLine || secondaryText.trim()) && (
+                    <div
+                      onPointerDown={(e) => handlePointerDown("line2", e)}
+                      onPointerMove={(e) => handlePointerMove("line2", e)}
+                      onPointerUp={handlePointerUp}
+                      onClick={(e) => { e.stopPropagation(); setActiveElement("line2"); }}
+                      onDoubleClick={handleDoubleClickLine2}
+                      className={`absolute z-20 select-none transition-transform ${
+                        activeElement === "line2" 
+                          ? "cursor-grab active:cursor-grabbing z-30" 
+                          : "cursor-pointer hover:ring-1 hover:ring-[#C49A50]/40 rounded-lg"
+                      } ${draggingTarget === "line2" ? "scale-105" : ""}`}
+                      style={{
+                        top: `${textPos2.y}%`,
+                        left: `${textPos2.x}%`,
+                        transform: "translate(-50%, -50%)",
+                        touchAction: "none"
+                      }}
+                    >
+                      <div className={`relative text-center px-3 py-1.5 rounded-xl transition-all ${
+                        activeElement === "line2"
+                          ? "border-2 border-dashed border-[#C49A50] bg-black/20 dark:bg-black/55 backdrop-blur-[0.5px] shadow-lg ring-2 ring-[#C49A50]/30"
+                          : "border-2 border-transparent bg-transparent"
+                      }`}>
+                        {activeElement === "line2" && (
+                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#C49A50] text-[#241812] text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full shadow-md whitespace-nowrap border border-[#241812]/50 flex items-center gap-1 pointer-events-none">
+                            <Sparkles className="w-2.5 h-2.5" />
+                            <span>Line 2 • Drag 👆</span>
+                          </div>
+                        )}
+
+                        {/* Secondary Laser Engraving Text */}
                         <p
-                          className={`leading-tight break-words select-none transition-all duration-150 mt-0.5 opacity-90 ${(ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).fontClass}`}
+                          className={`leading-tight whitespace-nowrap select-none transition-all duration-150 ${(ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).fontClass}`}
                           style={{
-                            fontSize: `clamp(11px, 3vw, ${Math.round((ENGRAVING_SIZES.find(s => s.id === selectedSize)?.sizePx || 26) * 0.72)}px)`,
-                            color: "#251208",
-                            textShadow: "0 1px 1px rgba(255,255,255,0.4), 0 -1px 1px rgba(0,0,0,0.85), 0 0 2px rgba(45,22,12,0.7)",
-                            filter: "drop-shadow(0 1px 2px rgba(15,7,3,0.7))",
+                            fontSize: `clamp(12px, 3.4vw, ${Math.round((ENGRAVING_SIZES.find(s => s.id === selectedSize)?.sizePx || 26) * 0.85)}px)`,
+                            color: "#221007",
+                            textShadow: "0 1px 1px rgba(255,255,255,0.4), 0 -1px 1px rgba(0,0,0,0.85), 0 0 2px rgba(45,22,12,0.75)",
+                            filter: "drop-shadow(0 1px 2px rgba(15,7,3,0.75))",
                             letterSpacing: (ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).letterSpacing || "normal",
                           }}
                         >
-                          {secondaryText.trim()}
+                          {secondaryText.trim() || (activeElement === "line2" ? "2nd Name / Date" : "Additional Name")}
                         </p>
-                      )}
 
-                      <span className="text-[8px] font-bold text-[#3D2214] dark:text-[#E0D3BE]/80 block mt-1">
-                        {(ENGRAVING_FONTS.find(f => f.id === selectedFont) || ENGRAVING_FONTS[0]).name} • {(ENGRAVING_SIZES.find(s => s.id === selectedSize) || ENGRAVING_SIZES[1]).label}
-                      </span>
+                        {activeElement === "line2" && (
+                          <span className="text-[7.5px] font-bold text-[#3D2214] dark:text-[#E0D3BE]/90 block mt-0.5 whitespace-nowrap pointer-events-none">
+                            Line 2 • Double-tap to edit
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
+
                 </div>
+
+                {/* Helpful Canvas Navigation Tip */}
+                <p className="text-[10px] text-stone-500 dark:text-stone-400 text-center flex items-center justify-center gap-1">
+                  <span>👆 Tap text to drag</span>
+                  <span>•</span>
+                  <span>Double-tap to edit</span>
+                  <span>•</span>
+                  <span className="font-semibold text-[#8B5A2B] dark:text-[#E6C477]">Tap wood to remove box</span>
+                </p>
 
                 {/* Wood Angle Selector (Allows customer to preview on plain clean wood photos) */}
                 {allProductImages.length > 1 && (
@@ -1220,22 +1307,22 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     </div>
                   </div>
                 )}
-
-                <p className="text-[10px] text-[#82786E] text-center italic mt-0.5">
-                  * Deep precision laser etched into the solid wood grain
-                </p>
               </div>
 
               {/* Right Column: Customization Controls */}
               <div className="flex flex-col gap-4">
                 
-                {/* Step 1: Text Customization (Line 1 + Optional Line 2) */}
+                {/* Step 1: Text Customization (Line 1 + Separate Line 2) */}
                 <div className="flex flex-col gap-2.5">
-                  <div>
-                    <div className="flex items-center justify-between mb-1.5">
+                  <div className={`p-2.5 rounded-xl border transition-all ${
+                    activeElement === 'line1'
+                      ? 'border-[#C49A50] bg-[#FAF6EE] dark:bg-[#1E1713] ring-1 ring-[#C49A50]/30'
+                      : 'border-[#DFCDB7] dark:border-[#38261C] bg-white dark:bg-[#14100E]'
+                  }`}>
+                    <div className="flex items-center justify-between mb-1">
                       <label className="text-[11px] font-bold uppercase tracking-wider text-[#C49A50] flex items-center gap-1.5">
                         <span className="w-4 h-4 rounded-full bg-[#241812] text-[#F7F5F0] text-[10px] flex items-center justify-center font-bold">1</span>
-                        <span>Line 1: Primary Name or Title:</span>
+                        <span>Line 1 (Main Name / Text):</span>
                       </label>
                       <span className="text-[10px] text-stone-400 font-semibold select-none">
                         {customText.length}/35
@@ -1247,15 +1334,16 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                         type="text"
                         maxLength={35}
                         value={customText}
+                        onFocus={() => setActiveElement("line1")}
                         onChange={(e) => setCustomText(e.target.value)}
                         placeholder="e.g. Amma's Kitchen / Vignesh & Divya"
-                        className="w-full pl-3.5 pr-16 py-2.5 rounded-xl border-2 border-[#DFCDB7] dark:border-[#38261C] bg-white dark:bg-[#14100E] text-[#241812] dark:text-[#F7F5F0] placeholder:text-[#82786E]/60 text-xs sm:text-sm font-semibold focus:outline-none focus:border-[#C49A50] focus:ring-2 focus:ring-[#C49A50]/20 transition-all shadow-xs"
+                        className="w-full pl-3 pr-16 py-2 rounded-lg border border-[#DFCDB7] dark:border-[#38261C] bg-white dark:bg-[#14100E] text-[#241812] dark:text-[#F7F5F0] placeholder:text-[#82786E]/60 text-xs sm:text-sm font-semibold focus:outline-none focus:border-[#C49A50] transition-all"
                       />
                       {customText && (
                         <button
                           type="button"
                           onClick={() => setCustomText("")}
-                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 text-xs bg-stone-100 dark:bg-stone-800 px-2 py-0.5 rounded-md font-bold cursor-pointer"
+                          className="absolute right-2 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 text-xs bg-stone-100 dark:bg-stone-800 px-2 py-0.5 rounded-md font-bold cursor-pointer"
                         >
                           Clear
                         </button>
@@ -1263,13 +1351,17 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                     </div>
                   </div>
 
-                  {/* Line 2 (Additional Name / Subtitle / Date) */}
+                  {/* Line 2 (Separate Additional Name / Date / Subtitle) */}
                   {showSecondaryLine ? (
-                    <div className="transition-all animate-in fade-in slide-in-from-top-1 duration-200">
-                      <div className="flex items-center justify-between mb-1.5">
+                    <div className={`p-2.5 rounded-xl border transition-all animate-in fade-in slide-in-from-top-1 duration-200 ${
+                      activeElement === 'line2'
+                        ? 'border-[#C49A50] bg-[#FAF6EE] dark:bg-[#1E1713] ring-1 ring-[#C49A50]/30'
+                        : 'border-[#DFCDB7] dark:border-[#38261C] bg-white dark:bg-[#14100E]'
+                    }`}>
+                      <div className="flex items-center justify-between mb-1">
                         <label className="text-[11px] font-bold uppercase tracking-wider text-[#C49A50] flex items-center gap-1.5">
-                          <span className="w-4 h-4 rounded-full bg-[#C49A50] text-[#241812] text-[10px] flex items-center justify-center font-bold">+</span>
-                          <span>Line 2: Additional Name / Date / Subtitle:</span>
+                          <span className="w-4 h-4 rounded-full bg-[#C49A50] text-[#241812] text-[10px] flex items-center justify-center font-bold">2</span>
+                          <span>Line 2 (Separate 2nd Name / Date):</span>
                         </label>
                         <span className="text-[10px] text-stone-400 font-semibold select-none">
                           {secondaryText.length}/35
@@ -1281,9 +1373,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                           type="text"
                           maxLength={35}
                           value={secondaryText}
+                          onFocus={() => setActiveElement("line2")}
                           onChange={(e) => setSecondaryText(e.target.value)}
-                          placeholder="e.g. Est. 2024 / Happy Housewarming / With Love"
-                          className="w-full pl-3.5 pr-20 py-2.5 rounded-xl border-2 border-[#DFCDB7] dark:border-[#38261C] bg-white dark:bg-[#14100E] text-[#241812] dark:text-[#F7F5F0] placeholder:text-[#82786E]/60 text-xs sm:text-sm font-semibold focus:outline-none focus:border-[#C49A50] focus:ring-2 focus:ring-[#C49A50]/20 transition-all shadow-xs"
+                          placeholder="e.g. Est. 2024 / Happy Housewarming"
+                          className="w-full pl-3 pr-20 py-2 rounded-lg border border-[#DFCDB7] dark:border-[#38261C] bg-white dark:bg-[#14100E] text-[#241812] dark:text-[#F7F5F0] placeholder:text-[#82786E]/60 text-xs sm:text-sm font-semibold focus:outline-none focus:border-[#C49A50] transition-all"
                         />
                         <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                           {secondaryText && (
@@ -1297,7 +1390,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                           )}
                           <button
                             type="button"
-                            onClick={() => { setShowSecondaryLine(false); setSecondaryText(""); }}
+                            onClick={() => { setShowSecondaryLine(false); setSecondaryText(""); setActiveElement("line1"); }}
                             className="text-red-500 hover:text-red-700 text-xs bg-red-50 dark:bg-red-950/40 px-1.5 py-0.5 rounded-md font-bold cursor-pointer"
                             title="Remove Line 2"
                           >
@@ -1311,11 +1404,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                       type="button"
                       onClick={() => {
                         setShowSecondaryLine(true);
+                        setActiveElement("line2");
                         setTimeout(() => secondaryInputRef.current?.focus(), 100);
                       }}
-                      className="w-full py-2 px-3 border border-dashed border-[#C49A50] hover:bg-[#C49A50]/10 rounded-xl text-xs font-bold text-[#8B5A2B] dark:text-[#E6C477] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      className="w-full py-2.5 px-3 border-2 border-dashed border-[#C49A50] hover:bg-[#C49A50]/10 rounded-xl text-xs font-bold text-[#8B5A2B] dark:text-[#E6C477] flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                     >
-                      <span>➕ Add Second Line / Additional Name, Date or Message</span>
+                      <span>➕ Add Second Name / Date (Move Anywhere Independently)</span>
                     </button>
                   )}
                 </div>
@@ -1389,30 +1483,52 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   <div className="flex items-center justify-between mb-2">
                     <label className="text-[11px] font-bold uppercase tracking-wider text-[#C49A50] flex items-center gap-1.5">
                       <span className="w-4 h-4 rounded-full bg-[#241812] text-[#F7F5F0] text-[10px] flex items-center justify-center font-bold">4</span>
-                      <span>Placement On Wood (Or Drag Directly):</span>
+                      <span>Quick Placement ({activeElement === 'line2' ? 'Line 2' : 'Line 1'}):</span>
                     </label>
-                    <span className="text-[10px] text-stone-500 font-semibold">
-                      {engravingPosition === 'custom' ? `📍 Custom (${textPos.x}%, ${textPos.y}%)` : ''}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => setActiveElement("line1")}
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-md cursor-pointer transition-colors ${
+                          activeElement === 'line1'
+                            ? 'bg-[#241812] text-white dark:bg-[#C49A50] dark:text-[#241812]'
+                            : 'bg-stone-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300'
+                        }`}
+                      >
+                        Line 1
+                      </button>
+                      {(showSecondaryLine || secondaryText.trim()) && (
+                        <button
+                          type="button"
+                          onClick={() => setActiveElement("line2")}
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-md cursor-pointer transition-colors ${
+                            activeElement === 'line2'
+                              ? 'bg-[#241812] text-white dark:bg-[#C49A50] dark:text-[#241812]'
+                              : 'bg-stone-200 dark:bg-stone-800 text-stone-600 dark:text-stone-300'
+                          }`}
+                        >
+                          Line 2
+                        </button>
+                      )}
+                    </div>
                   </div>
                   <div className="grid grid-cols-3 gap-2">
                     {ENGRAVING_POSITIONS.map((p) => {
-                      const isSelected = engravingPosition === p.id;
                       return (
                         <button
                           key={p.id}
                           type="button"
                           onClick={() => {
                             setEngravingPosition(p.id);
-                            if (p.id === "top") setTextPos({ x: 50, y: 28 });
-                            else if (p.id === "bottom") setTextPos({ x: 50, y: 72 });
-                            else setTextPos({ x: 50, y: 50 });
+                            const target = activeElement === "line2" ? "line2" : "line1";
+                            const newY = p.id === "top" ? (target === "line1" ? 28 : 38) : p.id === "bottom" ? (target === "line1" ? 65 : 78) : (target === "line1" ? 42 : 60);
+                            if (target === "line1") {
+                              setTextPos1({ x: 50, y: newY });
+                            } else {
+                              setTextPos2({ x: 50, y: newY });
+                            }
                           }}
-                          className={`py-2 px-1 rounded-xl border text-center transition-all cursor-pointer ${
-                            isSelected
-                              ? 'bg-[#241812] text-[#F7F5F0] dark:bg-[#C49A50] dark:text-[#241812] border-[#C49A50] shadow-sm ring-2 ring-[#C49A50]/40'
-                              : 'bg-white/80 dark:bg-[#1A120E] text-[#241812] dark:text-[#E2D8CC] border-[#DFCDB7] dark:border-[#38261C] hover:border-[#C49A50]'
-                          }`}
+                          className="py-2 px-1 rounded-xl border text-center transition-all cursor-pointer bg-white/80 dark:bg-[#1A120E] text-[#241812] dark:text-[#E2D8CC] border-[#DFCDB7] dark:border-[#38261C] hover:border-[#C49A50]"
                         >
                           <span className="block text-xs font-bold">
                             {p.icon} {p.label}
