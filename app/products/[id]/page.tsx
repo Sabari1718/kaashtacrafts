@@ -35,6 +35,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   const [resolvedParams, setResolvedParams] = useState<{ id: string } | null>(null);
   const [activeImage, setActiveImage] = useState<string>("");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [isMainZoomOpen, setIsMainZoomOpen] = useState(false);
 
   // Review Form State
   const [reviewRating, setReviewRating] = useState(5);
@@ -216,14 +217,28 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
         
         {/* Left Column: Product Image & Gallery */}
         <div className="flex flex-col gap-4">
-          <div className="relative w-full aspect-square bg-[#EAE1D2]/30 dark:bg-[#2E241E]/30 rounded-3xl overflow-hidden border border-[#EAE1D2] dark:border-[#2E241E] shadow-xs group">
+          <div className="relative w-full aspect-[4/5] sm:aspect-square md:aspect-[4/5] max-h-[620px] bg-white/80 dark:bg-[#1E1713]/80 rounded-3xl overflow-hidden border border-[#EAE1D2] dark:border-[#2E241E] shadow-sm group flex items-center justify-center">
+            {/* Ambient subtle warm glow */}
+            <div className="absolute inset-0 bg-radial from-[#C49A50]/5 via-transparent to-transparent pointer-events-none" />
+
             <Image 
               src={activeImage || product.image} 
               alt={product.name} 
               fill 
-              className="object-cover transition-opacity duration-300"
+              className="object-contain p-2 sm:p-4 transition-transform duration-500 group-hover:scale-102 cursor-zoom-in"
               priority
+              onClick={() => setIsMainZoomOpen(true)}
             />
+
+            {/* Click to zoom badge at bottom left */}
+            <button
+              onClick={() => setIsMainZoomOpen(true)}
+              className="absolute bottom-3 left-3 bg-black/60 hover:bg-black/80 backdrop-blur-md text-white text-[11px] font-semibold px-3 py-1 rounded-full border border-white/10 flex items-center gap-1.5 transition-all opacity-0 group-hover:opacity-100 cursor-pointer shadow-md"
+              title="Click to view full image"
+            >
+              <Eye className="w-3.5 h-3.5" />
+              <span>Tap to Zoom</span>
+            </button>
             
             {/* Wishlist & Share Floating Icons */}
             <div className="absolute top-4 right-4 flex flex-col gap-2.5 z-10">
@@ -261,11 +276,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 <button
                   key={idx}
                   onClick={() => setActiveImage(img)}
-                  className={`relative w-20 h-20 shrink-0 rounded-2xl overflow-hidden border-2 transition-all cursor-pointer ${
+                  className={`relative w-20 h-20 shrink-0 rounded-2xl overflow-hidden border-2 transition-all cursor-pointer bg-white/70 dark:bg-[#1E1713]/70 ${
                     activeImage === img ? 'border-[#C49A50] ring-2 ring-[#C49A50]/20 scale-102' : 'border-[#EAE1D2] dark:border-[#2E241E] opacity-75 hover:opacity-100'
                   }`}
                 >
-                  <Image src={img} alt={`Gallery image ${idx + 1}`} fill className="object-cover" />
+                  <Image src={img} alt={`Gallery image ${idx + 1}`} fill className="object-contain p-1" />
                 </button>
               ))}
             </div>
@@ -496,8 +511,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                   href={`/products/${p._id || p.id}`} 
                   className="group flex flex-col h-full bg-white/80 dark:bg-[#1E1713]/80 p-3 rounded-2xl border border-[#EAE1D2] dark:border-[#2E241E] hover:border-[#C49A50] shadow-xs hover:shadow-sm transition-all duration-300"
                 >
-                  <div className="relative aspect-square bg-[#EAE1D2]/30 dark:bg-[#2E241E]/30 rounded-xl overflow-hidden mb-3">
-                    <Image src={p.image} alt={p.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <div className="relative aspect-square bg-white/60 dark:bg-[#1E1713]/60 rounded-xl overflow-hidden mb-3 flex items-center justify-center">
+                    <Image src={p.image} alt={p.name} fill className="object-contain p-1.5 group-hover:scale-105 transition-transform duration-500" />
                   </div>
                   <h3 className="font-bold text-[#241812] dark:text-[#F7F5F0] line-clamp-1 text-sm group-hover:text-[#65452F] dark:group-hover:text-[#C49A50] transition-colors">{p.name}</h3>
                   <p className="text-[#C49A50] font-bold mt-1 text-sm">₹{p.price}</p>
@@ -618,6 +633,41 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
           Buy Now ₹{product.price}
         </button>
       </div>
+
+      {/* Main Image Zoom Lightbox */}
+      {isMainZoomOpen && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/92 backdrop-blur-md flex flex-col items-center justify-center p-4 sm:p-6"
+          onClick={() => setIsMainZoomOpen(false)}
+        >
+          <div 
+            className="relative max-w-5xl w-full h-[85vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setIsMainZoomOpen(false)}
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 z-30 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center border border-white/20 transition-all cursor-pointer shadow-lg"
+              aria-label="Close Zoom"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden">
+              <Image
+                src={activeImage || product.image}
+                alt={product.name}
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/75 backdrop-blur-md px-5 py-2 rounded-full text-xs font-semibold text-white/90 border border-white/10 shadow-lg">
+              {product.name} • 100% Full View
+            </div>
+          </div>
+        </div>
+      )}
 
     </main>
   );
