@@ -220,70 +220,58 @@ export default function Home() {
           >
             {promoBanners.map((banner, index) => (
               <SwiperSlide key={index}>
+                {/*
+                  CIRCUIT POINTCARE SPLIT LAYOUT:
+                  - Solid gradient background (left rich color → right dark)
+                  - LEFT half: Text content (badge, title, subtitle, CTA)
+                  - RIGHT half: Product cutout floating with shadow — visible on BOTH mobile & desktop
+                  - Fixed height so all 3 banners are identical size on mobile
+                */}
                 <div
-                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border ${banner.borderClass} h-[420px] sm:h-[440px] md:h-[420px] flex items-center bg-gradient-to-r ${banner.bgGradient} group transition-all`}
+                  className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border ${banner.borderClass} h-[320px] xs:h-[340px] sm:h-[380px] md:h-[420px] flex flex-row items-center bg-gradient-to-r ${banner.bgGradient} group transition-all`}
                 >
-                  {/* 1. DESKTOP 4K REAL PHOTOGRAPH (Right 56%, mask-image fade on left edge) */}
-                  <div
-                    className="hidden md:block absolute right-0 top-0 bottom-0 w-[58%] lg:w-[54%] h-full pointer-events-none overflow-hidden"
-                    style={{
-                      maskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 12%, black 32%, black 100%)",
-                      WebkitMaskImage: "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 12%, black 32%, black 100%)",
-                    }}
-                  >
-                    <Image
-                      src={banner.image}
-                      alt={banner.title}
-                      fill
-                      sizes="60vw"
-                      priority={index === 0}
-                      className="object-cover object-center group-hover:scale-105 transition-transform duration-1000 ease-out"
-                    />
-                    {/* Subtle overlay blending photo edge into the background gradient */}
-                    <div className={`absolute inset-0 bg-gradient-to-r ${banner.photoOverlay}`} />
-                  </div>
-
-                  {/* 2. MOBILE 4K PHOTOGRAPH (Full bleed background with uniform dark bottom-to-top gradient) */}
-                  <div className="md:hidden absolute inset-0 w-full h-full pointer-events-none">
-                    <Image
-                      src={banner.image}
-                      alt={banner.title}
-                      fill
-                      sizes="100vw"
-                      priority={index === 0}
-                      className="object-cover object-center"
-                    />
-                    <div className={`absolute inset-0 bg-gradient-to-t ${banner.mobileOverlay}`} />
-                  </div>
-
-                  {/* 3. CONTENT AREA (Uniform padding and alignment on desktop and mobile) */}
-                  <div className="relative z-10 w-full md:w-[50%] lg:w-[48%] h-full p-6 sm:p-10 md:p-12 lg:p-14 flex flex-col justify-center items-start text-left">
+                  {/* LEFT: Text Content (40% on mobile, 48% on desktop) */}
+                  <div className="relative z-10 w-[52%] sm:w-[48%] md:w-[50%] lg:w-[48%] h-full px-4 sm:px-8 md:px-12 lg:px-14 py-5 sm:py-8 md:py-0 flex flex-col justify-center items-start text-left shrink-0">
                     {/* Badge */}
-                    <div className="mb-2.5 sm:mb-3.5">
-                      <span className={`inline-flex items-center gap-1.5 backdrop-blur-md text-[10px] sm:text-[11px] font-extrabold tracking-wider uppercase px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border shadow-sm ${banner.badgeBg}`}>
-                        <Sparkles className={`w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0 ${banner.badgeIconColor}`} />
-                        <span>{banner.tag}</span>
+                    <div className="mb-2 sm:mb-3">
+                      <span className={`inline-flex items-center gap-1 sm:gap-1.5 backdrop-blur-md text-[8px] sm:text-[10px] md:text-[11px] font-extrabold tracking-wider uppercase px-2 py-0.5 sm:px-3 sm:py-1 rounded-full border shadow-sm ${banner.badgeBg}`}>
+                        <Sparkles className={`w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 ${banner.badgeIconColor}`} />
+                        <span className="line-clamp-1">{banner.tag}</span>
                       </span>
                     </div>
 
                     {/* Headline */}
-                    <h2 className={`heading-display text-2xl sm:text-3xl md:text-4xl lg:text-[42px] font-black leading-[1.14] mb-2 sm:mb-3 tracking-tight ${banner.titleClass}`}>
+                    <h2 className={`heading-display text-base sm:text-2xl md:text-3xl lg:text-[38px] font-black leading-[1.15] mb-1.5 sm:mb-2.5 tracking-tight ${banner.titleClass}`}>
                       {banner.title}
                     </h2>
 
-                    {/* Subtitle / Description */}
-                    <p className={`text-xs sm:text-sm md:text-[15px] leading-relaxed mb-4 sm:mb-6 font-sans font-medium max-w-lg ${banner.subtitleClass}`}>
+                    {/* Subtitle */}
+                    <p className={`hidden sm:block text-[11px] sm:text-sm md:text-[14px] leading-relaxed mb-3 sm:mb-5 font-sans font-medium max-w-xs md:max-w-sm ${banner.subtitleClass}`}>
                       {banner.subtitle}
                     </p>
 
                     {/* CTA Button */}
                     <Link
                       href={banner.href}
-                      className={`inline-flex items-center gap-2 sm:gap-2.5 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-black text-xs sm:text-sm tracking-wider uppercase transition-all duration-300 ${banner.btnClass}`}
+                      className={`inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-6 md:px-7 py-2 sm:py-2.5 md:py-3 rounded-full font-black text-[9px] sm:text-xs md:text-sm tracking-wider uppercase transition-all duration-300 ${banner.btnClass}`}
                     >
                       <span>{banner.btnText}</span>
-                      <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     </Link>
+                  </div>
+
+                  {/* RIGHT: Product Cutout (48% on mobile, 52% on desktop) — always visible, never hidden */}
+                  <div className="relative z-10 flex-1 h-full flex items-center justify-center pr-2 sm:pr-4 md:pr-8 lg:pr-12 overflow-hidden pointer-events-none">
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={banner.cutoutImage}
+                        alt={banner.title}
+                        fill
+                        sizes="(max-width: 640px) 48vw, (max-width: 768px) 50vw, 45vw"
+                        priority={index === 0}
+                        className="object-contain object-center sm:object-right filter drop-shadow-[0_8px_20px_rgba(0,0,0,0.5)] sm:drop-shadow-[0_16px_32px_rgba(0,0,0,0.6)] group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                    </div>
                   </div>
                 </div>
               </SwiperSlide>
