@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, ShoppingBag, Heart, Search, Moon, Sun, ArrowRight, X } from "lucide-react";
+import { Menu, ShoppingBag, Heart, Search, Moon, Sun, ArrowRight, X, Home, Sparkles, PhoneCall, Package } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useCart } from "../app/context/CartContext";
 import { useWishlist } from "../app/context/WishlistContext";
@@ -68,10 +68,10 @@ export default function Navbar() {
   if (pathname.startsWith("/admin")) return null;
 
   const navLinks = [
-    { name: "Home", href: "/", isActive: pathname === "/" },
-    { name: "Shop All", href: "/products", isActive: pathname.startsWith("/products") },
-    { name: "Contact Us", href: "/contact", isActive: pathname.startsWith("/contact") },
-    { name: "My Orders", href: "/my-orders", isActive: pathname.startsWith("/my-orders") },
+    { name: "Home", href: "/", isActive: pathname === "/", icon: Home },
+    { name: "Shop All", href: "/products", isActive: pathname.startsWith("/products"), icon: Sparkles },
+    { name: "Contact Us", href: "/contact", isActive: pathname.startsWith("/contact"), icon: PhoneCall },
+    { name: "My Orders", href: "/my-orders", isActive: pathname.startsWith("/my-orders"), icon: Package },
   ];
 
   return (
@@ -79,16 +79,16 @@ export default function Navbar() {
       {/* ── MAIN NAVBAR ── */}
       <nav className={`sticky top-0 z-50 w-full transition-all duration-500 ${
         isScrolled
-          ? "bg-white/95 dark:bg-[#0C0A09]/95 backdrop-blur-2xl shadow-[0_2px_10px_rgba(0,0,0,0.04)] border-b border-stone-200/80 dark:border-[#C49A50]/20"
+          ? "bg-white/95 dark:bg-[#0C0A09]/95 backdrop-blur-2xl shadow-[0_4px_20px_rgba(0,0,0,0.06)] border-b border-stone-200/80 dark:border-[#C49A50]/20"
           : "bg-white/98 dark:bg-[#0C0A09]/98 backdrop-blur-md border-b border-stone-200/60 dark:border-[#C49A50]/15"
       }`}>
-        <div className="max-w-[1440px] mx-auto px-3 sm:px-6 lg:px-10">
+        <div className="max-w-[1800px] w-full mx-auto px-4 sm:px-6 lg:px-10">
           <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-4">
 
             {/* ── BRAND (CLASSY ULTRA-PREMIUM HERITAGE WOODCRAFT BADGE) ── */}
             <Link
               href="/"
-              className="group flex items-center gap-2.5 sm:gap-3.5 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-xl sm:rounded-2xl bg-[#FCFAF6] dark:bg-[#14100D] border border-[#E5D7C4] dark:border-[#C49A50]/25 shadow-[0_2px_10px_rgba(42,22,13,0.05)] hover:border-[#C69A4B]/80 hover:shadow-[0_4px_18px_rgba(198,154,75,0.2)] hover:scale-102 active:scale-98 transition-all duration-300 shrink-0 cursor-pointer"
+              className="group flex items-center gap-2.5 sm:gap-3.5 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-xl sm:rounded-2xl bg-[#FCFAF6] dark:bg-[#14100D] border border-[#E5D7C4] dark:border-[#C49A50]/25 shadow-[0_4px_12px_rgba(42,22,13,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)] dark:shadow-[0_4px_15px_rgba(0,0,0,0.5)] hover:border-[#C69A4B]/80 hover:shadow-[0_6px_22px_rgba(198,154,75,0.25)] hover:scale-102 active:scale-98 transition-all duration-300 shrink-0 cursor-pointer"
             >
               {/* Logo Avatar - Prominent Full Artisan Workshop Badge (Tools on Left & Right Uncropped) */}
               <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden ring-1.5 ring-[#C69A4B]/70 shadow-md shrink-0 bg-[#2E1A11]">
@@ -112,13 +112,37 @@ export default function Navbar() {
               </div>
             </Link>
 
-            {/* ── DESKTOP SEARCH ── */}
-            <div className="hidden md:flex flex-1 max-w-sm lg:max-w-md relative mx-4" ref={searchContainerRef}>
-              <form onSubmit={handleSearch} className="flex w-full items-center bg-white/70 dark:bg-[#14100D]/90 rounded-full h-9 border border-[#E0D3BE] dark:border-[#C49A50]/25 focus-within:border-[#C69A4B]/60 focus-within:ring-2 focus-within:ring-[#C69A4B]/12 focus-within:dark:border-[#E2BA69] focus-within:dark:ring-[#E2BA69]/20 transition-all shadow-xs overflow-hidden">
+            {/* ── DESKTOP NAV LINKS (NOW ON LEFT, WITH 3D ICONS) ── */}
+            <div className="hidden lg:flex items-center bg-[#F2ECE1]/90 dark:bg-[#14100D]/90 rounded-full p-1.5 gap-1 border border-[#C99A45]/30 dark:border-[#C49A50]/25 shadow-[0_4px_12px_rgba(33,19,14,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)] dark:shadow-[0_4px_15px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.08)]">
+              {navLinks.map(link => {
+                const Icon = link.icon;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`relative px-3.5 xl:px-4.5 py-1.5 xl:py-2 rounded-full text-[11px] xl:text-[12px] font-black tracking-wider uppercase transition-all duration-200 flex items-center gap-1.5 font-sans cursor-pointer ${
+                      link.isActive
+                        ? "bg-[#21130E] text-[#F7F3EB] dark:bg-gradient-to-r dark:from-[#C49A50] dark:via-[#D4AF37] dark:to-[#B88636] dark:text-[#0C0A09] dark:border-transparent font-black shadow-[0_4px_14px_rgba(33,19,14,0.35),0_0_15px_rgba(212,175,55,0.4),inset_0_1px_1px_rgba(255,255,255,0.25)] hover:-translate-y-0.5 active:translate-y-0"
+                        : "text-[#38251A] dark:text-[#D8CFBF] hover:text-[#21130E] dark:hover:text-[#FAF6EE] hover:bg-white/80 dark:hover:bg-[#1E1712] hover:shadow-[0_4px_10px_rgba(33,19,14,0.08),inset_0_1px_1px_rgba(255,255,255,0.9)] hover:-translate-y-0.5 active:translate-y-0"
+                    }`}
+                  >
+                    <Icon className={`w-3.5 h-3.5 shrink-0 transition-transform duration-200 ${link.isActive ? "text-[#E6C477] dark:text-[#0C0A09] scale-110" : "text-[#8C6D4A] dark:text-[#C49A50]"}`} />
+                    <span>{link.name}</span>
+                    {link.isActive && (
+                      <span className="absolute bottom-1 w-3.5 h-[2px] rounded-full bg-gradient-to-r from-[#E6C477] to-[#C99A45] shadow-[0_0_6px_#C99A45]" />
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* ── DESKTOP SEARCH (NOW ON RIGHT, NEXT TO ACTION ICONS) ── */}
+            <div className="hidden md:flex flex-1 max-w-xs lg:max-w-sm relative mx-2" ref={searchContainerRef}>
+              <form onSubmit={handleSearch} className="flex w-full items-center bg-white/80 dark:bg-[#14100D]/90 rounded-full h-9 border border-[#E0D3BE] dark:border-[#C49A50]/25 focus-within:border-[#C69A4B]/60 focus-within:ring-2 focus-within:ring-[#C69A4B]/12 focus-within:dark:border-[#E2BA69] focus-within:dark:ring-[#E2BA69]/20 transition-all shadow-[0_2px_8px_rgba(33,19,14,0.05),inset_0_1px_2px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_10px_rgba(0,0,0,0.4)] overflow-hidden">
                 <Search className="w-3.5 h-3.5 text-[#7A6E63] dark:text-[#A3988C] ml-3.5 shrink-0" />
                 <input
                   type="text"
-                  placeholder="Search masterpieces..."
+                  placeholder="Search pieces..."
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
                   onFocus={() => setShowSuggestions(true)}
@@ -127,7 +151,7 @@ export default function Navbar() {
               </form>
 
               {showSuggestions && searchQuery.trim() && suggestions.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#14100D] rounded-2xl shadow-2xl border border-stone-200 dark:border-[#C49A50]/30 z-50 overflow-hidden">
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#14100D] rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-stone-200 dark:border-[#C49A50]/30 z-50 overflow-hidden">
                   {suggestions.map(p => (
                     <Link
                       href={`/products/${p.id || p._id}`}
@@ -135,7 +159,7 @@ export default function Navbar() {
                       onClick={() => { setShowSuggestions(false); setSearchQuery(""); }}
                       className="flex items-center gap-3 p-3 hover:bg-stone-50 dark:hover:bg-[#1E1712] border-b border-stone-100 dark:border-[#C49A50]/15 last:border-0 transition-colors"
                     >
-                      <div className="w-9 h-9 relative shrink-0 rounded-lg overflow-hidden bg-stone-100 dark:bg-[#1E1712]">
+                      <div className="w-9 h-9 relative shrink-0 rounded-lg overflow-hidden bg-stone-100 dark:bg-[#1E1712] shadow-inner">
                         <Image src={p.image} alt={p.name} fill className="object-cover" />
                       </div>
                       <div className="flex flex-col flex-1 min-w-0">
@@ -147,26 +171,6 @@ export default function Navbar() {
                   ))}
                 </div>
               )}
-            </div>
-
-            {/* ── DESKTOP NAV LINKS (HIGH CONTRAST BOLD HOVER) ── */}
-            <div className="hidden lg:flex items-center bg-[#EDE4D6]/70 dark:bg-[#14100D]/90 rounded-full p-1.5 gap-1 border border-[#C99A45]/30 dark:border-[#C49A50]/25 shadow-xs">
-              {navLinks.map(link => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`relative px-3.5 xl:px-4.5 py-1.5 xl:py-2 rounded-full text-[11px] xl:text-[12px] font-black tracking-[0.12em] uppercase transition-all duration-200 flex items-center justify-center font-sans ${
-                    link.isActive
-                      ? "bg-[#21130E] text-[#F7F3EB] dark:bg-gradient-to-r dark:from-[#C49A50] dark:via-[#D4AF37] dark:to-[#B88636] dark:text-[#0C0A09] dark:border-transparent font-black shadow-[0_4px_14px_rgba(33,19,14,0.35),0_0_15px_rgba(212,175,55,0.4)]"
-                      : "text-[#38251A] dark:text-[#D8CFBF] hover:text-white dark:hover:text-[#FAF6EE] hover:bg-[#21130E] dark:hover:bg-[#1E1712] hover:shadow-[0_4px_14px_rgba(33,19,14,0.3),0_0_8px_rgba(201,154,69,0.25)] hover:scale-105 active:scale-95"
-                  }`}
-                >
-                  <span>{link.name}</span>
-                  {link.isActive && (
-                    <span className="absolute bottom-1 w-3.5 h-[2px] rounded-full bg-gradient-to-r from-[#E6C477] to-[#C99A45] shadow-[0_0_6px_#C99A45]" />
-                  )}
-                </Link>
-              ))}
             </div>
 
             {/* ── ACTION ICONS (HIGH CONTRAST BOLD HOVER) ── */}
@@ -257,21 +261,27 @@ export default function Navbar() {
           {isMobileMenuOpen && (
             <div ref={mobileMenuRef} className="lg:hidden pb-3 animate-in fade-in slide-in-from-top-2 duration-200">
               <div className="bg-white/95 dark:bg-[#14100D]/95 backdrop-blur-xl rounded-2xl p-2 border border-[#E0D3BE] dark:border-[#C49A50]/25 shadow-xl flex flex-col gap-1 mb-2">
-                {navLinks.map(link => (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`px-4 py-2.5 rounded-xl text-[11px] uppercase font-bold tracking-wider flex items-center justify-between transition-all ${
-                      link.isActive
-                        ? "bg-[#21150F] text-[#F7F3EB] dark:bg-gradient-to-r dark:from-[#C49A50] dark:to-[#D4AF37] dark:text-[#0C0A09] font-black shadow-sm"
-                        : "text-[#21150F]/75 dark:text-[#D8CFBF] hover:bg-[#EDE5D8] dark:hover:bg-[#1E1712]"
-                    }`}
-                  >
-                    {link.name}
-                    <ArrowRight className="w-3.5 h-3.5 text-[#C69A4B] dark:text-[#E2BA69]" />
-                  </Link>
-                ))}
+                {navLinks.map(link => {
+                  const Icon = link.icon;
+                  return (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`px-4 py-2.5 rounded-xl text-[11px] uppercase font-bold tracking-wider flex items-center justify-between transition-all ${
+                        link.isActive
+                          ? "bg-[#21150F] text-[#F7F3EB] dark:bg-gradient-to-r dark:from-[#C49A50] dark:via-[#D4AF37] dark:to-[#B88636] dark:text-[#0C0A09] font-black shadow-sm"
+                          : "text-[#21150F]/75 dark:text-[#D8CFBF] hover:bg-[#EDE5D8] dark:hover:bg-[#1E1712]"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Icon className="w-4 h-4 text-[#C69A4B] dark:text-[#E2BA69]" />
+                        <span>{link.name}</span>
+                      </div>
+                      <ArrowRight className="w-3.5 h-3.5 text-[#C69A4B] dark:text-[#E2BA69]" />
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           )}

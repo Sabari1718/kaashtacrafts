@@ -185,7 +185,7 @@ export default function Home() {
           1. CATEGORY NAVIGATION BAR (MAJOR LUXURY REDESIGN)
           ══════════════════════════════════════════════ */}
       <section className="w-full bg-white dark:bg-[#0C0A09]/95 backdrop-blur-md border-b border-stone-200/80 dark:border-[#D4AF37]/20 shadow-2xs">
-        <div className="max-w-[1440px] mx-auto px-2 sm:px-6 py-2 sm:py-2.5 overflow-x-auto scrollbar-hide">
+        <div className="max-w-[1800px] w-full mx-auto px-4 sm:px-6 lg:px-10 py-2 sm:py-2.5 overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-2 sm:gap-3.5 min-w-max mx-auto justify-start sm:justify-center">
             {sortedTopCategories.map((cat: any, idx) => (
               <Link
@@ -221,7 +221,7 @@ export default function Home() {
              Single full-width rich banner with smooth transitions
           ══════════════════════════════════════════════ */}
       <section className="w-full py-3 sm:py-6 bg-white dark:bg-[#0C0A09] border-b border-stone-200/70 dark:border-[#C49A50]/20">
-        <div className="max-w-[1440px] mx-auto px-3 sm:px-6 relative group">
+        <div className="max-w-[1800px] w-full mx-auto px-4 sm:px-6 lg:px-10 relative group">
           <Swiper
             modules={[Autoplay, Navigation]}
             navigation={{
@@ -356,7 +356,7 @@ export default function Home() {
              Editorial Asymmetric Luxury Grid
           ══════════════════════════════════════════════ */}
       <section className="w-full bg-white dark:bg-[#12100E] py-8 sm:py-14 md:py-16">
-        <div className="max-w-[1400px] mx-auto px-3 sm:px-8">
+        <div className="max-w-[1800px] w-full mx-auto px-4 sm:px-6 lg:px-10">
 
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-6 mb-6 sm:mb-10">
@@ -392,9 +392,9 @@ export default function Home() {
             </div>
           </div>
 
-          {/* LUXURY PRODUCT GRID — 2 column on mobile with perfect gap, 4 on desktop */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5 md:gap-6">
-            {filteredProducts.slice(0, 8).map((product, idx) => {
+          {/* LUXURY PRODUCT GRID — 2 column on mobile with perfect gap, 4-5 on desktop */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 sm:gap-5 md:gap-6">
+            {filteredProducts.slice(0, 10).map((product, idx) => {
               const pid = product.id || (product as any)._id;
               const isSaved = isInWishlist(pid);
               const origPrice = product.originalPrice || Math.floor(product.price * 1.5);
@@ -406,7 +406,7 @@ export default function Home() {
                   className="product-card-luxury group flex flex-col"
                 >
                   {/* IMAGE */}
-                  <Link href={`/products/${pid}`} className="relative block overflow-hidden bg-gradient-to-b from-[#EDE5D8] to-[#E0D3BE] dark:from-[#181310] dark:to-[#0D0A08]" style={{ aspectRatio: "4/5" }}>
+                  <Link href={`/products/${pid}`} className="relative block overflow-hidden bg-gradient-to-b from-[#EDE5D8] to-[#E0D3BE] dark:from-[#181310] dark:to-[#0D0A08] shadow-[inset_0_3px_8px_rgba(0,0,0,0.06)]" style={{ aspectRatio: "4/5" }}>
                     <Image
                       src={product.image}
                       alt={product.name}
@@ -501,7 +501,7 @@ export default function Home() {
           6. CURATED LIVING — ASYMMETRIC BENTO GRID
           ══════════════════════════════════════════════ */}
       <section className="w-full bg-white dark:bg-[#1A1410] pt-6 pb-8 sm:pt-8 sm:pb-10 md:pt-9 md:pb-12 border-t border-stone-100 dark:border-[#2C2018]">
-        <div className="max-w-[1400px] mx-auto px-3 sm:px-8">
+        <div className="max-w-[1800px] w-full mx-auto px-4 sm:px-6 lg:px-10">
 
           <div className="text-center mb-6 sm:mb-8">
             <p className="label-luxury text-[#7A4513] dark:text-[#DEB96A] font-extrabold mb-1.5 sm:mb-2">Curated Living Concept</p>
@@ -593,7 +593,7 @@ export default function Home() {
           8. ARTISAN STORY — SPLIT EDITORIAL SECTION
           ══════════════════════════════════════════════ */}
       <section className="w-full bg-white dark:bg-[#12100E] pt-6 pb-8 sm:pt-8 sm:pb-12 md:pt-10 md:pb-14 border-t border-stone-100 dark:border-[#2C2018]">
-        <div className="max-w-[1400px] mx-auto px-3 sm:px-8">
+        <div className="max-w-[1800px] w-full mx-auto px-4 sm:px-6 lg:px-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
 
             {/* Image with editorial frame */}

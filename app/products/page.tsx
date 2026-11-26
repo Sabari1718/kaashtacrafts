@@ -192,10 +192,10 @@ function ProductsContent() {
 
   return (
     <main className="flex flex-col w-full min-h-screen bg-paper dark:bg-[#0C0A09] text-[#21150F] dark:text-[#FAF6EE] pt-6 pb-24 font-sans transition-colors duration-300">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div className="max-w-[1800px] w-full mx-auto px-4 sm:px-6 lg:px-10">
         
         {/* Top Header & Action Bar */}
-        <div className="relative z-30 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 bg-white/80 dark:bg-[#120F0D]/90 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-xs border border-stone-200 dark:border-[#C49A50]/25">
+        <div className="relative z-30 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 bg-white/90 dark:bg-[#120F0D]/90 backdrop-blur-md p-4 sm:p-6 rounded-2xl shadow-[0_8px_30px_rgba(33,21,15,0.06),inset_0_1px_1px_rgba(255,255,255,0.8)] dark:shadow-[0_10px_35px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.06)] border border-stone-200 dark:border-[#C49A50]/25">
           <div>
             <div className="flex items-center gap-2 text-[#C69A4B] text-[11px] font-bold uppercase tracking-[0.2em] mb-1">
               <Sparkles className="w-3.5 h-3.5 text-[#C69A4B]" />
@@ -297,8 +297,8 @@ function ProductsContent() {
               }}
               className={`px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-wider whitespace-nowrap cursor-pointer transition-all duration-200 font-sans shrink-0 flex items-center gap-2 ${
                 selectedCategory === category
-                  ? "bg-[#21130E] text-white dark:bg-gradient-to-r dark:from-[#C49A50] dark:via-[#D4AF37] dark:to-[#B88636] dark:text-[#0C0A09] dark:border-transparent font-black shadow-sm ring-2 ring-[#C99A45]/30 dark:ring-[#D4AF37]/50"
-                  : "bg-white dark:bg-[#14100D] text-[#21130E] dark:text-[#D8CFBF] border-2 border-[#E0D3BE] dark:border-[#C49A50]/20 hover:border-[#C99A45] hover:dark:border-[#D4AF37] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#1E1712] dark:hover:text-[#FAF6EE] hover:shadow-sm"
+                  ? "bg-[#21130E] text-white dark:bg-gradient-to-r dark:from-[#C49A50] dark:via-[#D4AF37] dark:to-[#B88636] dark:text-[#0C0A09] dark:border-transparent font-black shadow-[0_4px_14px_rgba(33,19,14,0.35),inset_0_1px_1px_rgba(255,255,255,0.3)] ring-2 ring-[#C99A45]/30 dark:ring-[#D4AF37]/50 hover:-translate-y-0.5 active:translate-y-0"
+                  : "bg-white dark:bg-[#14100D] text-[#21130E] dark:text-[#D8CFBF] border-2 border-[#E0D3BE] dark:border-[#C49A50]/20 hover:border-[#C99A45] hover:dark:border-[#D4AF37] hover:bg-[#21130E] hover:text-white dark:hover:bg-[#1E1712] dark:hover:text-[#FAF6EE] shadow-[0_2px_8px_rgba(33,19,14,0.04),inset_0_1px_0_rgba(255,255,255,0.9)] hover:shadow-md hover:-translate-y-0.5 active:translate-y-0"
               }`}
             >
               {selectedCategory === category && (
@@ -310,7 +310,7 @@ function ProductsContent() {
           {activeFiltersCount > 0 && (
             <button
               onClick={clearFilters}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-black text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer shrink-0 border border-red-200 dark:border-red-900/50"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-black text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors cursor-pointer shrink-0 border border-red-200 dark:border-red-900/50 shadow-xs hover:-translate-y-0.5"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               Reset All
@@ -326,7 +326,7 @@ function ProductsContent() {
               <p className="text-[#7A6E63] font-medium text-sm">Gathering Masterpieces...</p>
             </div>
           ) : filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6">
               {filteredProducts.map((product) => {
                 const productId = product.id || (product as any)._id;
                 const isSaved = isInWishlist(productId);
@@ -341,7 +341,7 @@ function ProductsContent() {
                     {/* Product Image Frame */}
                     <Link
                       href={`/products/${productId}`}
-                      className="block relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-b from-[#EDE5D8] to-[#E0D3BE] dark:from-[#181310] dark:to-[#0D0A08]"
+                      className="block relative aspect-[4/5] w-full overflow-hidden bg-gradient-to-b from-[#EDE5D8] to-[#E0D3BE] dark:from-[#181310] dark:to-[#0D0A08] shadow-[inset_0_3px_8px_rgba(0,0,0,0.06)]"
                     >
                       <Image 
                         src={product.image} 
