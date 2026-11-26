@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Heart, Send, ArrowLeft, Loader2, Star, ShieldCheck, Trash2, ShoppingBag, Truck, Award, Sparkles, Check, Eye, X, ChevronLeft, ChevronRight, Layers } from "lucide-react";
+import { Heart, Send, ArrowLeft, Loader2, Star, ShieldCheck, Trash2, ShoppingBag, Truck, Award, Sparkles, Check, Eye, X, ChevronLeft, ChevronRight, Layers, Home, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import { useCart } from "../../context/CartContext";
@@ -83,6 +83,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
       setIsLoading(false);
     }
   }
+
+  const handleGoBack = () => {
+    if (typeof window !== "undefined" && window.history.length > 1 && document.referrer.includes(window.location.host)) {
+      router.back();
+    } else {
+      router.push("/products");
+    }
+  };
 
   const handleAddToCart = () => {
     if (product) {
@@ -203,17 +211,97 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
   return (
     <main className="flex flex-col w-full min-h-screen bg-[#F7F5F0] dark:bg-[#14100E] text-[#241812] dark:text-[#F7F5F0] font-sans pb-24 md:pb-16 transition-colors duration-300">
       
-      {/* Mobile Top Navigation Bar */}
-      <div className="md:hidden flex items-center justify-between p-4 sticky top-0 bg-[#F7F5F0]/90 dark:bg-[#14100E]/90 backdrop-blur-md z-40 border-b border-[#EAE1D2] dark:border-[#2E241E]">
-        <button onClick={() => router.back()} className="p-2 bg-white dark:bg-[#1E1713] rounded-full border border-[#EAE1D2] dark:border-[#2E241E]" aria-label="Go Back">
-          <ArrowLeft className="w-4 h-4 text-[#241812] dark:text-[#F7F5F0]" />
+      {/* Mobile Top Navigation Bar (With Smart Back, Logo Home & Share) */}
+      <div className="md:hidden flex items-center justify-between px-3.5 py-2.5 sticky top-0 bg-[#F7F5F0]/95 dark:bg-[#14100E]/95 backdrop-blur-md z-40 border-b border-[#EAE1D2] dark:border-[#2E241E]">
+        <button 
+          onClick={handleGoBack} 
+          className="flex items-center gap-1 px-3 py-1.5 bg-white dark:bg-[#1E1713] rounded-full border border-[#EAE1D2] dark:border-[#2E241E] text-xs font-bold text-[#241812] dark:text-[#F7F5F0] shadow-xs active:scale-95 transition-all cursor-pointer" 
+          aria-label="Go Back"
+        >
+          <ArrowLeft className="w-4 h-4 text-[#C49A50]" />
+          <span>Back</span>
         </button>
-        <button onClick={handleShare} className="p-2 bg-white dark:bg-[#1E1713] rounded-full border border-[#EAE1D2] dark:border-[#2E241E]" aria-label="Share">
-          <Send className="w-4 h-4 text-[#241812] dark:text-[#F7F5F0]" />
-        </button>
+
+        <Link href="/" className="flex items-center gap-1.5">
+          <div className="w-6 h-6 rounded-full overflow-hidden ring-1 ring-[#C49A50]/60 bg-[#2E1A11] shrink-0">
+            <Image src="/logo-circle.png" alt="Kaashta Crafts" width={24} height={24} className="object-cover" />
+          </div>
+          <span className="font-playfair font-bold text-xs tracking-wider text-[#241812] dark:text-[#F7F5F0]">
+            Kaashta Crafts
+          </span>
+        </Link>
+
+        <div className="flex items-center gap-1.5">
+          <Link 
+            href="/" 
+            className="p-1.5 bg-white dark:bg-[#1E1713] rounded-full border border-[#EAE1D2] dark:border-[#2E241E] text-[#241812] dark:text-[#F7F5F0] shadow-xs active:scale-95 transition-all" 
+            title="Go to Home"
+          >
+            <Home className="w-4 h-4 text-[#241812] dark:text-[#F7F5F0]" />
+          </Link>
+          <button 
+            onClick={handleShare} 
+            className="p-1.5 bg-white dark:bg-[#1E1713] rounded-full border border-[#EAE1D2] dark:border-[#2E241E] text-[#241812] dark:text-[#F7F5F0] shadow-xs active:scale-95 transition-all cursor-pointer" 
+            aria-label="Share"
+            title="Share with friends"
+          >
+            <Send className="w-4 h-4 text-[#241812] dark:text-[#F7F5F0]" />
+          </button>
+        </div>
       </div>
 
-      <div className="max-w-[1300px] mx-auto w-full pt-4 md:pt-10 px-4 sm:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14">
+      {/* Top Breadcrumb & Navigation Trail (Desktop & Tablet) */}
+      <div className="max-w-[1300px] mx-auto w-full pt-4 md:pt-8 px-4 sm:px-8 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3 text-xs">
+          <button
+            onClick={handleGoBack}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white dark:bg-[#1E1713] border border-[#EAE1D2] dark:border-[#2E241E] text-[#241812] dark:text-[#F7F5F0] hover:border-[#C49A50] hover:text-[#C49A50] font-bold transition-all shadow-xs cursor-pointer group active:scale-95"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-[#C49A50] group-hover:-translate-x-0.5 transition-transform" />
+            <span>Back to All Pieces</span>
+          </button>
+          
+          <span className="hidden sm:inline text-[#82786E]">•</span>
+          
+          <nav className="hidden sm:flex items-center gap-2 text-xs text-[#82786E] font-medium">
+            <Link href="/" className="hover:text-[#241812] dark:hover:text-[#F7F5F0] transition-colors flex items-center gap-1">
+              <Home className="w-3.5 h-3.5 text-[#C49A50]" />
+              <span>Home</span>
+            </Link>
+            <span>/</span>
+            <Link href="/products" className="hover:text-[#241812] dark:hover:text-[#F7F5F0] transition-colors">
+              Shop All
+            </Link>
+            <span>/</span>
+            <Link href={`/products?category=${encodeURIComponent(product.category)}`} className="hover:text-[#241812] dark:hover:text-[#F7F5F0] transition-colors">
+              {product.category}
+            </Link>
+            <span>/</span>
+            <span className="text-[#241812] dark:text-[#F7F5F0] font-semibold line-clamp-1 max-w-[200px] lg:max-w-[320px]">
+              {product.name}
+            </span>
+          </nav>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Link
+            href="/"
+            className="hidden md:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/70 dark:bg-[#1E1713]/70 border border-[#EAE1D2] dark:border-[#2E241E] text-xs font-semibold text-[#82786E] hover:text-[#241812] dark:hover:text-[#F7F5F0] hover:border-[#C49A50] transition-all"
+          >
+            <Home className="w-3.5 h-3.5 text-[#C49A50]" />
+            <span>Home Page</span>
+          </Link>
+          <Link
+            href="/products"
+            className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-[#C49A50] hover:text-[#D4AF37] transition-colors"
+          >
+            <span>Explore Catalog</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      </div>
+
+      <div className="max-w-[1300px] mx-auto w-full pt-4 md:pt-6 px-4 sm:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-14">
         
         {/* Left Column: Product Image & Gallery */}
         <div className="flex flex-col gap-4">
@@ -619,6 +707,39 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                 </div>
               ))
             )}
+          </div>
+        </div>
+      </div>
+
+      {/* Back to Home & Explore Full Catalog Banner */}
+      <div className="max-w-[1300px] mx-auto w-full px-4 sm:px-8 mt-6 mb-16">
+        <div className="bg-gradient-to-r from-[#241812] via-[#38261C] to-[#241812] p-6 sm:p-9 rounded-3xl text-white flex flex-col sm:flex-row items-center justify-between gap-6 shadow-xl border border-[#C49A50]/30 relative overflow-hidden">
+          <div className="relative z-10 text-center sm:text-left">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#C49A50] mb-1.5 block">
+              Handcrafted With Tamil Woodcraft Heritage
+            </span>
+            <h3 className="text-xl sm:text-2xl font-bold font-playfair text-[#F7F5F0] mb-2">
+              Discover More From Kaashta Crafts
+            </h3>
+            <p className="text-xs sm:text-sm text-[#E0D3BE] max-w-xl leading-relaxed">
+              Shared this piece with family or friends? Explore our full collection of teak desk suites, sacred home decor, and culinary serving boards.
+            </p>
+          </div>
+          <div className="relative z-10 flex flex-wrap gap-3 shrink-0 justify-center">
+            <Link
+              href="/"
+              className="px-6 py-3 rounded-full bg-[#C49A50] hover:bg-[#D4AF37] text-[#241812] font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-2 cursor-pointer active:scale-95"
+            >
+              <Home className="w-4 h-4" />
+              <span>Go to Home</span>
+            </Link>
+            <Link
+              href="/products"
+              className="px-6 py-3 rounded-full bg-white/10 hover:bg-white/20 text-[#F7F5F0] border border-white/20 font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer active:scale-95"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span>Browse All Creations</span>
+            </Link>
           </div>
         </div>
       </div>
