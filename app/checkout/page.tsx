@@ -516,7 +516,13 @@ function CheckoutContent() {
               {checkoutItems.map((item, idx) => (
                 <div key={idx} className="flex flex-col text-xs pb-2 border-b border-[#EAE1D2]/40 dark:border-[#2E241E]/40 last:border-b-0">
                   <div className="flex justify-between items-center">
-                    <span className="text-[#82786E] dark:text-[#A39A90] line-clamp-1 pr-3">{item.quantity} × {item.name}</span>
+                    <Link 
+                      href={`/products/${item.productId || item.id}`}
+                      className="text-[#82786E] dark:text-[#A39A90] hover:text-[#C49A50] line-clamp-1 pr-3 transition-colors font-medium flex items-center gap-1 group"
+                      title="View product"
+                    >
+                      <span>{item.quantity} × {item.name}</span>
+                    </Link>
                     <span className="font-bold text-[#241812] dark:text-[#F7F5F0] shrink-0">₹{item.price * item.quantity}</span>
                   </div>
                   {item.customization?.text && (

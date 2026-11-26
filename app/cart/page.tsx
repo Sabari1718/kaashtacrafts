@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Trash2, Minus, Plus, ArrowRight, ShieldCheck, ShoppingBag, Sparkles } from "lucide-react";
+import { Trash2, Minus, Plus, ArrowRight, ShieldCheck, ShoppingBag, Sparkles, Eye, ExternalLink } from "lucide-react";
 import { useCart } from "../context/CartContext";
 
 export default function CartPage() {
@@ -76,11 +76,11 @@ export default function CartPage() {
                     </div>
                   </button>
 
-                  {/* Thumbnail Image */}
+                  {/* Thumbnail Image (Clickable Link to Product Details) */}
                   <div className="relative w-full sm:w-28 h-28 rounded-2xl overflow-hidden bg-[#EAE1D2]/30 dark:bg-[#2E241E]/30 shrink-0">
                     <button 
                       onClick={() => toggleSelection(item.id)}
-                      className="absolute top-2 left-2 z-10 p-1 rounded-md sm:hidden bg-white/90 dark:bg-[#1E1713]/90 shadow-xs"
+                      className="absolute top-2 left-2 z-10 p-1 rounded-md sm:hidden bg-white/90 dark:bg-[#1E1713]/90 shadow-xs cursor-pointer"
                     >
                       <div className={`w-4 h-4 rounded flex items-center justify-center ${selectedItemIds.includes(item.id) ? 'bg-[#241812] text-white' : 'border border-stone-300'}`}>
                         {selectedItemIds.includes(item.id) && (
@@ -90,12 +90,21 @@ export default function CartPage() {
                         )}
                       </div>
                     </button>
-                    <Image 
-                      src={item.image} 
-                      alt={item.name} 
-                      fill 
-                      className="object-cover"
-                    />
+                    <Link 
+                      href={`/products/${item.id || (item as any)._id}`}
+                      className="block w-full h-full relative group/img cursor-pointer"
+                      title={`Open ${item.name}`}
+                    >
+                      <Image 
+                        src={item.image} 
+                        alt={item.name} 
+                        fill 
+                        className="object-cover group-hover/img:scale-108 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover/img:bg-black/25 transition-colors flex items-center justify-center">
+                        <Eye className="w-5 h-5 text-white opacity-0 group-hover/img:opacity-100 transition-opacity drop-shadow-md" />
+                      </div>
+                    </Link>
                   </div>
                   
                   {/* Meta & Controls */}
@@ -103,7 +112,16 @@ export default function CartPage() {
                     <div className="flex justify-between items-start mb-2">
                       <div>
                         <span className="text-[10px] font-bold tracking-[0.16em] uppercase text-[#C49A50]">{item.category}</span>
-                        <h3 className="text-base font-bold text-[#241812] dark:text-[#F7F5F0] line-clamp-1">{item.name}</h3>
+                        <Link 
+                          href={`/products/${item.id || (item as any)._id}`}
+                          className="group/title block"
+                          title={`Click to open ${item.name}`}
+                        >
+                          <h3 className="text-base font-bold text-[#241812] dark:text-[#F7F5F0] line-clamp-1 group-hover/title:text-[#C49A50] transition-colors flex items-center gap-1.5 cursor-pointer">
+                            <span>{item.name}</span>
+                            <ExternalLink className="w-3.5 h-3.5 opacity-60 group-hover/title:opacity-100 text-[#C49A50] shrink-0" />
+                          </h3>
+                        </Link>
                         {item.customization?.text && (
                           <div className="mt-1 inline-flex items-center gap-1 bg-[#FAF6EE] dark:bg-[#251A12] border border-[#C49A50]/40 px-2 py-0.5 rounded-md text-[11px] font-semibold text-[#8B5A2B] dark:text-[#E6C477]">
                             <span>✒️ Engraving:</span>
@@ -136,13 +154,26 @@ export default function CartPage() {
                         </button>
                       </div>
 
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+                        <Link 
+                          href={`/products/${item.id || (item as any)._id}`}
+                          className="text-[#82786E] hover:text-[#241812] dark:hover:text-[#F7F5F0] flex items-center gap-1 text-xs font-semibold transition-colors"
+                          title="Open product page"
+                        >
+                          <Eye className="w-3.5 h-3.5 text-[#C49A50]" />
+                          <span>View Product</span>
+                        </Link>
+
+                        <span className="text-[#EAE1D2] dark:text-[#2E241E]">•</span>
+
                         <Link 
                           href={`/checkout?buyNow=${item.id}${item.customization?.text ? `&customText=${encodeURIComponent(item.customization.text)}&customFont=${encodeURIComponent(item.customization.font || '')}&customSize=${encodeURIComponent(item.customization.size || '')}&customPos=${encodeURIComponent(item.customization.position || '')}` : ''}`}
                           className="text-[#C49A50] hover:underline flex items-center gap-1 text-xs font-bold transition-colors"
                         >
                           Buy Now <ArrowRight className="w-3 h-3" />
                         </Link>
+
+                        <span className="text-[#EAE1D2] dark:text-[#2E241E]">•</span>
 
                         <button 
                           onClick={() => removeFromCart(item.id)}
